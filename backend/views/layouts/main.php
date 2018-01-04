@@ -20,7 +20,7 @@ AppAsset::register($this);
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="Xenon Boostrap Admin Panel" />
         <meta name="author" content="" />
-        <title>Emperor Admin</title>
+        <title>Al Khalejia Admin</title>
         <script src="<?= Yii::$app->homeUrl; ?>js/jquery-1.11.1.min.js"></script>
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -43,21 +43,21 @@ AppAsset::register($this);
                         <!-- logo -->
                         <div class="logo">
                             <a href="" class="logo-expanded">
-                                <img src="<?= Yii::$app->homeUrl; ?>images/logoo.png" width="82" alt="" />
+                                <h2>Al Khalejia</h2>
                             </a>
 
                             <a href="" class="logo-collapsed">
-                                <img src="<?= Yii::$app->homeUrl; ?>images/logoemp.png" width="40" alt="" />
+                                <h2>ALK</h2>
                             </a>
                         </div>
                         <!-- This will toggle the mobile menu and will be visible only on mobile devices -->
                         <div class="mobile-menu-toggle visible-xs">
-                            <a href="#" data-toggle="user-info-menu">
+                            <a href="" data-toggle="user-info-menu">
                                 <i class="fa-bell-o"></i>
                                 <span class="badge badge-success">7</span>
                             </a>
 
-                            <a href="#" data-toggle="mobile-menu">
+                            <a href="" data-toggle="mobile-menu">
                                 <i class="fa-bars"></i>
                             </a>
                         </div>
@@ -102,7 +102,7 @@ AppAsset::register($this);
                     <ul class="user-info-menu left-links list-inline list-unstyled">
 
                         <li class="hidden-sm hidden-xs">
-                            <a href="#" data-toggle="sidebar">
+                            <a href="" data-toggle="sidebar">
                                 <i class="fa-bars"></i>
                             </a>
                         </li>
@@ -115,18 +115,8 @@ AppAsset::register($this);
                         </li>
 
                         <li class="dropdown user-profile">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <?php
-                                $filename = '';
-                                if (file_exists($filename)) {
-                                    ?>
-                                    <img src="<?= Yii::$app->homeUrl; ?>uploads/<?= Yii::$app->user->identity->photo ?>" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
-                                    <?php
-                                } else {
-                                    ?>
-                                    <img src="<?= Yii::$app->homeUrl; ?>images/user-5.jpg" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
-                                <?php }
-                                ?>
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                <!--<img src="<?= Yii::$app->homeUrl; ?>images/user-5.jpg" alt="user-image" class="img-circle img-inline userpic-32" width="28" />-->
                                 <span>
                                     <?= Yii::$app->user->identity->name ?>
                                     <i class="fa-angle-down"></i>

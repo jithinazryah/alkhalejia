@@ -38,6 +38,7 @@ class m180104_071104_create_admin_post extends Migration {
             'name' => $this->string(100),
             'email' => $this->string(100),
             'phone' => $this->string(15),
+            'photo' => $this->string(100)->Null(),
             'address' => $this->text(),
             'status' => $this->smallInteger()->notNull()->defaultValue(0),
             'CB' => $this->integer()->notNull(),
