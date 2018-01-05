@@ -32,23 +32,22 @@ use Yii;
  * @property Contacts $supplier0
  * @property Contacts $transport0
  */
-class DailyEntry extends \yii\db\ActiveRecord
-{
+class DailyEntry extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'daily_entry';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['received_date', 'DOC', 'DOU'], 'safe'],
+            [['material', 'supplier', 'transport', 'payment_status', 'yard_id', 'received_date'], 'required'],
+            [['received_date', 'DOC', 'DOU', 'image', 'transport_amount'], 'safe'],
             [['material', 'supplier', 'transport', 'payment_status', 'yard_id', 'status', 'CB', 'UB'], 'integer'],
             [['rate', 'total'], 'number'],
             [['description'], 'string'],
@@ -63,8 +62,7 @@ class DailyEntry extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'received_date' => 'Received Date',
@@ -92,24 +90,22 @@ class DailyEntry extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMaterial0()
-    {
+    public function getMaterial0() {
         return $this->hasOne(Materials::className(), ['id' => 'material']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSupplier0()
-    {
+    public function getSupplier0() {
         return $this->hasOne(Contacts::className(), ['id' => 'supplier']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTransport0()
-    {
+    public function getTransport0() {
         return $this->hasOne(Contacts::className(), ['id' => 'transport']);
     }
+
 }
