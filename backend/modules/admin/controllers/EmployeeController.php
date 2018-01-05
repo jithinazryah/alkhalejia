@@ -72,11 +72,13 @@ class EmployeeController extends Controller {
                 $model->photo = $files->extension;
             }
             if ($model->validate() && $model->save()) {
-                if (!empty($this->upload($model))) {
+                if (!empty($files)) {
                     $this->upload($model, $files);
                 }
                 $this->Imageupload($model);
-                return $this->redirect(['view', 'id' => $model->id]);
+                Yii::$app->session->setFlash('success', "New Employee added Successfully");
+                $model = new Employee();
+                $model_upload = '';
             }
         }
         return $this->render('create', [
@@ -142,6 +144,11 @@ class EmployeeController extends Controller {
                 $arrs[$i]['expiry_date'] = $val;
                 $i++;
             }
+            $i = 0;
+            foreach ($_POST['creates']['description'] as $val) {
+                $arrs[$i]['description'] = $val;
+                $i++;
+            }
             if (!empty($arrs)) {
                 $this->SaveAttachment($model, $arrs);
             }
@@ -195,7 +202,7 @@ class EmployeeController extends Controller {
     public function actionUpdate($id) {
         $model = $this->findModel($id);
         $photo_ = $model->photo;
-        $model_upload = EmployeeUploads::find()->where(['employee_id' => $model->id])->all();
+        $model_upload = EmployeeUploads::find()->where(['employee_id' => $model->id, 'upload_category' => 1])->all();
         if ($model->load(Yii::$app->request->post())) {
             $files = UploadedFile::getInstance($model, 'photo');
             if (empty($files)) {
@@ -208,14 +215,13 @@ class EmployeeController extends Controller {
                     $this->upload($model, $files);
                 }
                 $this->Imageupload($model);
+                Yii::$app->session->setFlash('success', "Employee Details Updated Successfully");
                 return $this->redirect(['update', 'id' => $model->id]);
             }
-        } else {
-            return $this->render('update', [
-                        'model' => $model,
-                        'model_upload' => $model_upload,
-            ]);
-        }
+        } return $this->render('update', [
+                    'model' => $model,
+                    'model_upload' => $model_upload,
+        ]);
     }
 
     /**
@@ -245,6 +251,9 @@ class EmployeeController extends Controller {
         }
     }
 
+    /**
+     * Append one row to the document add form
+     */
     public function actionAttachment() {
         if (Yii::$app->request->isAjax) {
             $data = $this->renderPartial('_form_add_attachment');

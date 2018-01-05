@@ -27,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
                     <?= Html::a('<i class="fa-th-list"></i><span> Create Employee</span>', ['create'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?>
+                    <?= \common\widgets\Alert::widget(); ?>
                     <?=
                     GridView::widget([
                         'dataProvider' => $dataProvider,

@@ -20,8 +20,8 @@ use yii\helpers\ArrayHelper;
 </style>
 
 <div class="employee-form form-inline">
-
-    <?php $form = ActiveForm::begin(); ?>
+    <?= \common\widgets\Alert::widget(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     <div class="row">
         <?php $posts = ArrayHelper::map(AdminPost::findAll(['status' => 1]), 'id', 'post_name'); ?>
         <div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
@@ -86,6 +86,7 @@ use yii\helpers\ArrayHelper;
                     <th>Document Name</th>
                     <th>Document</th>
                     <th>Expiry Date</th>
+                    <th>Description</th>
                     <th></th>
                 </tr>
                 <?php foreach ($model_upload as $val) { ?>
@@ -93,6 +94,7 @@ use yii\helpers\ArrayHelper;
                         <td><?= $val->document_title ?></td>
                         <td><a href="<?= Yii::$app->homeUrl ?>uploads/employee/documents/<?= $val->id ?>/<?= $val->file ?>" target="_blank"><?= $val->file ?></a></td>
                         <td><?= $val->expiry_date ?></td>
+                        <td><?= $val->description ?></td>
                         <td><?= Html::a('<i class="fa fa-trash" style="color:red;"></i>', ['attachment-delete', 'id' => $val->id], ['onClick' => 'return confirm("Are you sure you want to remove?")']) ?></td>
                     </tr>
                 <?php }

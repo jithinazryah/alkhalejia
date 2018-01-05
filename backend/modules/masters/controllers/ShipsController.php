@@ -8,17 +8,18 @@ use common\models\ShipsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\components\UploadFile;
+use common\models\EmployeeUploads;
 
 /**
  * ShipsController implements the CRUD actions for Ships model.
  */
-class ShipsController extends Controller
-{
+class ShipsController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -33,14 +34,13 @@ class ShipsController extends Controller
      * Lists all Ships models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new ShipsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -49,10 +49,9 @@ class ShipsController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -61,17 +60,22 @@ class ShipsController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Ships();
+        $model_upload = '';
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate() && $model->save()) {
+                $this->Imageupload($model);
+                $model = new Ships();
+                $model_upload = '';
+                Yii::$app->session->setFlash('success', "New Ships added Successfully");
+            }
         }
+        return $this->render('create', [
+                    'model' => $model,
+                    'model_upload' => $model_upload,
+        ]);
     }
 
     /**
@@ -80,18 +84,122 @@ class ShipsController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $model_upload = EmployeeUploads::find()->where(['employee_id' => $model->id, 'upload_category' => 2])->all();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                $this->Imageupload($model);
+                Yii::$app->session->setFlash('success', "Ships Details Updated Successfully");
+                return $this->redirect(['update', 'id' => $model->id]);
+            }
+        } return $this->render('update', [
+                    'model' => $model,
+                    'model_upload' => $model_upload,
+        ]);
+    }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+    /*
+     * to upload multiple documents
+     *  */
+
+    public function Imageupload($model) {
+        if (isset($_POST['creates']) && $_POST['creates'] != '') {
+
+
+            $arrs = [];
+            $i = 0;
+
+            foreach ($_FILES['creates'] ['name'] as $row => $innerArray) {
+                $i = 0;
+                foreach ($innerArray as $innerRow => $value) {
+                    $arrs[$i]['name'] = $value;
+                    $i++;
+                }
+            }
+            $i = 0;
+            foreach ($_FILES['creates'] ['tmp_name'] as $row => $innerArray) {
+                $i = 0;
+                foreach ($innerArray as $innerRow => $value) {
+                    $arrs[$i]['tmp_name'] = $value;
+                    $i++;
+                }
+            }
+            $i = 0;
+
+            foreach ($_FILES['creates'] ['name'] as $row => $innerArray) {
+                $i = 0;
+                foreach ($innerArray as $innerRow => $value) {
+                    $ext = pathinfo($value, PATHINFO_EXTENSION);
+                    $arrs[$i]['extension'] = $ext;
+                    $i++;
+                }
+            }
+            $i = 0;
+            foreach ($_POST['creates']['file_name'] as $val) {
+                $arrs[$i]['file_name'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['creates']['expiry_date'] as $val) {
+                $arrs[$i]['expiry_date'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['creates']['description'] as $val) {
+                $arrs[$i]['description'] = $val;
+                $i++;
+            }
+            if (!empty($arrs)) {
+                $this->SaveAttachment($model, $arrs);
+            }
+        }
+        return;
+    }
+
+    /*
+     * to save the employee document details
+     */
+
+    public function SaveAttachment($model, $arrs) {
+        foreach ($arrs as $val) {
+            $model_upload = new EmployeeUploads();
+            $model_upload->employee_id = $model->id;
+            if (isset($val['file_name']) && $val['file_name'] != '') {
+                $model_upload->document_title = $val['file_name'];
+            }
+            if (isset($val['expiry_date']) && $val['expiry_date'] != '') {
+                $model_upload->expiry_date = $val['expiry_date'];
+            }
+            if (isset($val['name']) && $val['name'] != '') {
+                $model_upload->file = $val['name'];
+            }
+            if (isset($val['description']) && $val['description'] != '') {
+                $model_upload->description = $val['description'];
+            }
+            $model_upload->upload_category = 2;
+            if ($model_upload->document_title != '' && $model_upload->file != '') {
+                $allowed = array('pdf', 'txt', 'doc', 'docx', 'xls', 'xlsx', 'msg', 'zip', 'eml', 'jpg', 'jpeg', 'png');
+                if (in_array($val['extension'], $allowed)) {
+                    if (Yii::$app->SetValues->Attributes($model_upload) && $model_upload->save()) {
+                        $file_name = $val['name'];
+                        $root = Yii::$app->basePath . '/../uploads/ships/documents/' . $model_upload->id;
+                        if (!is_dir($root)) {
+                            mkdir($root);
+                        }
+                        move_uploaded_file($val['tmp_name'], $root . '/' . $file_name);
+                    }
+                }
+            }
         }
     }
+
+    /**
+     * Updates an existing Employee model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
 
     /**
      * Deletes an existing Ships model.
@@ -99,8 +207,7 @@ class ShipsController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -113,12 +220,42 @@ class ShipsController extends Controller
      * @return Ships the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Ships::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    /**
+     * Append one row to the document add form
+     */
+    public function actionAttachment() {
+        if (Yii::$app->request->isAjax) {
+            $data = $this->renderPartial('_form_add_attachment');
+            echo $data;
+        }
+    }
+
+    /**
+     * Remove employee attachments
+     */
+    public function actionAttachmentDelete($id) {
+        $model = EmployeeUploads::find()->where(['id' => $id])->one();
+        if (!empty($model)) {
+            if ($model->delete()) {
+                $dirPath = Yii::getAlias(Yii::$app->params['uploadPath']) . '/uploads/ships/documents/' . $model->id;
+                $file_name = $dirPath . '/' . $model->file;
+                if (file_exists($file_name)) {
+                    unlink($file_name);
+                }
+                if (is_dir($dirPath)) {
+                    rmdir($dirPath);
+                }
+            }
+        }
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
 }
