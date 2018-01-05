@@ -101,6 +101,9 @@ AppAsset::register($this);
                                     <li>
                                         <?= Html::a('Materials', ['/masters/materials/index'], ['class' => 'title']) ?>
                                     </li>
+                                    <li>
+                                        <?= Html::a('Ships', ['/masters/ships/index'], ['class' => 'title']) ?>
+                                    </li>
                                 </ul>
                             </li>
                             <?php
