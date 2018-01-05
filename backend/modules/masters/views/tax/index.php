@@ -93,7 +93,14 @@ $this->params['breadcrumbs'][] = $this->title;
         $("#search-option").click(function () {
             $(".filters").slideToggle();
         });
+$(document).on('click', '.modalButton', function () {
 
+        $('#modal')
+                .modal('show')
+                .find('#modalContent')
+                .load($(this).attr("value"));
+
+    });
 
     });
 
