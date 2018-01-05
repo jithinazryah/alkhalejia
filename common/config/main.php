@@ -28,5 +28,8 @@ return [
         'Followups' => [
             'class' => 'common\components\Followups'
         ],
+        'Modalview' => [
+            'class' => 'common\components\ModalViewWidget'
+        ],
     ],
 ];
