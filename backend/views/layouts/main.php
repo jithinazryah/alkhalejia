@@ -88,6 +88,24 @@ AppAsset::register($this);
                             <?php
                         }
                         ?>
+
+                        <?php
+                        if (Yii::$app->session['post']['masters'] == 1) {
+                            ?>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-object-group"></i>
+                                    <span class="title">Masters</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <?= Html::a('Materials', ['/masters/materials/index'], ['class' => 'title']) ?>
+                                    </li>
+                                </ul>
+                            </li>
+                            <?php
+                        }
+                        ?>
                     </ul>
 
                 </div>

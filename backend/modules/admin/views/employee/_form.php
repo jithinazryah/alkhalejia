@@ -64,10 +64,10 @@ use yii\helpers\ArrayHelper;
             if ($model->isNewRecord)
                 echo "";
             else {
-                if (!empty($model->image)) {
+                if (!empty($model->photo)) {
                     ?>
 
-                    <img src="<?= Yii::$app->homeUrl ?>../uploads/employee/<?= $model->photo ?> ?>" width="125" height="100"/>
+                    <img src="<?= Yii::$app->homeUrl ?>uploads/employee/<?= $model->photo ?> ?>" width="125" height="100"/>
                     <?php
                 }
             }
@@ -78,7 +78,7 @@ use yii\helpers\ArrayHelper;
     <div class="clearfix"></div>
     <div id = "p_attach">
         <input type = "hidden" id = "delete_port_vals" name = "delete_port_vals" value = "">
-        <h4 style = "color:#000;font-style: italic;">Attachments</h4>
+        <h4 style = "color:#000;font-style: italic;">Documents</h4>
         <p style="margin-bottom: 15px;color: red;font-style: italic;">( Only pdf,txt,doc,docx,xls,xlsx,msg,zip,eml, jpg, jpeg, png files are allowed. )</p>
         <?php if (!empty($model_upload)) { ?>
             <table class="table table-hover">

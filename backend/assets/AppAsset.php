@@ -14,7 +14,7 @@ class AppAsset extends AssetBundle {
     public $css = [
         'http://fonts.googleapis.com/css?family=Arimo:400,700,400italic',
         'css/fonts/linecons/css/linecons.css',
-        'css/fonts/fontawesome/css/font-awesome.min.css',
+        'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
         'css/bootstrap.css',
         'css/xenon-core.css',
         'css/xenon-forms.css',

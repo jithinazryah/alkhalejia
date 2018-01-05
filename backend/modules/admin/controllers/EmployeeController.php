@@ -67,7 +67,14 @@ class EmployeeController extends Controller {
 
         if ($model->load(Yii::$app->request->post())) {
             $model->password = Yii::$app->security->generatePasswordHash($model->password);
-            if ($model->validate() && $model->save() && $this->upload($model)) {
+            $files = UploadedFile::getInstance($model, 'photo');
+            if (!empty($files)) {
+                $model->photo = $files->extension;
+            }
+            if ($model->validate() && $model->save()) {
+                if (!empty($this->upload($model))) {
+                    $this->upload($model, $files);
+                }
                 $this->Imageupload($model);
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -79,31 +86,14 @@ class EmployeeController extends Controller {
     }
 
     /**
-     * Upload Employee images.
+     * Upload Material photos.
      * @return mixed
      */
-    public function Upload($model) {
-        $model->photo = UploadedFile::getInstance($model, 'photo');
-        if (isset($model->photo)) {
-            if ($model->photo->saveAs(Yii::$app->basePath . '/../uploads/employee/' . $model->id . '.' . $model->photo->extension)) {
-                if (!$model->isNewRecord) {
-                    $update = Employee::findOne($model->id);
-                    $update->photo = $model->id . '.' . $model->photo->extension;
-                    $update->save(false);
-                } else {
-                    $model->photo = $model->id . '.' . $model->photo->extension;
-                }
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            if (!$model->isNewRecord) {
-                $update = Employee::findOne($model->id);
-                $model->photo = $update->photo;
-            }
-            return true;
+    public function Upload($model, $files) {
+        if (isset($files) && !empty($files)) {
+            $files->saveAs(Yii::$app->basePath . '/../uploads/employee/' . $model->id . '.' . $files->extension);
         }
+        return TRUE;
     }
 
     /*
@@ -179,6 +169,7 @@ class EmployeeController extends Controller {
             if (isset($val['description']) && $val['description'] != '') {
                 $model_upload->description = $val['description'];
             }
+            $model_upload->upload_category = 1;
             if ($model_upload->document_title != '' && $model_upload->file != '') {
                 $allowed = array('pdf', 'txt', 'doc', 'docx', 'xls', 'xlsx', 'msg', 'zip', 'eml', 'jpg', 'jpeg', 'png');
                 if (in_array($val['extension'], $allowed)) {
@@ -203,10 +194,19 @@ class EmployeeController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $photo_ = $model->photo;
         $model_upload = EmployeeUploads::find()->where(['employee_id' => $model->id])->all();
         if ($model->load(Yii::$app->request->post())) {
+            $files = UploadedFile::getInstance($model, 'photo');
+            if (empty($files)) {
+                $model->photo = $photo_;
+            }
             if ($model->save()) {
-                $this->upload($model);
+                if (!empty($files)) {
+                    $model->photo = $model->id . '.' . $files->extension;
+                    $model->update();
+                    $this->upload($model, $files);
+                }
                 $this->Imageupload($model);
                 return $this->redirect(['update', 'id' => $model->id]);
             }
@@ -250,6 +250,26 @@ class EmployeeController extends Controller {
             $data = $this->renderPartial('_form_add_attachment');
             echo $data;
         }
+    }
+
+    /**
+     * Remove employee attachments
+     */
+    public function actionAttachmentDelete($id) {
+        $model = EmployeeUploads::find()->where(['id' => $id])->one();
+        if (!empty($model)) {
+            if ($model->delete()) {
+                $dirPath = Yii::getAlias(Yii::$app->params['uploadPath']) . '/uploads/employee/documents/' . $model->id;
+                $file_name = $dirPath . '/' . $model->file;
+                if (file_exists($file_name)) {
+                    unlink($file_name);
+                }
+                if (is_dir($dirPath)) {
+                    rmdir($dirPath);
+                }
+            }
+        }
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
 }

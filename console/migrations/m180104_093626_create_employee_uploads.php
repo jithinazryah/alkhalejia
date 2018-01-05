@@ -20,6 +20,7 @@ class m180104_093626_create_employee_uploads extends Migration {
         $this->createTable('{{%employee_uploads}}', [
             'id' => $this->primaryKey(),
             'employee_id' => $this->integer()->Null(),
+            'upload_category' => $this->integer()->Null(),
             'document_title' => $this->string(100)->Null(),
             'file' => $this->string(100)->Null(),
             'description' => $this->text()->Null(),
