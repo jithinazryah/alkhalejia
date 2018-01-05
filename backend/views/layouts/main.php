@@ -109,6 +109,24 @@ AppAsset::register($this);
                             <?php
                         }
                         ?>
+
+                        <?php
+                        if (Yii::$app->session['post']['admin'] == 1) {
+                            ?>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <span class="title">Purchase</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <?= Html::a('Access Powers', ['/purchase/admin-post/index'], ['class' => 'title']) ?>
+                                    </li>
+                                </ul>
+                            </li>
+                            <?php
+                        }
+                        ?>
                     </ul>
 
                 </div>
