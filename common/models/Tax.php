@@ -31,9 +31,9 @@ class Tax extends \yii\db\ActiveRecord {
         public function rules() {
                 return [
                         [['tax', 'value'], 'required'],
-                        [['status', 'CB', 'UB'], 'integer'],
+                        [['status', 'value','CB', 'UB'], 'integer'],
                         [['DOC', 'DOU'], 'safe'],
-                        [['tax', 'value'], 'string', 'max' => 100],
+                        [['tax'], 'string', 'max' => 100],
                 ];
         }
 

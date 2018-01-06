@@ -5,12 +5,12 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Tax;
+use common\models\Appointment;
 
 /**
- * TaxSearch represents the model behind the search form about `common\models\Tax`.
+ * AppointmentSearch represents the model behind the search form about `common\models\Appointment`.
  */
-class TaxSearch extends Tax
+class AppointmentSearch extends Appointment
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class TaxSearch extends Tax
     public function rules()
     {
         return [
-            [['id', 'status', 'value', 'CB', 'UB'], 'integer'],
-            [['tax', 'DOC', 'DOU'], 'safe'],
+            [['id', 'vessel', 'material', 'quantity', 'status', 'CB', 'UB'], 'integer'],
+            [['appointment_number', 'date', 'port_of_call', 'terminal', 'berth_number', 'eta', 'description', 'DOC', 'DOU'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class TaxSearch extends Tax
      */
     public function search($params)
     {
-        $query = Tax::find();
+        $query = Appointment::find();
 
         // add conditions that should always apply here
 
@@ -60,15 +60,24 @@ class TaxSearch extends Tax
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'vessel' => $this->vessel,
+            'date' => $this->date,
+            'material' => $this->material,
+            'quantity' => $this->quantity,
+            'eta' => $this->eta,
             'status' => $this->status,
-            'value' => $this->value,
             'CB' => $this->CB,
             'UB' => $this->UB,
             'DOC' => $this->DOC,
             'DOU' => $this->DOU,
         ]);
 
-        $query->andFilterWhere(['like', 'tax', $this->tax]);
+        $query->andFilterWhere(['like', 'appointment_number', $this->appointment_number])
+            ->andFilterWhere(['like', 'port_of_call', $this->port_of_call])
+            ->andFilterWhere(['like', 'terminal', $this->terminal])
+            ->andFilterWhere(['like', 'berth_number', $this->berth_number])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'image', $this->image]);
 
         return $dataProvider;
     }

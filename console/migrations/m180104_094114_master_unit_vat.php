@@ -37,6 +37,7 @@ class m180104_094114_master_unit_vat extends Migration {
                     'DOC' => $this->date(),
                     'DOU' => $this->timestamp(),
                         ], $tableOptions);
+                $this->alterColumn('{{%tax}}', 'value', $this->integer() . ' NOT NULL');
         }
 
         /**
