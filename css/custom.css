@@ -518,6 +518,17 @@ a {
 .login-page .login-form .login-footer a:hover {
     color: #0e62c7;
 }
+.forgot-header{
+    padding: 0px 30px;
+}
+.forgot-header h2{
+    color: #419d87;
+    font-weight: 600;
+    padding-bottom: 15px;
+}
+.forgot-header p{
+    color: #48484a;
+}
 /******************************* Login Layout End *****************************/
 .modal-content{
     background: #f9f9f9;
