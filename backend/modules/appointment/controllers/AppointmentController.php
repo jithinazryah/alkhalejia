@@ -64,7 +64,8 @@ class AppointmentController extends Controller {
                 $model = new Appointment();
                 if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model)) {
                         $image = UploadedFile::getInstances($model, 'image');
-                        $model->date = date('Y-m-d');
+                        $model->date = date('Y-m-d', strtotime($model->date));
+                        $model->eta = date('Y-m-d h:i:s', strtotime($model->date));
                         $model->appointment_number = 'demo';
                         if ($model->save()) {
                                 if (!empty($image)) {
@@ -76,10 +77,8 @@ class AppointmentController extends Controller {
                                 $model->appointment_number = $appointment_number . $model->id;
                                 $model->save();
 
-                                Yii::$app->getSession()->setFlash('success', 'Slider Added Successfully');
+
                                 return $this->redirect(['add', 'id' => $model->id]);
-                        } else {
-                                var_dump($model->getErrors());
                         }
                 } else {
                         return $this->render('create', [
@@ -126,8 +125,16 @@ class AppointmentController extends Controller {
         public function actionUpdate($id) {
                 $model = $this->findModel($id);
 
-                if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                        return $this->redirect(['view', 'id' => $model->id]);
+                if ($model->load(Yii::$app->request->post())) {
+                        $model->date = date('Y-m-d', strtotime($model->date));
+                        $model->eta = date('Y-m-d h:i:s', strtotime($model->eta));
+                        $image = UploadedFile::getInstances($model, 'image');
+                        if (!empty($image)) {
+                                $root_path = ['appointment', $model->id];
+                                Yii::$app->UploadFile->UploadSingle($image, $model, $root_path);
+                        }
+                        $model->save();
+                        return $this->redirect(['index']);
                 } else {
                         return $this->render('update', [
                                     'model' => $model,
