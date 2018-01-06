@@ -23,11 +23,11 @@ class SiteController extends Controller {
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                    [
+                        [
                         'actions' => ['login', 'error', 'index', 'home', 'forgot', 'new-password'],
                         'allow' => true,
                     ],
-                    [
+                        [
                         'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
@@ -114,12 +114,13 @@ class SiteController extends Controller {
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
+        $this->layout = 'login';
+        $model = new Employee();
+        $model->scenario = 'login';
+        if ($model->load(Yii::$app->request->post()) && $model->login() && $this->setSession()) {
 
+            return $this->redirect(array('site/home'));
+        } else {
             return $this->render('login', [
                         'model' => $model,
             ]);
