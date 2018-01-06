@@ -111,18 +111,19 @@ class UploadFile extends Component {
 	}
 
 	public function UploadSingle($files, $model, $paths) {
-		if ($files != '' && $model != '') {
-			$paths = $paths . '/' . $model->id . '/slider-images';
-			$path = $this->CheckPath1($paths);
-			foreach ($files as $file) {
-				$name = $this->fileExists($path, $file->baseName . '.' . $file->extension, $file, 1);
-				$file->saveAs($path . '/' . $name);
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
+
+                if ($files != '' && $model != '') {
+                        $path = $this->CheckPath($paths);
+                        foreach ($files as $file) {
+                                $name = $this->fileExists($path, $file->baseName . '.' . $file->extension, $file, 1);
+                                $file->saveAs($path . '/' . $name);
+                        }
+                        return true;
+                } else {
+
+                        return false;
+                }
+        }
 
 	public function CheckPath1($paths) {
 		if (!is_dir($paths))
@@ -159,15 +160,15 @@ class UploadFile extends Component {
 
 	public function CheckPath($paths) {
 
-		$root = Yii::getAlias(Yii::$app->params['uploadPath']); /* Yii::$app->basePath; */
-		foreach ($paths as $path) {
-			$root .= '/' . $path;
+                $root = Yii::getAlias(Yii::$app->params['uploadPath']).'/uploads'; /* Yii::$app->basePath; */
+                foreach ($paths as $path) {
+                        $root .= '/' . $path;
 
-			if (!is_dir($root))
-				mkdir($root);
-		}
-		return $root;
-	}
+                        if (!is_dir($root))
+                                mkdir($root);
+                }
+                return $root;
+        }
 
 	public function RemoveFiles($paths) {
 		$files = glob($paths . '/*');
