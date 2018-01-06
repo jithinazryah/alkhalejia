@@ -18,8 +18,8 @@ class TaxSearch extends Tax
     public function rules()
     {
         return [
-            [['id', 'status', 'value', 'CB', 'UB'], 'integer'],
-            [['tax', 'DOC', 'DOU'], 'safe'],
+            [['id', 'status', 'CB', 'UB'], 'integer'],
+            [['tax', 'value', 'DOC', 'DOU'], 'safe'],
         ];
     }
 
@@ -61,14 +61,14 @@ class TaxSearch extends Tax
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
-            'value' => $this->value,
             'CB' => $this->CB,
             'UB' => $this->UB,
             'DOC' => $this->DOC,
             'DOU' => $this->DOU,
         ]);
 
-        $query->andFilterWhere(['like', 'tax', $this->tax]);
+        $query->andFilterWhere(['like', 'tax', $this->tax])
+            ->andFilterWhere(['like', 'value', $this->value]);
 
         return $dataProvider;
     }

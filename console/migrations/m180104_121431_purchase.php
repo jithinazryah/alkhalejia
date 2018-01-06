@@ -34,6 +34,8 @@ class m180104_121431_purchase extends Migration {
                     'description' => $this->text()->null(),
                     'image' => $this->string()->null(),
                     'transport_amount' => $this->decimal(10, 2)->null(),
+                    'amount_paid' => $this->decimal(10, 2)->null(),
+                    'due_amount' => $this->decimal(10, 2)->null(),
                     'status' => $this->integer()->Null(),
                     'CB' => $this->integer()->Null(),
                     'UB' => $this->integer()->Null(),

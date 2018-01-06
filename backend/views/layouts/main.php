@@ -113,6 +113,7 @@ AppAsset::register($this);
                                                                         <li>
                                                                                 <?= Html::a('Yards', ['/masters/yard/index'], ['class' => 'title']) ?>
                                                                         </li>
+
                                                                         <li>
                                                                                 <?= Html::a('Units', ['/masters/units/index'], ['class' => 'title']) ?>
                                                                         </li>
@@ -135,7 +136,7 @@ AppAsset::register($this);
                                                                 </a>
                                                                 <ul>
                                                                         <li>
-                                                                                <?= Html::a('Access Powers', ['/purchase/admin-post/index'], ['class' => 'title']) ?>
+                                                                                <?= Html::a('Access Powers', ['/purchase/daily-entry/index'], ['class' => 'title']) ?>
                                                                         </li>
                                                                 </ul>
                                                         </li>

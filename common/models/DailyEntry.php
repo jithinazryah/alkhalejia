@@ -34,78 +34,78 @@ use Yii;
  */
 class DailyEntry extends \yii\db\ActiveRecord {
 
-    /**
-     * @inheritdoc
-     */
-    public static function tableName() {
-        return 'daily_entry';
-    }
+        /**
+         * @inheritdoc
+         */
+        public static function tableName() {
+                return 'daily_entry';
+        }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules() {
-        return [
-            [['material', 'supplier', 'transport', 'payment_status', 'yard_id', 'received_date'], 'required'],
-            [['received_date', 'DOC', 'DOU', 'image', 'transport_amount'], 'safe'],
-            [['material', 'supplier', 'transport', 'payment_status', 'yard_id', 'status', 'CB', 'UB'], 'integer'],
-            [['rate', 'total'], 'number'],
-            [['description'], 'string'],
-            [['ticket_no'], 'string', 'max' => 20],
-            [['truck_number', 'gross_weight', 'tare_weight', 'net_weight'], 'string', 'max' => 255],
-            [['material'], 'exist', 'skipOnError' => true, 'targetClass' => Materials::className(), 'targetAttribute' => ['material' => 'id']],
-            [['supplier'], 'exist', 'skipOnError' => true, 'targetClass' => Contacts::className(), 'targetAttribute' => ['supplier' => 'id']],
-            [['transport'], 'exist', 'skipOnError' => true, 'targetClass' => Contacts::className(), 'targetAttribute' => ['transport' => 'id']],
-        ];
-    }
+        /**
+         * @inheritdoc
+         */
+        public function rules() {
+                return [
+                        [['material', 'supplier', 'transport', 'payment_status', 'yard_id', 'received_date'], 'required'],
+                        [['received_date', 'DOC', 'DOU', 'image', 'transport_amount', 'amount_paid', 'due_amount'], 'safe'],
+                        [['material', 'supplier', 'transport', 'payment_status', 'yard_id', 'status', 'CB', 'UB'], 'integer'],
+                        [['rate', 'total'], 'number'],
+                        [['description'], 'string'],
+                        [['ticket_no'], 'string', 'max' => 20],
+                        [['truck_number', 'gross_weight', 'tare_weight', 'net_weight'], 'string', 'max' => 255],
+                        [['material'], 'exist', 'skipOnError' => true, 'targetClass' => Materials::className(), 'targetAttribute' => ['material' => 'id']],
+                        [['supplier'], 'exist', 'skipOnError' => true, 'targetClass' => Contacts::className(), 'targetAttribute' => ['supplier' => 'id']],
+                        [['transport'], 'exist', 'skipOnError' => true, 'targetClass' => Contacts::className(), 'targetAttribute' => ['transport' => 'id']],
+                ];
+        }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels() {
-        return [
-            'id' => 'ID',
-            'received_date' => 'Received Date',
-            'material' => 'Material',
-            'supplier' => 'Supplier',
-            'transport' => 'Transport',
-            'payment_status' => 'Payment Status',
-            'yard_id' => 'Yard ID',
-            'ticket_no' => 'Ticket No',
-            'truck_number' => 'Truck Number',
-            'gross_weight' => 'Gross Weight',
-            'tare_weight' => 'Tare Weight',
-            'net_weight' => 'Net Weight',
-            'rate' => 'Rate',
-            'total' => 'Total',
-            'description' => 'Description',
-            'status' => 'Status',
-            'CB' => 'Cb',
-            'UB' => 'Ub',
-            'DOC' => 'Doc',
-            'DOU' => 'Dou',
-        ];
-    }
+        /**
+         * @inheritdoc
+         */
+        public function attributeLabels() {
+                return [
+                    'id' => 'ID',
+                    'received_date' => 'Received Date',
+                    'material' => 'Material',
+                    'supplier' => 'Supplier',
+                    'transport' => 'Transport',
+                    'payment_status' => 'Payment Status',
+                    'yard_id' => 'Yard ID',
+                    'ticket_no' => 'Ticket No',
+                    'truck_number' => 'Truck Number',
+                    'gross_weight' => 'Gross Weight',
+                    'tare_weight' => 'Tare Weight',
+                    'net_weight' => 'Net Weight',
+                    'rate' => 'Rate',
+                    'total' => 'Total',
+                    'description' => 'Description',
+                    'status' => 'Status',
+                    'CB' => 'Cb',
+                    'UB' => 'Ub',
+                    'DOC' => 'Doc',
+                    'DOU' => 'Dou',
+                ];
+        }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMaterial0() {
-        return $this->hasOne(Materials::className(), ['id' => 'material']);
-    }
+        /**
+         * @return \yii\db\ActiveQuery
+         */
+        public function getMaterial0() {
+                return $this->hasOne(Materials::className(), ['id' => 'material']);
+        }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSupplier0() {
-        return $this->hasOne(Contacts::className(), ['id' => 'supplier']);
-    }
+        /**
+         * @return \yii\db\ActiveQuery
+         */
+        public function getSupplier0() {
+                return $this->hasOne(Contacts::className(), ['id' => 'supplier']);
+        }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTransport0() {
-        return $this->hasOne(Contacts::className(), ['id' => 'transport']);
-    }
+        /**
+         * @return \yii\db\ActiveQuery
+         */
+        public function getTransport0() {
+                return $this->hasOne(Contacts::className(), ['id' => 'transport']);
+        }
 
 }
