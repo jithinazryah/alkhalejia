@@ -5,24 +5,25 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "tax".
+ * This is the model class for table "service_category".
  *
  * @property int $id
- * @property string $tax
- * @property string $value
+ * @property string $category_name
+ * @property string $category_code
+ * @property string $description
  * @property int $status
  * @property int $CB
  * @property int $UB
  * @property string $DOC
  * @property string $DOU
  */
-class Tax extends \yii\db\ActiveRecord {
+class ServiceCategory extends \yii\db\ActiveRecord {
 
         /**
          * @inheritdoc
          */
         public static function tableName() {
-                return 'tax';
+                return 'service_category';
         }
 
         /**
@@ -30,10 +31,11 @@ class Tax extends \yii\db\ActiveRecord {
          */
         public function rules() {
                 return [
-                        [['tax', 'value'], 'required'],
+                        [['category_name', 'category_code'], 'required'],
+                        [['description'], 'string'],
                         [['status', 'CB', 'UB'], 'integer'],
                         [['DOC', 'DOU'], 'safe'],
-                        [['tax', 'value'], 'string', 'max' => 100],
+                        [['category_name', 'category_code'], 'string', 'max' => 200],
                 ];
         }
 
@@ -43,8 +45,9 @@ class Tax extends \yii\db\ActiveRecord {
         public function attributeLabels() {
                 return [
                     'id' => 'ID',
-                    'tax' => 'Tax',
-                    'value' => 'Value',
+                    'category_name' => 'Category Name',
+                    'category_code' => 'Category Code',
+                    'description' => 'Description',
                     'status' => 'Status',
                     'CB' => 'Cb',
                     'UB' => 'Ub',
@@ -53,9 +56,9 @@ class Tax extends \yii\db\ActiveRecord {
                 ];
         }
 
-        public static function Tax() {
+        public static function Category() {
                 $data = static::find()->where(['status' => 1])->all();
-                $value = (count($data) == 0) ? ['' => ''] : \yii\helpers\ArrayHelper::map($data, 'id', 'tax');
+                $value = (count($data) == 0) ? ['' => ''] : \yii\helpers\ArrayHelper::map($data, 'id', 'category_name');
                 return $value;
         }
 
