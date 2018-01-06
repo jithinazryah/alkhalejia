@@ -10,15 +10,14 @@ use common\models\Contacts;
 /**
  * ContactsSearch represents the model behind the search form about `common\models\Contacts`.
  */
-class ContactsSearch extends Contacts
-{
+class ContactsSearch extends Contacts {
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['id', 'type', 'category', 'status', 'CB', 'UB'], 'integer'],
+            [['id', 'type', 'category', 'status', 'service', 'CB', 'UB'], 'integer'],
             [['name', 'code', 'tax_id', 'phone', 'email', 'address', 'city', 'description', 'DOC', 'DOU'], 'safe'],
         ];
     }
@@ -26,8 +25,7 @@ class ContactsSearch extends Contacts
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -39,8 +37,7 @@ class ContactsSearch extends Contacts
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = Contacts::find();
 
         // add conditions that should always apply here
@@ -70,14 +67,16 @@ class ContactsSearch extends Contacts
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'tax_id', $this->tax_id])
-            ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'description', $this->description]);
+                ->andFilterWhere(['like', 'code', $this->code])
+                ->andFilterWhere(['like', 'tax_id', $this->tax_id])
+                ->andFilterWhere(['like', 'phone', $this->phone])
+                ->andFilterWhere(['like', 'service', $this->service])
+                ->andFilterWhere(['like', 'email', $this->email])
+                ->andFilterWhere(['like', 'address', $this->address])
+                ->andFilterWhere(['like', 'city', $this->city])
+                ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }
+
 }

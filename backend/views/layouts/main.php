@@ -136,7 +136,7 @@ AppAsset::register($this);
                                                                 </a>
                                                                 <ul>
                                                                         <li>
-                                                                                <?= Html::a('Access Powers', ['/purchase/daily-entry/index'], ['class' => 'title']) ?>
+                                                                                <?= Html::a('Daily Entry', ['/purchase/daily-entry/index'], ['class' => 'title']) ?>
                                                                         </li>
                                                                 </ul>
                                                         </li>

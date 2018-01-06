@@ -12,11 +12,15 @@ use yii\widgets\ActiveForm;
     <?= \common\widgets\Alert::widget(); ?>
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     <div class="row">
-        <div class='col-md-6 col-sm-6 col-xs-12 left_padd'>
+        <div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
         </div>
-        <div class='col-md-6 col-sm-6 col-xs-12 left_padd'>
+        <div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
+            <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+
+        </div>
+        <div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
             <?= $form->field($model, 'registration_number')->textInput(['maxlength' => true]) ?>
 
         </div>

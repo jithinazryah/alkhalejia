@@ -18,6 +18,7 @@ class m180104_105524_ships extends Migration {
                 $this->createTable('{{%ships}}', [
                     'id' => $this->primaryKey(),
                     'name' => $this->string(200)->notNull(),
+                    'code' => $this->string(15)->notNull(),
                     'registration_number' => $this->string(20)->notNull(),
                     'length' => $this->string(20)->notNull(),
                     'capacity' => $this->string(20)->notNull(),

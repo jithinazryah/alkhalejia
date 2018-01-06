@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'format' => 'raw',
                                 'filter' => Html::activeDropDownList($searchModel, 'vessel', ArrayHelper::map(Ships::find()->all(), 'id', 'name'), ['class' => 'form-control', 'id' => 'name', 'prompt' => '']),
                                 'value' => function ($data) {
-                                    return 'adda';
+                                    return Ships::findOne($data->vessel)->name;
                                 },
                             ],
                             'appointment_number',

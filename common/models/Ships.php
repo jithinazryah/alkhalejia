@@ -19,39 +19,38 @@ use Yii;
  * @property string $DOC
  * @property string $DOU
  */
-class Ships extends \yii\db\ActiveRecord
-{
+class Ships extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'ships';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['name', 'registration_number', 'length', 'capacity'], 'required'],
+            [['name', 'registration_number', 'length', 'capacity', 'code'], 'required'],
             [['description'], 'string'],
             [['status', 'CB', 'UB'], 'integer'],
             [['DOC', 'DOU'], 'safe'],
             [['name'], 'string', 'max' => 200],
             [['registration_number', 'length', 'capacity'], 'string', 'max' => 20],
+            [['code'], 'string', 'max' => 15],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'code' => 'Code',
             'registration_number' => 'Registration Number',
             'length' => 'Length',
             'capacity' => 'Capacity',
@@ -63,4 +62,5 @@ class Ships extends \yii\db\ActiveRecord
             'DOU' => 'Dou',
         ];
     }
+
 }

@@ -10,24 +10,22 @@ use common\models\Ships;
 /**
  * ShipsSearch represents the model behind the search form about `common\models\Ships`.
  */
-class ShipsSearch extends Ships
-{
+class ShipsSearch extends Ships {
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['id', 'status', 'CB', 'UB'], 'integer'],
-            [['name', 'registration_number', 'length', 'capacity', 'description', 'DOC', 'DOU'], 'safe'],
+            [['name', 'code', 'registration_number', 'length', 'capacity', 'description', 'DOC', 'DOU'], 'safe'],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -39,8 +37,7 @@ class ShipsSearch extends Ships
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = Ships::find();
 
         // add conditions that should always apply here
@@ -68,11 +65,13 @@ class ShipsSearch extends Ships
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'registration_number', $this->registration_number])
-            ->andFilterWhere(['like', 'length', $this->length])
-            ->andFilterWhere(['like', 'capacity', $this->capacity])
-            ->andFilterWhere(['like', 'description', $this->description]);
+                ->andFilterWhere(['like', 'code', $this->code])
+                ->andFilterWhere(['like', 'registration_number', $this->registration_number])
+                ->andFilterWhere(['like', 'length', $this->length])
+                ->andFilterWhere(['like', 'capacity', $this->capacity])
+                ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }
+
 }

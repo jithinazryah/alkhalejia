@@ -36,7 +36,7 @@ class m180104_114439_contacts extends Migration {
                         ], $tableOptions);
 
                 $this->addForeignKey("fk_contacts_category", "contacts", "category", "supplier_category", "id", "RESTRICT", "RESTRICT");
-//                $this->addForeignKey("fk_contacts_service", "contacts", "service", "services", "id", "RESTRICT", "RESTRICT");
+                $this->addForeignKey("fk_contacts_service", "contacts", "service", "services", "id", "RESTRICT", "RESTRICT");
         }
 
         /**

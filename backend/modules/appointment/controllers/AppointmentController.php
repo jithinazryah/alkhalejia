@@ -72,7 +72,7 @@ class AppointmentController extends Controller {
                                         Yii::$app->UploadFile->UploadSingle($image, $model, $root_path);
                                 }
                                 $model = $this->findModel($model->id);
-                                $appointment_number = \common\models\Ships::findOne($model->vessel)->registration_number;
+                                $appointment_number = \common\models\Ships::findOne($model->vessel)->code;
                                 $model->appointment_number = $appointment_number . $model->id;
                                 $model->save();
 

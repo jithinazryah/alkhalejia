@@ -88,6 +88,7 @@ use yii\web\UploadedFile;
                                     <label class = "control-label"></label>
                                     <label class = "control-label">1</label>
                                 </div>-->
+                <?php $entry= \common\models\DailyEntry::findOne($id);?>
                 <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class = "form-group field-staffperviousemployer-hospital_address">
                         <span class="serial_no">1</span>
@@ -97,52 +98,52 @@ use yii\web\UploadedFile;
                 <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class = "form-group field-staffperviousemployer-hospital_address">
                         <label class = "control-label">Ticket No.</label>
-                        <input class="form-control" type = "text" name = "creates[ticket_no][]">
+                        <input class="form-control" type = "text" name = "creates[ticket_no][]" value="<?= $entry->ticket_no?>">
 
                     </div>
                 </div>
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Truck No.</label>
-                        <input class="form-control" type = "text" name = "creates[truck_no][]">
+                        <input class="form-control" type = "text" name = "creates[truck_no][]" value="<?= $entry->truck_number?>">
                     </div>
                 </div>
                 <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Net Weight</label>
-                        <input type="text" class="form-control" name="creates[net_weight][]">
+                        <input type="text" class="form-control" name="creates[net_weight][]" value="<?= $entry->net_weight?>">
                     </div>
                 </div>
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Rate</label>
-                        <input type="text" class="form-control" name="creates[rate][]">
+                        <input type="text" class="form-control" name="creates[rate][]" value="<?= $entry->rate?>">
                     </div>
                 </div>
                 <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Transport Amount</label>
-                        <input type="text" class="form-control" name="creates[transport_amount][]">
+                        <input type="text" class="form-control" name="creates[transport_amount][]" value="<?= $entry->transport_amount?>">
                     </div>
                 </div>
 
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Total</label>
-                        <input type="text" class="form-control" name="creates[total][]">
+                        <input type="text" class="form-control" name="creates[total][]" value="<?= $entry->total?>">
                     </div>
                 </div>
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Amount Paid</label>
-                        <input type="text" class="form-control" name="creates[amount_paid][]">
+                        <input type="text" class="form-control" name="creates[amount_paid][]" value="<?= $entry->amount_paid?>">
                     </div>
                 </div>
 
                 <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Description</label>
-                        <input type="text" class="form-control" name="creates[description][]">
+                        <input type="text" class="form-control" name="creates[description][]" value="<?= $entry->description?>">
                     </div>
                 </div>
             </div>
@@ -152,11 +153,11 @@ use yii\web\UploadedFile;
     </div>
 
 
-    <div class="row">
+<!--    <div class="row">
         <div class="col-md-12">
             <a id="addAttach" title="Add More Attachment" last_sl="1" class="btn btn-blue btn-icon btn-icon-standalone addAttach" style="float:right;margin-right: 15px;"><i class="fa-plus"></i></a>
         </div>
-    </div>
+    </div>-->
     <hr class="appoint_history" />
     <div class="row">
         <div class='col-md-12 col-sm-12 col-xs-12'>
