@@ -55,7 +55,7 @@ $this->title = 'Login';
 
     <div class="row">
 
-        <div class="col-sm-6" style="background-color: rgba(44, 36, 28, 0.4);">
+        <div class="col-sm-6 log-frm">
 
             <script type="text/javascript">
                 jQuery(document).ready(function ($)
@@ -84,10 +84,7 @@ $this->title = 'Login';
             ?>
 
             <div class="login-header">
-                <a href="" class="logo">
-                    <?php echo Html::img('@web/images/logoo.png') ?>
-                        <!--<span>Emperor Admin log in</span>-->
-                </a>
+                <h2>AL KHALEJIA</h2>
 
                 <p>Dear user, Please log in to access!</p>
             </div>
