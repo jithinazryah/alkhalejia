@@ -42,7 +42,7 @@ use yii\web\UploadedFile;
     </div>
     <div class="row">
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
-            <?php $transports = ArrayHelper::map(Contacts::findAll(['status' => 1 ]), 'id', 'name'); ?>
+            <?php $transports = ArrayHelper::map(Contacts::findAll(['status' => 1]), 'id', 'name'); ?>
             <?= $form->field($model, 'transport')->dropDownList($transports, ['prompt' => '-Choose a Transport-']) ?>
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
@@ -57,41 +57,18 @@ use yii\web\UploadedFile;
             <?= $form->field($model, 'image')->fileInput() ?>
         </div>
     </div>
-    <div id = "p_attach">
+    <hr class="appoint_history" />
+    <div id = "p_attach" style="">
         <input type = "hidden" id = "delete_port_vals" name = "delete_port_vals" value = "">
-        <?php if (!empty($model_upload)) { ?>
-            <table class="table table-hover">
-                <tr>
-                    <th>Document Name</th>
-                    <th>Document</th>
-                    <th>Expiry Date</th>
-                    <th>Description</th>
-                    <th></th>
-                </tr>
-                <?php foreach ($model_upload as $val) { ?>
-                    <tr>
-                        <td><?= $val->document_title ?></td>
-                        <td><a href="<?= Yii::$app->homeUrl ?>uploads/employee/documents/<?= $val->id ?>/<?= $val->file ?>" target="_blank"><?= $val->file ?></a></td>
-                        <td><?= $val->expiry_date ?></td>
-                        <td><?= $val->description ?></td>
-                        <td><?= Html::a('<i class="fa fa-trash" style="color:red;"></i>', ['attachment-delete', 'id' => $val->id], ['onClick' => 'return confirm("Are you sure you want to remove?")']) ?></td>
-                    </tr>
-                <?php }
-                ?>
-            </table>
-        <?php }
-        ?>
-
         <span>
-            <div class="row">
+            <div class="row daily-entry-span">
                 <!--                <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
                                     <label class = "control-label"></label>
                                     <label class = "control-label">1</label>
                                 </div>-->
-                <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
+                <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd' style="width: 5%;">
                     <div class = "form-group field-staffperviousemployer-hospital_address">
-                        <span class="serial_no">1</span>
-
+                        <h4 class="serial_no" style="margin-top: 32px;">1.</h4>
                     </div>
                 </div>
                 <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
@@ -107,7 +84,7 @@ use yii\web\UploadedFile;
                         <input class="form-control" type = "text" name = "creates[truck_no][]">
                     </div>
                 </div>
-                <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
+                <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Net Weight</label>
                         <input type="text" class="form-control" name="creates[net_weight][]">
@@ -139,7 +116,7 @@ use yii\web\UploadedFile;
                     </div>
                 </div>
 
-                <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
+                <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Description</label>
                         <input type="text" class="form-control" name="creates[description][]">
@@ -177,7 +154,7 @@ use yii\web\UploadedFile;
         $('#addAttach').on('click', function () {
             var srl = $('#addAttach').attr('last_sl');
 //            parseFloat(total) + parseFloat(price);
-            var newsrl = parseInt(srl)+1;
+            var newsrl = parseInt(srl) + 1;
             $('#addAttach').attr('last_sl', newsrl);
             $.ajax({
                 type: 'POST',

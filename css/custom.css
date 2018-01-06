@@ -536,3 +536,6 @@ a {
     background: #f9f9f9;
     font-size: 14px;
 }
+.daily-entry-span .control-label{
+    font-size: 11px;
+}

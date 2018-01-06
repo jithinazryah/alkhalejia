@@ -6,10 +6,10 @@
  */
 ?>
 <span>
-    <div class="row">
-        <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
+    <div class="row daily-entry-span">
+        <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd' style="width: 5%;">
             <div class = "form-group field-staffperviousemployer-hospital_address">
-                <span class="serial_no"><?= $srl?></span>
+                <h4 class="serial_no" style="margin-top: 32px;"><?= $srl ?>.</h4>
 
             </div>
         </div>
@@ -26,7 +26,7 @@
                 <input class="form-control" type = "text" name = "creates[truck_no][]">
             </div>
         </div>
-        <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
+        <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
             <div class="form-group field-staffperviousemployer-designation">
                 <label class="control-label" for="">Net Weight</label>
                 <input type="text" class="form-control" name="creates[net_weight][]">
@@ -57,14 +57,14 @@
                 <input type="text" class="form-control" name="creates[amount_paid][]">
             </div>
         </div>
-        <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
+        <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
             <div class="form-group field-staffperviousemployer-designation">
                 <label class="control-label" for="">Description</label>
                 <input type="text" class="form-control" name="creates[description][]">
             </div>
         </div>
         <div class = "col-md-1 col-sm-12 col-xs-12 left_padd">
-            <a id="remAttach" class="btn btn-icon btn-red remAttach" style="margin-top: 27px;"><i class="fa-remove"></i></a>
+            <a id="remAttach" class="btn btn-icon btn-red remAttach" style="margin-top: 25px;padding: 4px 10px;"><i class="fa-remove"></i></a>
         </div>
     </div>
     <div style="clear:both"></div>
