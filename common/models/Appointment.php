@@ -25,53 +25,51 @@ use Yii;
  * @property string $DOC
  * @property string $DOU
  */
-class Appointment extends \yii\db\ActiveRecord
-{
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'appointment';
-    }
+class Appointment extends \yii\db\ActiveRecord {
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['vessel', 'appointment_number', 'date', 'material'], 'required'],
-            [['vessel', 'material', 'quantity', 'status', 'CB', 'UB'], 'integer'],
-            [['date', 'eta', 'DOC', 'DOU'], 'safe'],
-            [['description'], 'string'],
-            [['appointment_number', 'port_of_call', 'terminal', 'berth_number'], 'string', 'max' => 100],
-        ];
-    }
+        /**
+         * @inheritdoc
+         */
+        public static function tableName() {
+                return 'appointment';
+        }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'vessel' => 'Vessel Name',
-            'appointment_number' => 'Appointment Number',
-            'date' => 'Date',
-            'port_of_call' => 'Port Of Call',
-            'terminal' => 'Terminal',
-            'berth_number' => 'Berth Number',
-            'material' => 'Material',
-            'quantity' => 'Quantity',
-            'eta' => 'Eta',
-            'description' => 'Description',
-            'status' => 'Status',
-            'image' => 'Image',
-            'CB' => 'Cb',
-            'UB' => 'Ub',
-            'DOC' => 'Doc',
-            'DOU' => 'Dou',
-        ];
-    }
+        /**
+         * @inheritdoc
+         */
+        public function rules() {
+                return [
+                        [['vessel', 'appointment_number', 'date', 'material'], 'required'],
+                        [['vessel', 'material', 'quantity', 'status', 'CB', 'UB'], 'integer'],
+                        [['date', 'eta', 'DOC', 'DOU'], 'safe'],
+                        [['description'], 'string'],
+                        [['appointment_number', 'port_of_call', 'terminal', 'berth_number'], 'string', 'max' => 100],
+                ];
+        }
+
+        /**
+         * @inheritdoc
+         */
+        public function attributeLabels() {
+                return [
+                    'id' => 'ID',
+                    'vessel' => 'Vessel Name',
+                    'appointment_number' => 'Appointment Number',
+                    'date' => 'Date',
+                    'port_of_call' => 'Port Of Call',
+                    'terminal' => 'Terminal',
+                    'berth_number' => 'Berth Number',
+                    'material' => 'Material',
+                    'quantity' => 'Quantity',
+                    'eta' => 'Eta',
+                    'description' => 'Description',
+                    'status' => 'Status',
+                    'image' => 'File Upload',
+                    'CB' => 'Cb',
+                    'UB' => 'Ub',
+                    'DOC' => 'Doc',
+                    'DOU' => 'Dou',
+                ];
+        }
+
 }

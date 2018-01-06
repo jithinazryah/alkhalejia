@@ -143,6 +143,24 @@ AppAsset::register($this);
                                                         <?php
                                                 }
                                                 ?>
+
+                                                <?php
+                                                if (Yii::$app->session['post']['admin'] == 1) {
+                                                        ?>
+                                                        <li>
+                                                                <a href="">
+                                                                        <i class="fa fa-file"></i>
+                                                                        <span class="title">Appointments</span>
+                                                                </a>
+                                                                <ul>
+                                                                        <li>
+                                                                                <?= Html::a('Appointments', ['/appointment/appointment/index'], ['class' => 'title']) ?>
+                                                                        </li>
+                                                                </ul>
+                                                        </li>
+                                                        <?php
+                                                }
+                                                ?>
                                         </ul>
 
                                 </div>
