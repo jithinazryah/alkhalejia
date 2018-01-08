@@ -15,6 +15,92 @@ $(function () {
                         .load($(this).attr("value"));
         });
 
+        //----------------Appointment-----------------//
+        $('#appointmentdetails-service_id').change(function () {
+                var service_id = $(this).val();
+                $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        data: {service_id: service_id},
+                        url: homeUrl + 'appointment/appointment/supplier',
+                        success: function (data) {
+                                if (data != '') {
+                                        $("#appointmentdetails-supplier").html(data);
+                                } else {
+                                        $("#appointmentdetails-supplier").prop('disabled', true);
+                                }
+                        }
+                });
+        });
+
+//        $('#appointmentdetails-supplier').change(function () {
+//                var supplier = $(this).val();
+//                var service = $('#appointmentdetails-service_id').val();
+//                if (service && supplier) {
+//
+//                        $.ajax({
+//                                type: 'POST',
+//                                cache: false,
+//                                data: {service_id: service, supplier_id: supplier},
+//                                url: homeUrl + 'appointment/appointment/rate',
+//                                success: function (data) {
+//                                        if (data != '') {
+//                                                $("#appointmentdetails-supplier").html(data);
+//                                        } else {
+//                                                $("#appointmentdetails-supplier").prop('disabled', true);
+//                                        }
+//                                }
+//                        });
+//
+//                } else {
+//                        $('#appointmentdetails-supplier').val('');
+//                        alert('Please select a service');
+//                }
+//        });
+
+
+        $('#appointmentdetails-quantity').change(function () {
+                Total();
+                SubTotal();
+        });
+        $('#appointmentdetails-unit_price').change(function () {
+                Total();
+                SubTotal();
+        });
+        $('#appointmentdetails-tax').change(function () {
+                Tax();
+                SubTotal();
+        });
+        function Total() {
+                var quantity = $('#appointmentdetails-quantity').val();
+                var rate = $('#appointmentdetails-unit_price').val();
+                if (quantity && rate) {
+                        var total = quantity * rate;
+                        var total = total.toFixed(2);
+                        $('#appointmentdetails-total').val(total);
+                }
+        }
+
+        function Tax() {
+                var tax = $('#appointmentdetails-tax').val();
+                var total = $('#appointmentdetails-total').val();
+                var tax_amount = (total * tax) / 100;
+                var tax_amount = tax_amount.toFixed(2);
+                $('#appointmentdetails-tax_amount').val(tax_amount);
+        }
+        function SubTotal() {
+
+                var total = $('#appointmentdetails-total').val();
+                var tax = $('#appointmentdetails-tax_amount').val();
+                if (tax == '') {
+                        tax = 0;
+                }
+                var subtotal = parseFloat(total) + parseFloat(tax);
+
+                $('#appointmentdetails-sub_total').val(subtotal.toFixed(2));
+        }
+
+
 });
 function showLoader() {
         $('.page-loading-overlay').removeClass('loaded');
