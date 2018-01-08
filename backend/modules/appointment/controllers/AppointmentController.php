@@ -225,22 +225,12 @@ class AppointmentController extends Controller {
                 $service_ids = $_POST['service_ids'];
                 $appointment = Appointment::findOne($app);
                 $appointment_details = AppointmentDetails::findAll(['service_id' => $service_ids, 'appointment_id' => $app]);
-                var_dump($appointment_details);
-                exit;
+
                 echo $this->renderPartial('report', [
                     'appointment' => $appointment,
                     'appointment_details' => $appointment_details,
-                    'service_ids' => $service_ids,
-                    'save' => true,
-                    'print' => false,
                 ]);
-                Yii::$app->session->set('fda-report', $this->renderPartial('report', [
-                            'appointment' => $appointment,
-                            'appointment_details' => $appointment_details,
-                            'service_ids' => $service_ids,
-                            'save' => false,
-                            'print' => true,
-                ]));
+
                 exit;
         }
 
