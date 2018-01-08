@@ -181,8 +181,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                                 <td id="<?= $estimate->id ?>-sub_total" val="<?= $estimate->sub_total ?>"><?php if ($estimate->sub_total != '') { ?> <?= $estimate->sub_total ?><?php } ?></td>
 
                                                                                                 <td>
-                                                                                                        <?= Html::a('<i class="fa fa-pencil"></i>', ['/appointment/appointment/add', 'id' => $id, 'prfrma_id' => $estimate->id], ['class' => '', 'tittle' => 'Edit']) ?>
-                                                                                                        <?= Html::a('<i class="fa fa-remove"></i>', ['/appointment/appointment/delete-detail', 'id' => $estimate->id], ['class' => '', 'tittle' => 'Edit', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
+                                                                                                        <?php
+                                                                                                        if ($appointment->status != 0) {
+                                                                                                                ?>
+                                                                                                                <?= Html::a('<i class="fa fa-pencil"></i>', ['/appointment/appointment/add', 'id' => $id, 'prfrma_id' => $estimate->id], ['class' => '', 'tittle' => 'Edit']) ?>
+                                                                                                                <?= Html::a('<i class="fa fa-remove"></i>', ['/appointment/appointment/delete-detail', 'id' => $estimate->id], ['class' => '', 'tittle' => 'Edit', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
+                                                                                                        <?php } ?>
                                                                                                 </td>
 
                                                                                                 <td>
@@ -230,32 +234,35 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                 <?= Html::endForm() ?>
                                                                         </td>
                                                                 </tr>
-
-
-                                                                <tr class="formm">
-                                                                        <?php $form = ActiveForm::begin(); ?>
-                                                                        <td></td>
-                                                                        <td><?= $form->field($model, 'service_id')->dropDownList(ArrayHelper::map(Services::findAll(['status' => 1]), 'id', 'service'), ['prompt' => '-Service-'])->label(false); ?></td>
-                                                                        <?php
-                                                                        $contacts = Contacts::find()->where(['status' => 1])->all();
-
-                                                                        if (isset($model->service_id) && $model->service_id == 1) {
-                                                                                $contacts = common\models\Materials::find()->where(['status' => 1])->all();
-                                                                        }
+                                                                <?php
+                                                                if ($appointment->status != 0) {
                                                                         ?>
-                                                                        <td><?= $form->field($model, 'supplier')->dropDownList(ArrayHelper::map($contacts, 'id', 'name'), ['prompt' => '-Select-'])->label(false); ?></td>
-                                                                        <td><?= $form->field($model, 'unit_price')->textInput(['placeholder' => ' Rate'])->label(false) ?></td>
-                                                                        <td><?= $form->field($model, 'quantity')->textInput(['placeholder' => 'Quantity'])->label(false) ?></td>
-                                                                        <td><?= $form->field($model, 'total')->textInput(['placeholder' => 'Total'])->label(false) ?></td>
-                                                                        <td><?= $form->field($model, 'tax')->dropDownList(ArrayHelper::map(common\models\Tax::findAll(['status' => 1]), 'id', 'tax'), ['prompt' => '-VAT-'])->label(false); ?></td>
-                                                                        <td><?= $form->field($model, 'tax_amount')->textInput(['placeholder' => 'Vat Amount'])->label(false) ?></td>
-                                                                        <td><?= $form->field($model, 'sub_total')->textInput(['placeholder' => 'Sub Total'])->label(false) ?></td>
-                                                                        <td><?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => 'btn btn-success']) ?>
-                                                                        </td>
-                                                                        <td></td>
-                                                                        <?php ActiveForm::end(); ?>
-                                                                </tr>
-                                                                <tr></tr>
+
+                                                                        <tr class="formm">
+                                                                                <?php $form = ActiveForm::begin(); ?>
+                                                                                <td></td>
+                                                                                <td><?= $form->field($model, 'service_id')->dropDownList(ArrayHelper::map(Services::findAll(['status' => 1]), 'id', 'service'), ['prompt' => '-Service-'])->label(false); ?></td>
+                                                                                <?php
+                                                                                $contacts = Contacts::find()->where(['status' => 1])->all();
+
+                                                                                if (isset($model->service_id) && $model->service_id == 1) {
+                                                                                        $contacts = common\models\Materials::find()->where(['status' => 1])->all();
+                                                                                }
+                                                                                ?>
+                                                                                <td><?= $form->field($model, 'supplier')->dropDownList(ArrayHelper::map($contacts, 'id', 'name'), ['prompt' => '-Select-'])->label(false); ?></td>
+                                                                                <td><?= $form->field($model, 'unit_price')->textInput(['placeholder' => ' Rate'])->label(false) ?></td>
+                                                                                <td><?= $form->field($model, 'quantity')->textInput(['placeholder' => 'Quantity'])->label(false) ?></td>
+                                                                                <td><?= $form->field($model, 'total')->textInput(['placeholder' => 'Total'])->label(false) ?></td>
+                                                                                <td><?= $form->field($model, 'tax')->dropDownList(ArrayHelper::map(common\models\Tax::findAll(['status' => 1]), 'id', 'tax'), ['prompt' => '-VAT-'])->label(false); ?></td>
+                                                                                <td><?= $form->field($model, 'tax_amount')->textInput(['placeholder' => 'Vat Amount'])->label(false) ?></td>
+                                                                                <td><?= $form->field($model, 'sub_total')->textInput(['placeholder' => 'Sub Total'])->label(false) ?></td>
+                                                                                <td><?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => 'btn btn-success']) ?>
+                                                                                </td>
+                                                                                <td></td>
+                                                                                <?php ActiveForm::end(); ?>
+                                                                        </tr>
+                                                                        <tr></tr>
+                                                                <?php } ?>
 
 
                                                         </tbody>

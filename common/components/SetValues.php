@@ -95,4 +95,22 @@ class SetValues extends Component {
                 }
         }
 
+        public function Transaction($transaction_category, $transaction_id, $transaction_date, $financial_year, $supplier_id, $supplier_name, $supplier_code, $credit_amount, $debit_amount, $balance_amount, $status) {
+                $model = new \common\models\Transaction;
+                $model->transaction_category = $transaction_category;
+                $model->transaction_id = $transaction_id;
+                $model->transaction_date = $transaction_date;
+                $model->financial_year = $financial_year;
+                $model->supplier_id = $supplier_id;
+                $model->supplier_name = $supplier_name;
+                $model->supplier_code = $supplier_code;
+                $model->credit_amount = $credit_amount;
+                $model->debit_amount = $debit_amount;
+                $model->balance_amount = $balance_amount;
+                $model->status = $status;
+                $model->CB = Yii::$app->user->identity->id;
+                $model->DOC = date('Y-m-d');
+                $model->save();
+        }
+
 }

@@ -173,8 +173,7 @@ class AppointmentController extends Controller {
                         }
                         if (count(array_unique($invoice)) === 1) {
                                 $appointment_details = AppointmentDetails::findAll(['appointment_id' => $appointment_id, 'id' => $est_id]);
-                                var_dump($appointment_details);
-                                exit;
+
                                 $this->GenerateReport($appointment_details, $appointment, $invoice, $est_id);
                         } else {
                                 $error = 'Choose Same Service';
@@ -192,21 +191,25 @@ class AppointmentController extends Controller {
 
         protected function GenerateReport($appointment_details, $appointment, $invoice, $est_id) {
 
-                Yii::$app->session->set('fda', $this->renderPartial('fda_report', [
-                            'appointment' => $appointment,
-                            'appointment_details' => $appointment_details,
-                            'invoice' => $invoice,
-                            'est_id' => $est_id,
-                            'save' => false,
-                            'print' => true,
-                ]));
-                echo $this->renderPartial('fda_report', [
+//                Yii::$app->session->set('fda', $this->renderPartial('fda_report', [
+//                            'appointment' => $appointment,
+//                            'appointment_details' => $appointment_details,
+//                            'invoice' => $invoice,
+//                            'est_id' => $est_id,
+//                            'save' => false,
+//                            'print' => true,
+//                ]));
+//                echo $this->renderPartial('fda_report', [
+//                    'appointment' => $appointment,
+//                    'appointment_details' => $close_estimates,
+//                    'invoice' => $invoice,
+//                    'est_id' => $est_id,
+//                    'save' => true,
+//                    'print' => false,
+//                ]);
+                echo $this->renderPartial('report', [
                     'appointment' => $appointment,
-                    'appointment_details' => $close_estimates,
-                    'invoice' => $invoice,
-                    'est_id' => $est_id,
-                    'save' => true,
-                    'print' => false,
+                    'appointment_details' => $appointment_details,
                 ]);
 
                 exit;
@@ -247,7 +250,24 @@ class AppointmentController extends Controller {
 
         public function actionCloseAppointment($id) {
                 $appointment = $this->findModel($id);
-                $appointment_details = AppointmentDetails::find()->where(['status' => 1])->all();
+                $appointment_details = AppointmentDetails::find()->where(['appointment_id' => $id])->all();
+                $i = 0;
+                foreach ($appointment_details as $value) {
+                        $i++;
+                        // $transaction_id = 'APP' . $i;
+                        $transaction_date = date('Y-m-d');
+                        $financial_year = '';
+                        $service = \common\models\Services::findOne($value->service_id);
+                        if ($value->service == 1) {
+                                $supplier = \common\models\Materials::findOne($value->supplier);
+                        } else {
+                                $supplier = \common\models\Contacts::findOne($value->supplier);
+                        }
+                        Yii::$app->SetValues->Transaction($service->category, $value->id, $transaction_date, $financial_year, $value->supplier, $supplier->name, $supplier->code, $value->sub_total, 0, $value->sub_total, 1);
+                }
+                $appointment->status = 0;
+                $appointment->save();
+                return $this->redirect(Yii::$app->request->referrer);
         }
 
         /**
