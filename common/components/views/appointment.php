@@ -33,13 +33,29 @@ use common\models\Vessel;
                         ?>
 
                 </td>
-                <td class="labell">PORT OF CALL </td><td class="value">: <?= $appointment->port_of_call; ?> </td>
+                <td class="labell">PORT OF CALL </td><td class="value">:
+                        <?php
+                        if (isset($appointment->port_of_call)) {
+                                $ports = common\models\Ports::findOne($appointment->port_of_call);
+                                if (isset($ports))
+                                        echo $ports->port_name;
+                        }
+                        ?>
+                </td>
                 <td class="labell">TERMINAL </td><td class="value">: <?= $appointment->terminal; ?> </td>
         </tr>
 
         <tr>
                 <td class="labell">BERTH NO </td><td class="value">: <?= $appointment->berth_number; ?> </td>
-                <td class="labell">Material </td><td class="value">: <?= $appointment->material; ?> </td>
+                <td class="labell">Material </td><td class="value">:
+                        <?php
+                        if (isset($appointment->material)) {
+                                $material = common\models\Materials::findOne($appointment->material);
+                                if (isset($material))
+                                        echo $material->name;
+                        }
+                        ?>
+                </td>
                 <td class="labell">QUANTITY </td><td class="value">: <?= $appointment->quantity; ?> </td>
 
         </tr>

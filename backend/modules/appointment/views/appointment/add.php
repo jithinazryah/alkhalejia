@@ -30,10 +30,60 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php //Pjax::begin();     ?>
                         <div class="panel-body">
                                 <?= AppointmentWidget::widget(['id' => $appointment->id]) ?>
-
                                 <hr class="appoint_history" />
 
 
+                                <!---------------------------------------------------- Generate Print  ------------------------------------------->
+                                <div class="col-md-12" style="float: left;">
+                                        <div class="row">
+
+                                                <?= Html::beginForm(['appointment/report'], 'post', ['target' => 'print_popup', 'onSubmit' => "window.open('about:blank','print_popup','width=1200,height=600');"]) ?>
+                                                <input type="hidden" name="app_id" value="<?= $appointment->id ?>">
+                                                <?php
+                                                $service_ids = common\models\AppointmentDetails::find()->select('service_id')->distinct()->where(['appointment_id' => $appointment->id])->all();
+                                                if (count($service_ids) > 1) {
+                                                        ?>
+                                                        <div class="col-md-3">
+
+                                                                <select name="service_ids" id="service_ids" class="form-control">
+                                                                        <option value="" selected = "selected">Select Service</option>
+                                                                        <?php
+                                                                        foreach ($service_ids as $service_one) {
+
+                                                                                if ($service_one != '') {
+                                                                                        $data = Services::findOne(['id' => $service_one->service_id]);
+                                                                                        ?>
+                                                                                        <option value="<?= $service_one->service_id ?>"><?= $data->service ?></option>
+                                                                                        <?php
+                                                                                }
+                                                                        }
+                                                                        ?>
+                                                                </select>
+                                                        </div>
+                                                        <?php
+                                                } else {
+                                                        foreach ($service_ids as $service_one) {
+                                                                ?>
+                                                                <input type="hidden" name="fda" value="<?= $service_one->service_id ?>">
+                                                                <?php
+                                                        }
+                                                }
+                                                ?>
+
+                                                <div class="col-md-3">
+                                                        <?= Html::submitButton('<i class="fa-print"></i><span>Generate Print</span>', ['class' => 'btn btn-secondary btn-icon btn-icon-standalone']) ?>
+                                                        <?= Html::endForm() ?>
+                                                        <?php ?>
+                                                </div>
+                                        </div>
+                                        <?php
+                                        ?>
+                                </div>
+
+                                <!------------------------------------------------------------------------------------------------------------->
+
+
+                                <!-------------------------------------------------- Menu ----------------------------------------------------------->
                                 <ul class="estimat nav nav-tabs nav-tabs-justified">
                                         <li>
                                                 <?php
@@ -49,6 +99,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                         </li>
 
                                 </ul>
+
+                                <!------------------------------------------------------------------------------------------------------------->
+
+
+                                <!------------------------------------------- Appointment Details ------------------------------------------------------------------>
                                 <div class="outterr">
 
                                         <div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
@@ -66,70 +121,116 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         <th data-priority="1">VAT AMOUNT</th>
                                                                         <th data-priority="1">SUB TOTAL</th>
                                                                         <th data-priority="1">ACTIONS</th>
+                                                                        <th data-priority="1">PRINT</th>
                                                                 </tr>
                                                         </thead>
 
                                                         <tbody>
                                                                 <?php
                                                                 $i = 0;
-                                                                $epdatotal = 0;
-                                                                $tot_subtoatl = 0;
-                                                                foreach ($estimates as $estimate):
-                                                                        $i++;
-                                                                        ?>
-                                                                        <tr>
-                                                                                <td><?= $i; ?></td>
-                                                                                <td class="" drop_id="estimatedproforma-service_id" id="<?= $estimate->id ?>-service_id" val="<?= $estimate->service_id ?>"><?= $estimate->service->service ?></td>
-                                                                                <?php
-                                                                                if ($estimate->supplier != '') {
-
-                                                                                        if (isset($estimate->service_id) && $estimate->service_id == 1) {
-                                                                                                $selected = common\models\Materials::findOne($estimate->service_id);
-                                                                                        } else {
-                                                                                                $selected = common\models\Contacts::findOne($estimate->service_id);
-                                                                                        }
-                                                                                }
+                                                                $grand_epdatotal = 0;
+                                                                $grand_tot_subtoatl = 0;
+                                                                foreach ($services as $val) {
+                                                                        $estimates = common\models\AppointmentDetails::findAll(['appointment_id' => $id, 'service_id' => $val->id]);
+                                                                        if (count($estimates) > 0) {
                                                                                 ?>
-                                                                                <td class="" drop_id="estimatedproforma-supplier" id="<?= $estimate->id ?>-supplier" val="<?= $estimate->supplier ?>"> <?= $selected->name ?></td>
-                                                                                <td class="edit_text" id="<?= $estimate->id ?>-unit_rate"  val="<?= $estimate->unit_price ?>">
-                                                                                        <?php
-                                                                                        if ($estimate->unit_price == '') {
-                                                                                                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                                                                                        } else {
-                                                                                                echo Yii::$app->SetValues->NumberFormat($estimate->unit_price);
-                                                                                        }
+                                                                                <tr>
+                                                                                        <td colspan="10"><h5 style="font-weight:bold;color: #008cbd;text-align: left;text-transform: uppercase;"><?= $val->service; ?></h5></td>
+                                                                                        <td></td>
+                                                                                </tr>
+                                                                                <?php
+                                                                                $epdatotal = 0;
+                                                                                $tot_subtoatl = 0;
+                                                                                foreach ($estimates as $estimate) {
+                                                                                        $i++;
                                                                                         ?>
-                                                                                </td>
-                                                                                <td  id="<?= $estimate->id ?>-quantity" val="<?= $estimate->quantity ?>"><?php if ($estimate->quantity != '') { ?> <?= $estimate->quantity ?><?php } ?></td>
-                                                                                <td  id="<?= $estimate->id ?>-total" val="<?= $estimate->total ?>"><?php if ($estimate->total != '') { ?> <?= $estimate->total ?><?php } ?></td>
-                                                                                <td  id="<?= $estimate->id ?>-tax" val="<?= $estimate->tax ?>"><?php if ($estimate->tax != '') { ?> <?= $estimate->tax ?><?php } ?></td>
-                                                                                <td  id="<?= $estimate->id ?>-tax_amount" val="<?= $estimate->tax_amount ?>"><?php if ($estimate->tax_amount != '') { ?> <?= $estimate->tax_amount ?><?php } ?></td>
-                                                                                <td id="<?= $estimate->id ?>-sub_total" val="<?= $estimate->sub_total ?>"><?php if ($estimate->sub_total != '') { ?> <?= $estimate->sub_total ?><?php } ?></td>
+                                                                                        <tr>
+                                                                                                <td><?= $i; ?></td>
+                                                                                                <td class="" drop_id="estimatedproforma-service_id" id="<?= $estimate->id ?>-service_id" val="<?= $estimate->service_id ?>"><?= $estimate->service->service ?></td>
+                                                                                                <?php
+                                                                                                if ($estimate->supplier != '') {
 
-                                                                                <td>
-                                                                                        <?= Html::a('<i class="fa fa-pencil"></i>', ['/appointment/appointment/add', 'id' => $id, 'prfrma_id' => $estimate->id], ['class' => '', 'tittle' => 'Edit']) ?>
-                                                                                        <?= Html::a('<i class="fa fa-remove"></i>', ['/appointment/appointment/delete-detail', 'id' => $estimate->id], ['class' => '', 'tittle' => 'Edit', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
-                                                                                </td>
+                                                                                                        if (isset($estimate->service_id) && $estimate->service_id == 1) {
+                                                                                                                $selected = common\models\Materials::findOne($estimate->service_id);
+                                                                                                        } else {
+                                                                                                                $selected = common\models\Contacts::findOne($estimate->service_id);
+                                                                                                        }
+                                                                                                }
+                                                                                                ?>
+                                                                                                <td class="" drop_id="estimatedproforma-supplier" id="<?= $estimate->id ?>-supplier" val="<?= $estimate->supplier ?>"> <?= $selected->name ?></td>
+                                                                                                <td class="edit_text" id="<?= $estimate->id ?>-unit_rate"  val="<?= $estimate->unit_price ?>">
+                                                                                                        <?php
+                                                                                                        if ($estimate->unit_price == '') {
+                                                                                                                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                                                                                        } else {
+                                                                                                                echo Yii::$app->SetValues->NumberFormat($estimate->unit_price);
+                                                                                                        }
+                                                                                                        ?>
+                                                                                                </td>
+                                                                                                <td  id="<?= $estimate->id ?>-quantity" val="<?= $estimate->quantity ?>"><?php if ($estimate->quantity != '') { ?> <?= $estimate->quantity ?><?php } ?></td>
+                                                                                                <td  id="<?= $estimate->id ?>-total" val="<?= $estimate->total ?>"><?php if ($estimate->total != '') { ?> <?= $estimate->total ?><?php } ?></td>
+                                                                                                <td  id="<?= $estimate->id ?>-tax" val="<?= $estimate->tax ?>">
+                                                                                                        <?php
+                                                                                                        if ($estimate->tax != '') {
+                                                                                                                $tax = \common\models\Tax::findOne($estimate->tax);
+                                                                                                                echo $tax->tax;
+                                                                                                        }
+                                                                                                        ?>
+                                                                                                </td>
+                                                                                                <td  id="<?= $estimate->id ?>-tax_amount" val="<?= $estimate->tax_amount ?>"><?php if ($estimate->tax_amount != '') { ?> <?= $estimate->tax_amount ?><?php } ?></td>
+                                                                                                <td id="<?= $estimate->id ?>-sub_total" val="<?= $estimate->sub_total ?>"><?php if ($estimate->sub_total != '') { ?> <?= $estimate->sub_total ?><?php } ?></td>
+
+                                                                                                <td>
+                                                                                                        <?= Html::a('<i class="fa fa-pencil"></i>', ['/appointment/appointment/add', 'id' => $id, 'prfrma_id' => $estimate->id], ['class' => '', 'tittle' => 'Edit']) ?>
+                                                                                                        <?= Html::a('<i class="fa fa-remove"></i>', ['/appointment/appointment/delete-detail', 'id' => $estimate->id], ['class' => '', 'tittle' => 'Edit', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
+                                                                                                </td>
+
+                                                                                                <td>
+                                                                                                        <?= Html::beginForm(['appointment/selected-report'], 'post', ['target' => 'print_popup', 'onSubmit' => "window.open('about:blank','print_popup','width=1200,height=600');"]) ?>
+                                                                                                        <input type="checkbox" name="invoice_type[<?= $estimate->id ?>]" value="<?= $estimate->service_id ?>">
+                                                                                                        <input type="hidden" name="app_id" value="<?= $appointment->id ?>">
+                                                                                                </td>
+                                                                                                <?php
+                                                                                                $epdatotal += $estimate->total;
+                                                                                                $tot_subtoatl += $estimate->sub_total;
+                                                                                                $grand_epdatotal += $estimate->total;
+                                                                                                $grand_tot_subtoatl += $estimate->sub_total;
+                                                                                                ?>
+                                                                                        </tr>
+                                                                                <?php } ?>
+
+                                                                                <tr>
+                                                                                        <td></td>
+                                                                                        <td colspan="4"> <b>SUB TOTAL</b></td>
+                                                                                        <td><?php echo $epdatotal . '/-'; ?></td>
+                                                                                        <td colspan=""></td>
+                                                                                        <td colspan=""></td>
+                                                                                        <td><?php echo $tot_subtoatl . '/-'; ?></td>
+                                                                                        <td colspan=""></td>
+                                                                                        <td colspan="">
+                                                                                        </td>
+                                                                                </tr>
+
                                                                                 <?php
-                                                                                $epdatotal += $estimate->total;
-                                                                                $tot_subtoatl += $estimate->sub_total;
-                                                                                ?>
-                                                                        </tr>
-
-                                                                        <?php
-                                                                endforeach;
+                                                                        }
+                                                                }
                                                                 ?>
 
 
                                                                 <tr>
                                                                         <td></td>
-                                                                        <td colspan="4"> <b>TOTAL</b></td>
-                                                                        <td style="font-weight: bold;"><?php echo Yii::$app->SetValues->NumberFormat($epdatotal) . '/-'; ?></td>
+                                                                        <td colspan="4"> <b>GRAND TOTAL</b></td>
+                                                                        <td style="font-weight: bold;"><?php echo $grand_epdatotal . '/-'; ?></td>
+                                                                        <td></td>
+                                                                        <td></td>
+                                                                        <td style="font-weight: bold;"><?php echo $grand_tot_subtoatl . '/-'; ?>
                                                                         <td colspan=""></td>
-                                                                        <td colspan=""></td>
-                                                                        <td style="font-weight: bold;" colspan=""><?php echo Yii::$app->SetValues->NumberFormat($tot_subtoatl) . '/-'; ?></td>
-                                                                        <td colspan=""></td>
+                                                                        <td colspan="">
+                                                                                <?= Html::submitButton('<i class="fa-print"></i><span>Print</span>', ['class' => 'btn btn-secondary btn-icon btn-icon-standalone']) ?>
+                                                                                <?= Html::endForm() ?>
+                                                                        </td>
                                                                 </tr>
+
 
                                                                 <tr class="formm">
                                                                         <?php $form = ActiveForm::begin(); ?>
@@ -151,6 +252,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         <td><?= $form->field($model, 'sub_total')->textInput(['placeholder' => 'Sub Total'])->label(false) ?></td>
                                                                         <td><?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => 'btn btn-success']) ?>
                                                                         </td>
+                                                                        <td></td>
                                                                         <?php ActiveForm::end(); ?>
                                                                 </tr>
                                                                 <tr></tr>
@@ -162,209 +264,39 @@ $this->params['breadcrumbs'][] = $this->title;
                                         </div>
 
                                 </div>
-                                <script>
-                                        $("document").ready(function () {
-                                                $('#appointmentdetails-service_id').change(function () {
-                                                        var service_id = $(this).val();
-                                                        $.ajax({
-                                                                type: 'POST',
-                                                                cache: false,
-                                                                data: {service_id: service_id},
-                                                                url: '<?= Yii::$app->homeUrl; ?>appointment/appointment/supplier',
-                                                                success: function (data) {
-                                                                        if (data != '') {
-                                                                                $("#appointmentdetails-supplier").html(data);
-                                                                        } else {
-                                                                                $("#appointmentdetails-supplier").prop('disabled', true);
-                                                                        }
-                                                                }
-                                                        });
-                                                });
-                                                $('#appointmentdetails-quantity').change(function () {
-                                                        Total();
-                                                        SubTotal();
-                                                });
-                                                $('#appointmentdetails-unit_price').change(function () {
-                                                        Total();
-                                                        SubTotal();
-                                                });
-                                                $('#appointmentdetails-tax').change(function () {
-                                                        Tax();
-                                                        SubTotal();
-                                                });
-                                                function Total() {
-                                                        var quantity = $('#appointmentdetails-quantity').val();
-                                                        var rate = $('#appointmentdetails-unit_price').val();
-                                                        if (quantity && rate) {
-                                                                var total = quantity * rate;
-                                                                var total = total.toFixed(2);
-                                                                $('#appointmentdetails-total').val(total);
-                                                        }
-                                                }
 
-                                                function Tax() {
-                                                        var tax = $('#appointmentdetails-tax').val();
-                                                        var total = $('#appointmentdetails-total').val();
-                                                        var tax_amount = (total * tax) / 100;
-                                                        var tax_amount = tax_amount.toFixed(2);
-                                                        $('#appointmentdetails-tax_amount').val(tax_amount);
-                                                }
-                                                function SubTotal() {
+                                <!------------------------------------------------------------------------------------------------------------->
 
-                                                        var total = $('#appointmentdetails-total').val();
-                                                        var tax = $('#appointmentdetails-tax_amount').val();
-                                                        if (tax == '') {
-                                                                tax = 0;
-                                                        }
-                                                        var subtotal = parseFloat(total) + parseFloat(tax);
-
-                                                        $('#appointmentdetails-sub_total').val(subtotal.toFixed(2));
-                                                }
-
-
-                                        });
-                                </script>
-
-
-
-                                <link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/select2/select2.css">
-                                <link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/select2/select2-bootstrap.css">
-                                <script src="<?= Yii::$app->homeUrl; ?>js/select2/select2.min.js"></script>
-
-                                <script>
-                                        $(document).ready(function () {
-                                                $("#estimatedproforma-unit_rate").keyup(function () {
-                                                        multiply();
-                                                });
-                                                $("#estimatedproforma-unit").keyup(function () {
-                                                        multiply();
-                                                });
-                                        });
-                                        function multiply() {
-                                                var rate = $("#estimatedproforma-unit_rate").val();
-                                                var unit = $("#estimatedproforma-unit").val();
-                                                if (rate != '' && unit != '') {
-                                                        $("#estimatedproforma-epda").val(rate * unit);
-                                                }
-
-                                        }
-                                        $("#estimatedproforma-epda").prop("disabled", true);
-                                </script>
-                        </div>
-                        <?php //Pjax::end();                  ?>
-                </div>
-
-
-
-        </div>
-</div>
-
-<div class="modal fade" id="add-sub">
-        <div class="modal-dialog">
-                <div class="modal-content">
-
-                        <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title">Dynamic Content</h4>
-                        </div>
-
-                        <div class="modal-body">
-
-                                Content is loading...
-
-                        </div>
-
-                        <div class="modal-footer">
-                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-info">Save changes</button>
+                                <?php
+                                if ($appointment->status != 0) {
+                                        ?>
+                                        <div style="float:right;padding-top: 5px;">
+                                                <?php
+                                                echo Html::a('<span> Close Appointment</span>', ['appointment/close-appointment', 'id' => $appointment->id], ['class' => 'btn btn-secondary']);
+                                                ?>
+                                        </div>
+                                <?php } ?>
                         </div>
                 </div>
         </div>
-        <style>
-                .filter{
-                        background-color: #b9c7a7;
-                }
-                table.table tr td:last-child a {
-                        padding: inherit;padding: 0px 4px;
-                }
-                .error{
-                        color: #0553b1;
-                        padding-bottom: 5px;
-                        font-size: 18px;
-                        font-weight: bold;
-                }
-
-        </style>
-        <script>
-                $("document").ready(function () {
-
-                        /*
-                         * Double click enter function
-                         * */
-
-                        $('.edit_text').on('dblclick', function () {
-
-                                var val = $(this).attr('val');
-                                var idd = this.id;
-                                var res_data = idd.split("-");
-                                if (res_data[1] == 'comments' || res_data[1] == 'rate_to_category') {
-                                        $(this).html('<textarea class="' + idd + '" value="' + val + '">' + val + '</textarea>');
-                                } else {
-                                        $(this).html('<input class="' + idd + '" type="text" value="' + val + '"/>');
-                                }
-
-                                $('.' + idd).focus();
-                        });
-                        $('.edit_text').on('focusout', 'input,textarea', function () {
-                                var thiss = $(this).parent('.edit_text');
-                                var data_id = thiss.attr('id');
-                                var update = thiss.attr('update');
-                                var res_id = data_id.split("-");
-                                var res_val = $(this).val();
-                                $.ajax({
-                                        type: 'POST',
-                                        cache: false,
-                                        data: {id: res_id[0], name: res_id[1], valuee: res_val},
-                                        url: '<?= Yii::$app->homeUrl; ?>appointment/estimated-proforma/edit-estimate',
-                                        success: function (data) {
-                                                if (data == '') {
-                                                        data = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                                                }
-                                                thiss.html(res_val);
-                                        }
-                                });
-                        });
-                        /*
-                         * Double click Dropdown
-                         * */
-
-                        $('.edit_dropdown').on('dblclick', function () {
-                                var val = $(this).attr('val');
-                                var drop_id = $(this).attr('drop_id');
-                                var idd = this.id;
-                                var option = $('#' + drop_id).html();
-                                $(this).html('<select class="' + drop_id + '" value="' + val + '">' + option + '</select>');
-                                $('.' + drop_id + ' option[value="' + val + '"]').attr("selected", "selected");
-                                $('.' + drop_id).focus();
-                        });
-                        $('.edit_dropdown').on('focusout', 'select', function () {
-                                var thiss = $(this).parent('.edit_dropdown');
-                                var data_id = thiss.attr('id');
-                                var res_id = data_id.split("-");
-                                var res_val = $(this).val();
-                                $.ajax({
-                                        type: 'POST',
-                                        cache: false,
-                                        data: {id: res_id[0], name: res_id[1], valuee: res_val},
-                                        url: '<?= Yii::$app->homeUrl; ?>appointment/estimated-proforma/edit-estimate-service',
-                                        success: function (data) {
-                                                if (data == '') {
-                                                        data = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                                                }
-                                                thiss.html(data);
-                                        }
-                                });
-                        });
-                });
-        </script>
 </div>
+
+
+
+<style>
+        .filter{
+                background-color: #b9c7a7;
+        }
+        table.table tr td:last-child a {
+                padding: inherit;padding: 0px 4px;
+        }
+        .error{
+                color: #0553b1;
+                padding-bottom: 5px;
+                font-size: 18px;
+                font-weight: bold;
+        }
+
+</style>
+
+

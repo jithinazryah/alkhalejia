@@ -76,8 +76,6 @@ class AppointmentController extends Controller {
                                 $appointment_number = \common\models\Ships::findOne($model->vessel)->code;
                                 $model->appointment_number = $appointment_number . $model->id;
                                 $model->save();
-
-
                                 return $this->redirect(['add', 'id' => $model->id]);
                         }
                 } else {
@@ -87,6 +85,10 @@ class AppointmentController extends Controller {
                 }
         }
 
+        /*
+         * Add services to appointment
+         */
+
         public function actionAdd($id, $prfrma_id = NULL) {
 
                 if (!isset($prfrma_id)) {
@@ -95,6 +97,7 @@ class AppointmentController extends Controller {
                         $model = AppointmentDetails::findOne($prfrma_id);
                 }
                 $estimates = AppointmentDetails::findAll(['appointment_id' => $id]);
+                $services = \common\models\Services::find()->where(['status' => 1])->all();
                 $appointment = Appointment::findOne($id);
                 if ($model->load(Yii::$app->request->post())) {
                         $model->appointment_id = $id;
@@ -107,9 +110,14 @@ class AppointmentController extends Controller {
                             'model' => $model,
                             'estimates' => $estimates,
                             'appointment' => $appointment,
+                            'services' => $services,
                             'id' => $id,
                 ]);
         }
+
+        /*
+         * Delete service in appointment
+         */
 
         public function actionDeleteDetail($id) {
                 AppointmentDetails::findOne($id)->delete();
@@ -142,6 +150,106 @@ class AppointmentController extends Controller {
                 }
         }
 
+        /*
+         * Generate report of multiple entrys (same service)
+         */
+
+        public function actionSelectedReport() {
+                $appointment_id = $_POST['app_id'];
+                $appointment = Appointment::findOne($appointment_id);
+
+                if (!empty($_POST['invoice_type'])) {
+                        $est_id = array();
+                        $invoice = array();
+                        foreach ($_POST['invoice_type'] as $key => $value) {
+                                $est_id[] = $key;
+                                $invoice[] = $value;
+                        }
+                        if ($invoice[0] == '') {
+                                $error = 'Invoice type field cannot be blank';
+                                return $this->renderPartial('error', [
+                                            'error' => $error,
+                                ]);
+                        }
+                        if (count(array_unique($invoice)) === 1) {
+                                $appointment_details = AppointmentDetails::findAll(['appointment_id' => $appointment_id, 'id' => $est_id]);
+                                var_dump($appointment_details);
+                                exit;
+                                $this->GenerateReport($appointment_details, $appointment, $invoice, $est_id);
+                        } else {
+                                $error = 'Choose Same Service';
+                                return $this->renderPartial('error', [
+                                            'error' => $error,
+                                ]);
+                        }
+                }
+                exit;
+        }
+
+        /*
+         * This function will generate report
+         */
+
+        protected function GenerateReport($appointment_details, $appointment, $invoice, $est_id) {
+
+                Yii::$app->session->set('fda', $this->renderPartial('fda_report', [
+                            'appointment' => $appointment,
+                            'appointment_details' => $appointment_details,
+                            'invoice' => $invoice,
+                            'est_id' => $est_id,
+                            'save' => false,
+                            'print' => true,
+                ]));
+                echo $this->renderPartial('fda_report', [
+                    'appointment' => $appointment,
+                    'appointment_details' => $close_estimates,
+                    'invoice' => $invoice,
+                    'est_id' => $est_id,
+                    'save' => true,
+                    'print' => false,
+                ]);
+
+                exit;
+        }
+
+        /*
+         * Generate report based on service
+         */
+
+        public function actionReport() {
+                empty(Yii::$app->session['fda-report']);
+                $app = $_POST['app_id'];
+                $service_ids = $_POST['service_ids'];
+                $appointment = Appointment::findOne($app);
+                $appointment_details = AppointmentDetails::findAll(['service_id' => $service_ids, 'appointment_id' => $app]);
+                var_dump($appointment_details);
+                exit;
+                echo $this->renderPartial('report', [
+                    'appointment' => $appointment,
+                    'appointment_details' => $appointment_details,
+                    'service_ids' => $service_ids,
+                    'save' => true,
+                    'print' => false,
+                ]);
+                Yii::$app->session->set('fda-report', $this->renderPartial('report', [
+                            'appointment' => $appointment,
+                            'appointment_details' => $appointment_details,
+                            'service_ids' => $service_ids,
+                            'save' => false,
+                            'print' => true,
+                ]));
+                exit;
+        }
+
+        /*
+         * Close Appointment
+         */
+
+        public function actionCloseAppointment($id) {
+                $appointment = $this->findModel($id);
+                $appointment_details = AppointmentDetails::find()->where(['status' => 1])->all();
+        }
+
         /**
          * Deletes an existing Appointment model.
          * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -169,6 +277,10 @@ class AppointmentController extends Controller {
                 }
         }
 
+        /*
+         * Ajax functions for appointment
+         */
+
         public function actionSupplier() {
 
                 if (Yii::$app->request->isAjax) {
@@ -190,4 +302,15 @@ class AppointmentController extends Controller {
                 }
         }
 
+//        public function actionRate() {
+//                if (Yii::$app->request->isAjax) {
+//                        $service_id = $_POST['service_id'];
+//                        $supplier_id = $_POST['supplier_id'];
+//                        if ($service_id == 1) {
+//
+//                        } else {
+//
+//                        }
+//                }
+//        }
 }
