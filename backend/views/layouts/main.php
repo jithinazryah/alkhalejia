@@ -123,8 +123,17 @@ AppAsset::register($this);
                                     <li>
                                         <?= Html::a('Service', ['/masters/services/index'], ['class' => 'title']) ?>
                                     </li>
+                                    <!--                                    <li>
+                                    <?php // Html::a('Service Category', ['/masters/service-category/index'], ['class' => 'title']) ?>
+                                                                        </li>-->
                                     <li>
-                                        <?= Html::a('Service Category', ['/masters/service-category/index'], ['class' => 'title']) ?>
+                                        <?= Html::a('Transaction Category', ['/masters/transaction-category/index'], ['class' => 'title']) ?>
+                                    </li>
+                                    <li>
+                                        <?= Html::a('Financial Years', ['/masters/financial-years/index'], ['class' => 'title']) ?>
+                                    </li>
+                                    <li>
+                                        <?= Html::a('Currency', ['/masters/currency/index'], ['class' => 'title']) ?>
                                     </li>
                                 </ul>
                             </li>
