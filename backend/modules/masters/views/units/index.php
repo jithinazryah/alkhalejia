@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
                     <?= Html::button('<i class="fa-th-list"></i><span> Create New</span>', ['value' => Url::to('create'), 'class' => 'btn btn-warning  btn-icon btn-icon-standalone modalButton']) ?>
+                    <?= \common\widgets\Alert::widget(); ?>
                     <?php
                     echo ModalViewWidget::widget();
                     ?>

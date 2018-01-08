@@ -34,10 +34,12 @@ use yii\web\UploadedFile;
         <div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
             <?php $materials = ArrayHelper::map(Materials::findAll(['status' => 1]), 'id', 'name'); ?>
             <?= $form->field($model, 'material')->dropDownList($materials, ['prompt' => '-Choose a Material-']) ?>
+
         </div>
         <div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
             <?php $suppliers = ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 2]), 'id', 'name'); ?>
             <?= $form->field($model, 'supplier')->dropDownList($suppliers, ['prompt' => '-Choose a Supplier-']) ?>
+
         </div>
     </div>
     <div class="row">
@@ -52,14 +54,19 @@ use yii\web\UploadedFile;
             <?php $yards = ArrayHelper::map(Yard::findAll(['status' => 1]), 'id', 'name'); ?>
             <?= $form->field($model, 'yard_id')->dropDownList($yards, ['prompt' => '-Choose a Yard-']) ?>
         </div>
-        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
-
+    </div>
+    <div class="row">
+        <div class='col-md-4 col-sm-6 col-xs-12 left_padd'>    
+            <?= $form->field($model, 'status')->dropDownList(['1' => 'Enabled', '0' => 'Disabled']) ?>
+        </div> 
+        <div class='col-md-4 col-sm-6 col-xs-12 left_padd'>    
             <?= $form->field($model, 'image')->fileInput() ?>
         </div>
     </div>
-    <hr class="appoint_history" />
-    <div id = "p_attach" style="">
+    <div id = "p_attach">
         <input type = "hidden" id = "delete_port_vals" name = "delete_port_vals" value = "">
+
+
         <span>
             <div class="row daily-entry-span">
                 <!--                <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
@@ -74,52 +81,46 @@ use yii\web\UploadedFile;
                 <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class = "form-group field-staffperviousemployer-hospital_address">
                         <label class = "control-label">Ticket No.</label>
-                        <input class="form-control" type = "text" name = "creates[ticket_no][]">
+                        <?= $form->field($model_details, 'ticket_no[]')->textInput()->label(FALSE) ?>
 
                     </div>
                 </div>
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Truck No.</label>
-                        <input class="form-control" type = "text" name = "creates[truck_no][]">
+                        <?= $form->field($model_details, 'truck_number[]')->textInput()->label(FALSE) ?>
                     </div>
                 </div>
-                <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
+                <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Net Weight</label>
-                        <input type="text" class="form-control" name="creates[net_weight][]">
+                        <?= $form->field($model_details, 'net_weight[]')->textInput()->label(FALSE) ?>
                     </div>
                 </div>
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Rate</label>
-                        <input type="text" class="form-control" name="creates[rate][]">
+                        <?= $form->field($model_details, 'rate[]')->textInput()->label(FALSE) ?>
                     </div>
                 </div>
                 <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Transport Amount</label>
-                        <input type="text" class="form-control" name="creates[transport_amount][]">
+                        <?= $form->field($model_details, 'transport_amount[]')->textInput()->label(FALSE) ?>
                     </div>
                 </div>
 
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Total</label>
-                        <input type="text" class="form-control" name="creates[total][]">
-                    </div>
-                </div>
-                <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
-                    <div class="form-group field-staffperviousemployer-designation">
-                        <label class="control-label" for="">Amount Paid</label>
-                        <input type="text" class="form-control" name="creates[amount_paid][]">
+                        <?= $form->field($model_details, 'total[]')->textInput()->label(FALSE) ?>
                     </div>
                 </div>
 
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                     <div class="form-group field-staffperviousemployer-designation">
                         <label class="control-label" for="">Description</label>
-                        <input type="text" class="form-control" name="creates[description][]">
+                        <?= $form->field($model_details, 'description[]')->textInput()->label(FALSE) ?>
                     </div>
                 </div>
             </div>
@@ -127,19 +128,14 @@ use yii\web\UploadedFile;
         </span>
 
     </div>
-
-
     <div class="row">
         <div class="col-md-12">
             <a id="addAttach" title="Add More Attachment" last_sl="1" class="btn btn-blue btn-icon btn-icon-standalone addAttach" style="float:right;margin-right: 15px;"><i class="fa-plus"></i></a>
         </div>
     </div>
-    <hr class="appoint_history" />
-    <div class="row">
-        <div class='col-md-12 col-sm-12 col-xs-12'>
-            <div class="form-group">
-                <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'style' => 'margin-top: 18px; height: 36px; width:100px;float:right;']) ?>
-            </div>
+    <div class='col-md-4 col-sm-6 col-xs-12' style="float:right;">
+        <div class="form-group" style="float: right;">
+            <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'style' => 'margin-top: 18px; height: 36px; width:100px;']) ?>
         </div>
     </div>
 

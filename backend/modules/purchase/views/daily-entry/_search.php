@@ -29,22 +29,6 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'yard_id') ?>
 
-    <?php // echo $form->field($model, 'ticket_no') ?>
-
-    <?php // echo $form->field($model, 'truck_number') ?>
-
-    <?php // echo $form->field($model, 'gross_weight') ?>
-
-    <?php // echo $form->field($model, 'tare_weight') ?>
-
-    <?php // echo $form->field($model, 'net_weight') ?>
-
-    <?php // echo $form->field($model, 'rate') ?>
-
-    <?php // echo $form->field($model, 'total') ?>
-
-    <?php // echo $form->field($model, 'description') ?>
-
     <?php // echo $form->field($model, 'status') ?>
 
     <?php // echo $form->field($model, 'CB') ?>

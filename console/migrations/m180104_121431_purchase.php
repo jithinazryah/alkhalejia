@@ -18,25 +18,14 @@ class m180104_121431_purchase extends Migration {
 
         $this->createTable('{{%daily_entry}}', [
             'id' => $this->primaryKey(),
-            'received_date' => $this->dateTime()->null(),
-            'material' => $this->integer()->Null(),
-            'supplier' => $this->integer()->Null(),
-            'transport' => $this->integer()->Null(),
-            'payment_status' => $this->integer()->Null(),
-            'yard_id' => $this->integer()->Null(),
-            'ticket_no' => $this->string(20)->null(),
-            'truck_number' => $this->string()->null(),
-            'gross_weight' => $this->string()->null(),
-            'tare_weight' => $this->string()->null(),
-            'net_weight' => $this->string()->null(),
-            'rate' => $this->decimal(10, 2)->null(),
-            'total' => $this->decimal(10, 2)->null(),
-            'description' => $this->text()->null(),
-            'image' => $this->string()->null(),
-            'transport_amount' => $this->decimal(10, 2)->null(),
-            'amount_paid' => $this->decimal(10, 2)->null(),
-            'due_amount' => $this->decimal(10, 2)->null(),
-            'status' => $this->smallInteger()->notNull()->defaultValue(1),
+            'received_date' => $this->dateTime()->notNull(),
+            'material' => $this->integer()->notNull(),
+            'supplier' => $this->integer()->notNull(),
+            'transport' => $this->integer()->notNull(),
+            'payment_status' => $this->integer()->notNull(),
+            'yard_id' => $this->integer()->notNull(),
+            'image' => $this->string(20)->null(),
+            'status' => $this->integer()->Null(),
             'CB' => $this->integer()->Null(),
             'UB' => $this->integer()->Null(),
             'DOC' => $this->date(),
@@ -46,6 +35,31 @@ class m180104_121431_purchase extends Migration {
         $this->addForeignKey("fk_purchase_material", "daily_entry", "material", "materials", "id", "RESTRICT", "RESTRICT");
         $this->addForeignKey("fk_purchase_supplier", "daily_entry", "supplier", "contacts", "id", "RESTRICT", "RESTRICT");
         $this->addForeignKey("fk_purchase_transport", "daily_entry", "transport", "contacts", "id", "RESTRICT", "RESTRICT");
+        $this->addForeignKey("fk_purchase_yard", "daily_entry", "yard_id", "yard", "id", "RESTRICT", "RESTRICT");
+
+
+        /************daily entry details************* */
+        $this->createTable('{{%daily_entry_details}}', [
+            'id' => $this->primaryKey(),
+            'daily_entry_id' => $this->integer()->notNull(),
+            'ticket_no' => $this->string(20)->notNull(),
+            'truck_number' => $this->string()->notNull(),
+            'gross_weight' => $this->string()->notNull(),
+            'tare_weight' => $this->string()->notNull(),
+            'net_weight' => $this->string()->notNull(),
+            'rate' => $this->decimal(10, 2)->notNull(),
+            'total' => $this->decimal(10, 2)->notNull(),
+            'description' => $this->text()->null(),
+            'transport_amount' => $this->decimal(10, 2)->notNull(),
+            'status' => $this->integer()->Null(),
+            'CB' => $this->integer()->Null(),
+            'UB' => $this->integer()->Null(),
+            'DOC' => $this->date(),
+            'DOU' => $this->timestamp(),
+                ], $tableOptions);
+
+        $this->addForeignKey("fk_daily_entry_id", "daily_entry_details", "daily_entry_id", "daily_entry", "id", "RESTRICT", "RESTRICT");
+        
     }
 
     /**

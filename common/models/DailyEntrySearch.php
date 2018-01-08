@@ -19,8 +19,7 @@ class DailyEntrySearch extends DailyEntry
     {
         return [
             [['id', 'material', 'supplier', 'transport', 'payment_status', 'yard_id', 'status', 'CB', 'UB'], 'integer'],
-            [['received_date', 'ticket_no', 'truck_number', 'gross_weight', 'tare_weight', 'net_weight', 'description', 'DOC', 'DOU'], 'safe'],
-            [['rate', 'total'], 'number'],
+            [['received_date', 'DOC', 'DOU'], 'safe'],
         ];
     }
 
@@ -67,21 +66,12 @@ class DailyEntrySearch extends DailyEntry
             'transport' => $this->transport,
             'payment_status' => $this->payment_status,
             'yard_id' => $this->yard_id,
-            'rate' => $this->rate,
-            'total' => $this->total,
             'status' => $this->status,
             'CB' => $this->CB,
             'UB' => $this->UB,
             'DOC' => $this->DOC,
             'DOU' => $this->DOU,
         ]);
-
-        $query->andFilterWhere(['like', 'ticket_no', $this->ticket_no])
-            ->andFilterWhere(['like', 'truck_number', $this->truck_number])
-            ->andFilterWhere(['like', 'gross_weight', $this->gross_weight])
-            ->andFilterWhere(['like', 'tare_weight', $this->tare_weight])
-            ->andFilterWhere(['like', 'net_weight', $this->net_weight])
-            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

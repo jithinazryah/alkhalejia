@@ -16,55 +16,49 @@
         <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
             <div class = "form-group field-staffperviousemployer-hospital_address">
                 <label class = "control-label">Ticket No.</label>
-                <input class="form-control" type = "text" name = "creates[ticket_no][]">
+                <input class="form-control" type = "text" name = "DailyEntryDetails[ticket_no][]">
 
             </div>
         </div>
         <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
             <div class="form-group field-staffperviousemployer-designation">
                 <label class="control-label" for="">Truck No.</label>
-                <input class="form-control" type = "text" name = "creates[truck_no][]">
+                <input class="form-control" type = "text" name = "DailyEntryDetails[truck_number][]">
             </div>
         </div>
-        <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
+        <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
             <div class="form-group field-staffperviousemployer-designation">
                 <label class="control-label" for="">Net Weight</label>
-                <input type="text" class="form-control" name="creates[net_weight][]">
+                <input type="text" class="form-control" name="DailyEntryDetails[net_weight][]">
             </div>
         </div>
         <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
             <div class="form-group field-staffperviousemployer-designation">
                 <label class="control-label" for="">Rate</label>
-                <input type="text" class="form-control" name="creates[rate][]">
+                <input type="text" class="form-control" name="DailyEntryDetails[rate][]">
             </div>
         </div>
 
         <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
             <div class="form-group field-staffperviousemployer-designation">
                 <label class="control-label" for="">Transport Amount</label>
-                <input type="text" class="form-control" name="creates[transport_amount][]">
+                <input type="text" class="form-control" name="DailyEntryDetails[transport_amount][]">
             </div>
         </div>
         <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
             <div class="form-group field-staffperviousemployer-designation">
                 <label class="control-label" for="">Total</label>
-                <input type="text" class="form-control" name="creates[total][]">
+                <input type="text" class="form-control" name="DailyEntryDetails[total][]">
             </div>
         </div>
-        <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
-            <div class="form-group field-staffperviousemployer-designation">
-                <label class="control-label" for="">Amount Paid</label>
-                <input type="text" class="form-control" name="creates[amount_paid][]">
-            </div>
-        </div>
-        <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
+        <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
             <div class="form-group field-staffperviousemployer-designation">
                 <label class="control-label" for="">Description</label>
-                <input type="text" class="form-control" name="creates[description][]">
+                <input type="text" class="form-control" name="DailyEntryDetails[description][]">
             </div>
         </div>
         <div class = "col-md-1 col-sm-12 col-xs-12 left_padd">
-            <a id="remAttach" class="btn btn-icon btn-red remAttach" style="margin-top: 25px;padding: 4px 10px;"><i class="fa-remove"></i></a>
+            <a id="remAttach" class="btn btn-icon btn-red remAttach" style="margin-top: 27px;"><i class="fa-remove"></i></a>
         </div>
     </div>
     <div style="clear:both"></div>
