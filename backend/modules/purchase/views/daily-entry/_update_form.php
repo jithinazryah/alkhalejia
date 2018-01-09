@@ -66,71 +66,77 @@ use yii\web\UploadedFile;
     <div id = "p_attach">
         <input type = "hidden" id = "delete_port_vals" name = "delete_port_vals" value = "">
 
+        <?php
+        $srl = '0';
+        foreach ($model_details as $detail) {
+            $srl++;
+            ?>
+            <span>
+                <div class="row daily-entry-span">
+                    <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd' style="width: 5%;">
+                        <div class = "form-group field-staffperviousemployer-hospital_address">
+                            <h4 class="serial_no" style="margin-top: 32px;"><?= $srl ?>.</h4>
 
-        <span>
-            <div class="row daily-entry-span">
-                <!--                <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
-                                    <label class = "control-label"></label>
-                                    <label class = "control-label">1</label>
-                                </div>-->
-                <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd' style="width: 5%;">
-                    <div class = "form-group field-staffperviousemployer-hospital_address">
-                        <h4 class="serial_no" style="margin-top: 32px;">1.</h4>
+                        </div>
                     </div>
-                </div>
-                <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
-                    <div class = "form-group field-staffperviousemployer-hospital_address">
-                        <label class = "control-label">Ticket No.</label>
-                        <?= $form->field($model_details, 'ticket_no[]')->textInput()->label(FALSE) ?>
+                    <input type="hidden" name="update[detail][]" value="<?= $detail->id?>">
+                    <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
+                        <div class = "form-group field-staffperviousemployer-hospital_address">
+                            <label class = "control-label">Ticket No.</label>
+                            <input class="form-control" type = "text" name = "update[ticket_no][]" value="<?= $detail->ticket_no ?>">
 
+                        </div>
                     </div>
-                </div>
-                <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
-                    <div class="form-group field-staffperviousemployer-designation">
-                        <label class="control-label" for="">Truck No.</label>
-                        <?= $form->field($model_details, 'truck_number[]')->textInput()->label(FALSE) ?>
+                    <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
+                        <div class="form-group field-staffperviousemployer-designation">
+                            <label class="control-label" for="">Truck No.</label>
+                            <input class="form-control" type = "text" name = "update[truck_number][]" value="<?= $detail->truck_number ?>">
+                        </div>
                     </div>
-                </div>
-                <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
-                    <div class="form-group field-staffperviousemployer-designation">
-                        <label class="control-label" for="">Net Weight</label>
-                        <?= $form->field($model_details, 'net_weight[]')->textInput()->label(FALSE) ?>
+                    <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
+                        <div class="form-group field-staffperviousemployer-designation">
+                            <label class="control-label" for="">Net Weight</label>
+                            <input type="text" class="form-control" name="update[net_weight][]" value="<?= $detail->net_weight ?>">
+                        </div>
                     </div>
-                </div>
-                <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
-                    <div class="form-group field-staffperviousemployer-designation">
-                        <label class="control-label" for="">Rate</label>
-                        <?= $form->field($model_details, 'rate[]')->textInput()->label(FALSE) ?>
+                    <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
+                        <div class="form-group field-staffperviousemployer-designation">
+                            <label class="control-label" for="">Rate</label>
+                            <input type="text" class="form-control" name="update[rate][]" value="<?= $detail->rate ?>">
+                        </div>
                     </div>
-                </div>
-                <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
-                    <div class="form-group field-staffperviousemployer-designation">
-                        <label class="control-label" for="">Transport Amount</label>
-                        <?= $form->field($model_details, 'transport_amount[]')->textInput()->label(FALSE) ?>
-                    </div>
-                </div>
 
-                <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
-                    <div class="form-group field-staffperviousemployer-designation">
-                        <label class="control-label" for="">Total</label>
-                        <?= $form->field($model_details, 'total[]')->textInput()->label(FALSE) ?>
+                    <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
+                        <div class="form-group field-staffperviousemployer-designation">
+                            <label class="control-label" for="">Transport Amount</label>
+                            <input type="text" class="form-control" name="update[transport_amount][]" value="<?= $detail->transport_amount ?>">
+                        </div>
                     </div>
+                    <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
+                        <div class="form-group field-staffperviousemployer-designation">
+                            <label class="control-label" for="">Total</label>
+                            <input type="text" class="form-control" name="update[total][]" value="<?= $detail->total ?>">
+                        </div>
+                    </div>
+                    <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
+                        <div class="form-group field-staffperviousemployer-designation">
+                            <label class="control-label" for="">Description</label>
+                            <input type="text" class="form-control" name="update[description][]" value="<?= $detail->description ?>">
+                        </div>
+                    </div>
+                    
                 </div>
+                <div style="clear:both"></div>
+            </span>
+            <?php
+        }
+        ?>
 
-                <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
-                    <div class="form-group field-staffperviousemployer-designation">
-                        <label class="control-label" for="">Description</label>
-                        <?= $form->field($model_details, 'description[]')->textInput()->label(FALSE) ?>
-                    </div>
-                </div>
-            </div>
-            <div style="clear:both"></div>
-        </span>
 
     </div>
     <div class="row">
         <div class="col-md-12">
-            <a id="addAttach" title="Add More Attachment" last_sl="1" class="btn btn-blue btn-icon btn-icon-standalone addAttach" style="float:right;margin-right: 15px;"><i class="fa-plus"></i></a>
+            <a id="addAttach" title="Add More Attachment" last_sl="<?= $srl ?>" class="btn btn-blue btn-icon btn-icon-standalone addAttach" style="float:right;margin-right: 15px;"><i class="fa-plus"></i></a>
         </div>
     </div>
     <div class='col-md-4 col-sm-6 col-xs-12' style="float:right;">
@@ -167,6 +173,7 @@ use yii\web\UploadedFile;
 
 
         });
+        
         $('#p_attach').on('click', '.remAttach', function () {
             if (i > 2) {
                 $(this).parents('span').remove();

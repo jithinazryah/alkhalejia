@@ -72,11 +72,13 @@ class DailyEntryController extends Controller {
             $arr = $this->SavePurchaseDetails($model_details, $data);
             $files = UploadedFile::getInstance($model, 'image');
             $model->received_date = date("Y-m-d h:i", strtotime($model->received_date));
+            $model->image = $files->extension;
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if (Yii::$app->SetValues->Attributes($model) && $model->save() && $this->Upload($model, $files) && $this->Savedetails($model, $arr, $transaction)
+                        && $this->Addtransaction($model, $arr)
                 ) {
-//                    $transaction->commit();
+                    $transaction->commit();
                     Yii::$app->session->setFlash('success', "New invoice create successfully.");
                     return $this->redirect(['index']);
                 } else {
@@ -102,15 +104,48 @@ class DailyEntryController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $model_details = DailyEntryDetails::find()->where(['daily_entry_id' => $id, 'status' => '1'])->all();
+        $image = $model->image;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $data = Yii::$app->request->post();
+            $arr = $this->SavePurchaseDetails($model_details, $data);
+            $detl_arr = $this->updatePurchaseDetails();
+            $files = UploadedFile::getInstance($model, 'image');
+            $model->received_date = date("Y-m-d h:i", strtotime($model->received_date));
+            $model->image = $files->extension;
+            if (!empty($files) && !empty($image)) {
+                unlink(Yii::$app->basePath . '/../uploads/daily-entry/' . $id . '.' . $model->image);
+            }
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if (Yii::$app->SetValues->Attributes($model) && $model->save() && $this->Upload($model, $files) &&
+                        $this->Savedetails($model, $arr, $transaction) && $this->update_details($model, $detl_arr)) {
+//                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', "Invoice updated successfully.");
+                    return $this->redirect(['index']);
+                } else {
+                    
+                }
+            } catch (Exception $e) {
+                $transaction->rollBack();
+            }
         } else {
             return $this->render('update', [
                         'model' => $model,
+                        'model_details' => $model_details,
             ]);
         }
     }
+
+    public function Upload($daily_entry, $files) {
+        if (isset($files) && !empty($files)) {
+            $files->saveAs(Yii::$app->basePath . '/../uploads/daily-entry/' . $daily_entry->id . '.' . $files->extension);
+        }
+        return TRUE;
+    }
+
+    /*     * ************************************************************************ */
 
     public function Savedetails($model, $arr, $transaction) {
 //        echo '<pre>';        print_r($arr);exit;
@@ -120,11 +155,11 @@ class DailyEntryController extends Controller {
             $model_details = new DailyEntryDetails();
             $model_details->attributes = $model->attributes;
             $model_details->daily_entry_id = $model->id;
-            if (isset($val['ticket_no']) && $val['truck_no'] != '') {
-                $model_details->ticket_no = $val['truck_no'];
+            if (isset($val['ticket_no']) && $val['truck_number'] != '') {
+                $model_details->ticket_no = $val['truck_number'];
             }
-            if (isset($val['truck_no']) && $val['truck_no'] != '') {
-                $model_details->truck_number = $val['truck_no'];
+            if (isset($val['truck_number']) && $val['truck_number'] != '') {
+                $model_details->truck_number = $val['truck_number'];
             }
             if (isset($val['net_weight']) && $val['net_weight'] != '') {
                 $model_details->net_weight = $val['net_weight'];
@@ -148,7 +183,7 @@ class DailyEntryController extends Controller {
             ) {
                 $transaction->commit();
             } else {
-                    $transaction->rollBack();
+                $transaction->rollBack();
             }
 //            } catch (Exception $e) {
 //                $transaction->rollBack();
@@ -157,23 +192,16 @@ class DailyEntryController extends Controller {
         return TRUE;
     }
 
-    public function Upload($daily_entry, $files) {
-        if (isset($files) && !empty($files)) {
-            $files->saveAs(Yii::$app->basePath . '/../uploads/daily-entry/' . $daily_entry->id . '.' . $files->extension);
-        }
-        return TRUE;
-    }
-
-    public function SaveStock($daily_entry, $model) {
+    public function SaveStock($daily_entry, $models) {
 
         $model = new Stock();
-        $model->transaction_type = 2;
+        $model->transaction_type = 3;
         $model->transaction_id = $daily_entry->id;
-        $model->material_id = $model->material;
-        $material_code = \common\models\Materials::findOne($model->material)->code;
+        $model->material_id = $models->material;
+        $material_code = \common\models\Materials::findOne($models->material)->code;
         $model->material_code = $material_code;
-        $model->yard_id = $model->yard_id;
-        $yard_code = \common\models\Yard::findOne($model->yard_id)->code;
+        $model->yard_id = $models->yard_id;
+        $yard_code = \common\models\Yard::findOne($models->yard_id)->code;
         $model->yard_code = $yard_code;
         $model->material_cost = $daily_entry->rate;
         $model->weight_in = $daily_entry->net_weight;
@@ -186,6 +214,172 @@ class DailyEntryController extends Controller {
 
             return FALSE;
         }
+    }
+
+    public function SavePurchaseDetails($model, $data) {
+//        echo '<pre>';        print_r($_POST['DailyEntryDetails']);exit;
+
+        $arrs = [];
+        if (isset($_POST['DailyEntryDetails']) && $_POST['DailyEntryDetails'] != '') {
+
+
+            $i = 0;
+            foreach ($_POST['DailyEntryDetails']['ticket_no'] as $val) {
+                $arrs[$i]['ticket_no'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['DailyEntryDetails']['truck_number'] as $val) {
+                $arrs[$i]['truck_number'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['DailyEntryDetails']['net_weight'] as $val) {
+                $arrs[$i]['net_weight'] = $val;
+                $i++;
+            }
+
+            $i = 0;
+            foreach ($_POST['DailyEntryDetails']['rate'] as $val) {
+                $arrs[$i]['rate'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['DailyEntryDetails']['transport_amount'] as $val) {
+                $arrs[$i]['transport_amount'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['DailyEntryDetails']['total'] as $val) {
+                $arrs[$i]['total'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['DailyEntryDetails']['description'] as $val) {
+                $arrs[$i]['description'] = $val;
+                $i++;
+            }
+        }
+        return $arrs;
+    }
+
+    /*     * *********update******** */
+
+    public function update_details($model, $arr) {
+//        echo '<pre>';        print_r($arr);exit
+        foreach ($arr as $val) {
+//            echo $val['detail'];exit;
+            $total = 0;
+            $amount_paid = 0;
+            $model_details = DailyEntryDetails::findOne($val['detail']);
+//            var_dump($model_details);exit;
+            $model_details->daily_entry_id = $model->id;
+            $model_details->ticket_no = $val['ticket_no'];
+
+            if (isset($val['truck_number']) && $val['truck_number'] != '') {
+                $model_details->truck_number = $val['truck_number'];
+            }
+            if (isset($val['net_weight']) && $val['net_weight'] != '') {
+                $model_details->net_weight = $val['net_weight'];
+            }
+            if (isset($val['rate']) && $val['rate'] != '') {
+                $model_details->rate = $val['rate'];
+            }
+            if (isset($val['transport_amount']) && $val['transport_amount'] != '') {
+                $model_details->transport_amount = $val['transport_amount'];
+            }
+            if (isset($val['total']) && $val['total'] != '') {
+                $model_details->total = $val['total'];
+                $total = $model_details->total;
+            }
+            if (isset($val['description']) && $val['description'] != '') {
+                $model_details->description = $val['description'];
+            }
+//            $transaction = Yii::$app->db->beginTransaction();
+//            try {
+            if (Yii::$app->SetValues->Attributes($model_details) && $model_details->save() && $this->UpdateStock($model_details, $model)
+            ) {
+                
+            }
+//            } catch (Exception $e) {
+//                $transaction->rollBack();
+//            }
+        }
+        return TRUE;
+    }
+
+    public function UpdateStock($daily_entry, $models) {
+
+        $model = Stock::find()->where(['transaction_id' => $daily_entry->id])->one();
+        $model->transaction_id = $daily_entry->id;
+        $model->material_id = $models->material;
+        $material_code = \common\models\Materials::findOne($models->material)->code;
+        $model->material_code = $material_code;
+        $model->yard_id = $models->yard_id;
+        $yard_code = \common\models\Yard::findOne($models->yard_id)->code;
+        $model->yard_code = $yard_code;
+        $model->material_cost = $daily_entry->rate;
+        $model->weight_in = $daily_entry->net_weight;
+        $model->total_cost = $daily_entry->total;
+        Yii::$app->SetValues->Attributes($model);
+        if ($model->save()) {
+
+            return TRUE;
+        } else {
+
+            return FALSE;
+        }
+    }
+
+    public function UpdatePurchaseDetails() {
+
+        $arrs = [];
+        if (isset($_POST['update']) && $_POST['update'] != '') {
+
+
+            $i = 0;
+            foreach ($_POST['update']['detail'] as $val) {
+                $arrs[$i]['detail'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['update']['ticket_no'] as $val) {
+                $arrs[$i]['ticket_no'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['update']['truck_number'] as $val) {
+                $arrs[$i]['truck_number'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['update']['net_weight'] as $val) {
+                $arrs[$i]['net_weight'] = $val;
+                $i++;
+            }
+
+            $i = 0;
+            foreach ($_POST['update']['rate'] as $val) {
+                $arrs[$i]['rate'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['update']['transport_amount'] as $val) {
+                $arrs[$i]['transport_amount'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['update']['total'] as $val) {
+                $arrs[$i]['total'] = $val;
+                $i++;
+            }
+            $i = 0;
+            foreach ($_POST['update']['description'] as $val) {
+                $arrs[$i]['description'] = $val;
+                $i++;
+            }
+        }
+        return $arrs;
     }
 
     /**
@@ -224,57 +418,6 @@ class DailyEntryController extends Controller {
             $data = $this->renderPartial('_form_add_attachment', ['srl' => $srl]);
             echo $data;
         }
-    }
-
-    /*
-     * to upload multiple documents
-     *  */
-
-    public function SavePurchaseDetails($model, $data) {
-//        echo '<pre>';        print_r($_POST['DailyEntryDetails']);exit;
-
-        $arrs = [];
-        if (isset($_POST['DailyEntryDetails']) && $_POST['DailyEntryDetails'] != '') {
-
-
-            $i = 0;
-            foreach ($_POST['DailyEntryDetails']['ticket_no'] as $val) {
-                $arrs[$i]['ticket_no'] = $val;
-                $i++;
-            }
-            $i = 0;
-            foreach ($_POST['DailyEntryDetails']['truck_number'] as $val) {
-                $arrs[$i]['truck_no'] = $val;
-                $i++;
-            }
-            $i = 0;
-            foreach ($_POST['DailyEntryDetails']['net_weight'] as $val) {
-                $arrs[$i]['net_weight'] = $val;
-                $i++;
-            }
-
-            $i = 0;
-            foreach ($_POST['DailyEntryDetails']['rate'] as $val) {
-                $arrs[$i]['rate'] = $val;
-                $i++;
-            }
-            $i = 0;
-            foreach ($_POST['DailyEntryDetails']['transport_amount'] as $val) {
-                $arrs[$i]['transport_amount'] = $val;
-                $i++;
-            }
-            $i = 0;
-            foreach ($_POST['DailyEntryDetails']['total'] as $val) {
-                $arrs[$i]['total'] = $val;
-                $i++;
-            }
-            $i = 0;
-            foreach ($_POST['DailyEntryDetails']['description'] as $val) {
-                $arrs[$i]['description'] = $val;
-                $i++;
-            }
-        }
-        return $arrs;
     }
 
 }

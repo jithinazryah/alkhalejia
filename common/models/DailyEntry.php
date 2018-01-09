@@ -66,6 +66,7 @@ class DailyEntry extends \yii\db\ActiveRecord
             'transport' => 'Transporter',
             'payment_status' => 'Payment Status',
             'yard_id' => 'Yard ID',
+            'image' => 'File Upload',
             'status' => 'Status',
             'CB' => 'Cb',
             'UB' => 'Ub',
