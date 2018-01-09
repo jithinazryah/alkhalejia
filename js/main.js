@@ -26,6 +26,8 @@ $(function () {
                         success: function (data) {
                                 if (data != '') {
                                         $("#appointmentdetails-supplier").html(data);
+                                        $("#appointmentdetails-unit_price").val('');
+                                        $("#appointmentdetails-tax").val('');
                                 } else {
                                         $("#appointmentdetails-supplier").prop('disabled', true);
                                 }
@@ -33,30 +35,34 @@ $(function () {
                 });
         });
 
-//        $('#appointmentdetails-supplier').change(function () {
-//                var supplier = $(this).val();
-//                var service = $('#appointmentdetails-service_id').val();
-//                if (service && supplier) {
-//
-//                        $.ajax({
-//                                type: 'POST',
-//                                cache: false,
-//                                data: {service_id: service, supplier_id: supplier},
-//                                url: homeUrl + 'appointment/appointment/rate',
-//                                success: function (data) {
-//                                        if (data != '') {
-//                                                $("#appointmentdetails-supplier").html(data);
-//                                        } else {
-//                                                $("#appointmentdetails-supplier").prop('disabled', true);
-//                                        }
-//                                }
-//                        });
-//
-//                } else {
-//                        $('#appointmentdetails-supplier').val('');
-//                        alert('Please select a service');
-//                }
-//        });
+        $('#appointmentdetails-supplier').change(function () {
+
+                var supplier = $(this).val();
+                var service = $('#appointmentdetails-service_id').val();
+                if (service && supplier) {
+
+                        $.ajax({
+                                type: 'POST',
+                                cache: false,
+                                data: {service_id: service, supplier_id: supplier},
+                                url: homeUrl + 'appointment/appointment/rate',
+                                success: function (data) {
+                                        if (data != '') {
+
+                                                var res = $.parseJSON(data);
+                                                $("#appointmentdetails-unit_price").val(res['rate']);
+                                                $("#appointmentdetails-tax").val(res['tax']);
+                                        } else {
+                                                $("#appointmentdetails-supplier").prop('disabled', true);
+                                        }
+                                }
+                        });
+
+                } else {
+                        $('#appointmentdetails-supplier').val('');
+                        alert('Please select a service');
+                }
+        });
 
 
         $('#appointmentdetails-quantity').change(function () {

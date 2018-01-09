@@ -246,7 +246,7 @@ class AppointmentController extends Controller {
                         $i++;
                         $transaction_id = 'APP' . $value->id;
                         $transaction_date = date('Y-m-d');
-                        $financial_year = '';
+                        $financial_year = $this->GetFinancialYear($transaction_date);
                         $service = \common\models\Services::findOne($value->service_id);
                         if ($value->service_id == 1) {
                                 $supplier = \common\models\Materials::findOne($value->supplier);
@@ -260,6 +260,27 @@ class AppointmentController extends Controller {
                 $appointment->save();
                 return $this->redirect(Yii::$app->request->referrer);
         }
+
+        /*
+         * Get Financial year
+         */
+
+        public function GetFinancialYear($transaction_date) {
+                $trans_date = date('Y-m-d', strtotime($transaction_date));
+                $financial_datas = \common\models\FinancialYears::find()->all();
+
+                foreach ($financial_datas as $value) {
+                        $contractDateBegin = date('Y-m-d', strtotime($value->start_period));
+                        $contractDateEnd = date('Y-m-d', strtotime($value->end_period));
+                        if (($trans_date > $contractDateBegin) && ($trans_date < $contractDateEnd)) {
+                                return $value->id;
+                        }
+                }
+        }
+
+        /*
+         * Save stock
+         */
 
         public function SaveStock($model) {
                 $stock = new \common\models\Stock();
@@ -333,15 +354,23 @@ class AppointmentController extends Controller {
                 }
         }
 
-//        public function actionRate() {
-//                if (Yii::$app->request->isAjax) {
-//                        $service_id = $_POST['service_id'];
-//                        $supplier_id = $_POST['supplier_id'];
-//                        if ($service_id == 1) {
-//
-//                        } else {
-//
-//                        }
-//                }
-//        }
+        public function actionRate() {
+                if (Yii::$app->request->isAjax) {
+                        $service_id = $_POST['service_id'];
+                        $supplier_id = $_POST['supplier_id'];
+                        if ($service_id == 1) {
+                                $detail = \common\models\Materials::findOne($supplier_id);
+                                $rate = $detail->selling_price;
+                                $tax = $detail->tax;
+                        } else {
+                                $detail = \common\models\Services::findOne($service_id);
+                                $rate = $detail->unit_rate;
+                                $tax = $detail->tax;
+                        }
+
+                        $data = ['rate' => $rate, 'tax' => $tax];
+                        echo json_encode($data);
+                }
+        }
+
 }

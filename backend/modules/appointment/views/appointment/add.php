@@ -117,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         <th data-priority="1">RATE</th>
                                                                         <th data-priority="1">QUANTITY</th>
                                                                         <th data-priority="1">TOTAL</th>
-                                                                        <th data-priority="1">VAT</th>
+                                                                        <th data-priority="1" style="width: 10%;">VAT</th>
                                                                         <th data-priority="1">VAT AMOUNT</th>
                                                                         <th data-priority="1">SUB TOTAL</th>
                                                                         <th data-priority="1">COMMENT</th>
