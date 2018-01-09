@@ -16,39 +16,39 @@
                 <div class = 'col-md-1 col-sm-12 col-xs-12 left_padd'>
                         <div class = "form-group field-staffperviousemployer-hospital_address">
                                 <label class = "control-label">Ticket No.</label>
-                                <input class="form-control" type = "text" name = "DailyEntryDetails[ticket_no][]">
+                                <input class="form-control" type = "text" required="required" name = "DailyEntryDetails[ticket_no][]">
 
                         </div>
                 </div>
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                         <div class="form-group field-staffperviousemployer-designation">
                                 <label class="control-label" for="">Truck No.</label>
-                                <input class="form-control" type = "text" name = "DailyEntryDetails[truck_number][]">
+                                <input class="form-control" type = "text" required="required" name = "DailyEntryDetails[truck_number][]">
                         </div>
                 </div>
                 <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
                         <div class="form-group field-staffperviousemployer-designation">
                                 <label class="control-label" for="">Net Weight</label>
-                                <input type="text" class="form-control" name="DailyEntryDetails[net_weight][]">
+                                <input type="text" class="form-control" required="required" name="DailyEntryDetails[net_weight][]">
                         </div>
                 </div>
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                         <div class="form-group field-staffperviousemployer-designation">
                                 <label class="control-label" for="">Rate</label>
-                                <input type="text" class="form-control" name="DailyEntryDetails[rate][]">
+                                <input type="text" class="form-control" required="required" name="DailyEntryDetails[rate][]">
                         </div>
                 </div>
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                         <div class="form-group field-staffperviousemployer-designation">
                                 <label class="control-label" for="">Total</label>
-                                <input type="text" class="form-control" name="DailyEntryDetails[total][]">
+                                <input type="text" class="form-control" required="required" name="DailyEntryDetails[total][]">
                         </div>
                 </div>
 
                 <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
                         <div class="form-group field-staffperviousemployer-designation">
                                 <label class="control-label" for="">Transporter Amount</label>
-                                <input type="text" class="form-control" name="DailyEntryDetails[transport_amount][]">
+                                <input type="text" class="form-control" required="required" name="DailyEntryDetails[transport_amount][]">
                         </div>
                 </div>
 

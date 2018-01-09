@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = 'Update';
                 <?= Html::a('<i class="fa-th-list"></i><span> Manage Daily Entry</span>', ['index'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?>
                 <div class="panel-body"><div class="daily-entry-create">
                         <?=
-                        $this->render('_update_form', [
+                        $this->render('_form', [
                             'model' => $model,
                             'model_details' => $model_details,
                         ])

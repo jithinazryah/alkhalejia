@@ -36,6 +36,7 @@ class m180104_121431_purchase extends Migration {
         $this->addForeignKey("fk_purchase_supplier", "daily_entry", "supplier", "contacts", "id", "RESTRICT", "RESTRICT");
         $this->addForeignKey("fk_purchase_transport", "daily_entry", "transport", "contacts", "id", "RESTRICT", "RESTRICT");
         $this->addForeignKey("fk_purchase_yard", "daily_entry", "yard_id", "yard", "id", "RESTRICT", "RESTRICT");
+       
 
 
         /************daily entry details************* */

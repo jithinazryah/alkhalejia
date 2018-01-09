@@ -36,6 +36,7 @@ class m180108_064908_create_transaction extends Migration {
 
         $this->addForeignKey("fk_transaction_category", "transaction", "transaction_category", "transaction_category", "id", "RESTRICT", "RESTRICT");
         $this->addForeignKey("fk_financial_year", "transaction", "financial_year", "financial_years", "id", "RESTRICT", "RESTRICT");
+         $this->addColumn('daily_entry', 'type', 'int');
     }
 
     /**

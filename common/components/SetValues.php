@@ -103,10 +103,11 @@ class SetValues extends Component {
                 return $string;
         }
 
-        public function Transaction($transaction_category, $transaction_id, $transaction_date, $financial_year, $supplier_id, $supplier_name, $supplier_code, $credit_amount, $debit_amount, $balance_amount, $status) {
+        public function Transaction($transaction_category, $transaction_id, $transaction_date, $financial_year, $supplier_id, $supplier_name, $supplier_code, $credit_amount, $debit_amount, $balance_amount, $type) {
                 $model = new \common\models\Transaction;
                 $model->transaction_category = $transaction_category;
                 $model->transaction_id = $transaction_id;
+                $model->type = $type;
                 $model->transaction_date = $transaction_date;
                 $model->financial_year = $financial_year;
                 $model->supplier_id = $supplier_id;
@@ -127,8 +128,8 @@ class SetValues extends Component {
                 }
         }
 
-        public function TransactionUpdate($transaction_category, $transaction_id, $transaction_date, $financial_year, $supplier_id, $supplier_name, $supplier_code, $credit_amount, $debit_amount, $balance_amount, $status) {
-                $model = \common\models\Transaction::find()->where(['transaction_id' => $transaction_id])->one();
+        public function TransactionUpdate($transaction_category, $transaction_id, $transaction_date, $financial_year, $supplier_id, $supplier_name, $supplier_code, $credit_amount, $debit_amount, $balance_amount, $status,$type) {
+                $model = \common\models\Transaction::find()->where(['transaction_id' => $transaction_id, 'type' => $type])->one();
                 $model->transaction_category = $transaction_category;
                 $model->transaction_id = $transaction_id;
                 $model->transaction_date = $transaction_date;
