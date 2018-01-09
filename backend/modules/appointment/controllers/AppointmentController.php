@@ -244,20 +244,41 @@ class AppointmentController extends Controller {
                 $i = 0;
                 foreach ($appointment_details as $value) {
                         $i++;
-                        // $transaction_id = 'APP' . $i;
+                        $transaction_id = 'APP' . $value->id;
                         $transaction_date = date('Y-m-d');
                         $financial_year = '';
                         $service = \common\models\Services::findOne($value->service_id);
-                        if ($value->service == 1) {
+                        if ($value->service_id == 1) {
                                 $supplier = \common\models\Materials::findOne($value->supplier);
                         } else {
                                 $supplier = \common\models\Contacts::findOne($value->supplier);
                         }
-                        Yii::$app->SetValues->Transaction($service->category, $value->id, $transaction_date, $financial_year, $value->supplier, $supplier->name, $supplier->code, $value->sub_total, 0, $value->sub_total, 1);
+                        Yii::$app->SetValues->Transaction($service->category, $transaction_id, $transaction_date, $financial_year, $value->supplier, $supplier->name, $supplier->code, $value->sub_total, 0, $value->sub_total, 1);
                 }
+                $this->SaveStock($appointment);
                 $appointment->status = 0;
                 $appointment->save();
                 return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        public function SaveStock($model) {
+                $stock = new \common\models\Stock();
+                $stock->transaction_type = 1;
+                $stock->transaction_id = $model->id;
+                $stock->material_id = $model->material;
+                $material_code = \common\models\Materials::findOne($model->material);
+                $stock->material_code = $material_code->code;
+                $stock->yard_id = '';
+                $stock->yard_code = '';
+                $stock->material_cost = $material_code->selling_price;
+                $stock->weight_out = $model->quantity;
+                $stock->total_cost = $material_code->selling_price * $model->quantity;
+                Yii::$app->SetValues->Attributes($stock);
+                if ($stock->save()) {
+                        return TRUE;
+                } else {
+                        return FALSE;
+                }
         }
 
         /**

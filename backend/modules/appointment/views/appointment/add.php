@@ -206,10 +206,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                 <tr>
                                                                                         <td></td>
                                                                                         <td colspan="4"> <b>SUB TOTAL</b></td>
-                                                                                        <td><?php echo $epdatotal . '/-'; ?></td>
+                                                                                        <td><?php echo Yii::$app->SetValues->NumberFormat($epdatotal) . '/-'; ?></td>
                                                                                         <td colspan=""></td>
                                                                                         <td colspan=""></td>
-                                                                                        <td><?php echo $tot_subtoatl . '/-'; ?></td>
+                                                                                        <td><?php echo Yii::$app->SetValues->NumberFormat($tot_subtoatl) . '/-'; ?></td>
                                                                                         <td colspan=""></td>
                                                                                         <td colspan="">
                                                                                         </td>
@@ -224,10 +224,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                 <tr>
                                                                         <td></td>
                                                                         <td colspan="4"> <b>GRAND TOTAL</b></td>
-                                                                        <td style="font-weight: bold;"><?php echo $grand_epdatotal . '/-'; ?></td>
+                                                                        <td style="font-weight: bold;"><?php echo Yii::$app->SetValues->NumberFormat($grand_epdatotal) . '/-'; ?></td>
                                                                         <td></td>
                                                                         <td></td>
-                                                                        <td style="font-weight: bold;"><?php echo $grand_tot_subtoatl . '/-'; ?>
+                                                                        <td style="font-weight: bold;"><?php echo Yii::$app->SetValues->NumberFormat($grand_tot_subtoatl) . '/-'; ?>
                                                                         <td colspan=""></td>
                                                                         <td colspan="">
                                                                                 <?= Html::submitButton('<i class="fa-print"></i><span>Print</span>', ['class' => 'btn btn-secondary btn-icon btn-icon-standalone']) ?>
