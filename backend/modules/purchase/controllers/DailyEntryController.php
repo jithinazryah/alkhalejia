@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\Stock;
+use common\models\Transaction;
 use yii\web\UploadedFile;
 
 /**
@@ -75,8 +76,7 @@ class DailyEntryController extends Controller {
             $model->image = $files->extension;
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                if (Yii::$app->SetValues->Attributes($model) && $model->save() && $this->Upload($model, $files) && $this->Savedetails($model, $arr, $transaction)
-                        && $this->Addtransaction($model, $arr)
+                if (Yii::$app->SetValues->Attributes($model) && $model->save() && $this->Upload($model, $files) && $this->Savedetails($model, $arr)
                 ) {
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', "New invoice create successfully.");
@@ -121,7 +121,7 @@ class DailyEntryController extends Controller {
             try {
                 if (Yii::$app->SetValues->Attributes($model) && $model->save() && $this->Upload($model, $files) &&
                         $this->Savedetails($model, $arr, $transaction) && $this->update_details($model, $detl_arr)) {
-//                    $transaction->commit();
+                    $transaction->commit();
                     Yii::$app->session->setFlash('success', "Invoice updated successfully.");
                     return $this->redirect(['index']);
                 } else {
@@ -147,8 +147,9 @@ class DailyEntryController extends Controller {
 
     /*     * ************************************************************************ */
 
-    public function Savedetails($model, $arr, $transaction) {
+    public function Savedetails($model, $arr) {
 //        echo '<pre>';        print_r($arr);exit;
+        $flag = 0;
         foreach ($arr as $val) {
             $total = 0;
             $amount_paid = 0;
@@ -179,17 +180,23 @@ class DailyEntryController extends Controller {
             }
 //            $transaction = Yii::$app->db->beginTransaction();
 //            try {
-            if (Yii::$app->SetValues->Attributes($model_details) && $model_details->save() && $this->SaveStock($model_details, $model)
+            if (Yii::$app->SetValues->Attributes($model_details) && $model_details->save() && $this->SaveStock($model_details, $model) && $this->Addtransaction($model_details, $model)
             ) {
-                $transaction->commit();
+                $flag = 1;
+//                $transaction->commit();
             } else {
-                $transaction->rollBack();
+                $flag = 0;
+//                $transaction->rollBack();
             }
 //            } catch (Exception $e) {
 //                $transaction->rollBack();
 //            }
         }
-        return TRUE;
+        if ($flag === 1) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
     public function SaveStock($daily_entry, $models) {
@@ -213,6 +220,16 @@ class DailyEntryController extends Controller {
         } else {
 
             return FALSE;
+        }
+    }
+
+    public function Addtransaction($daily_entry, $models) {
+        $financial_year = '';
+        $supplier = \common\models\Contacts::findOne($models->supplier);
+        if(Yii::$app->SetValues->Transaction(1, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->supplier, $supplier->name, $supplier->code, 0, $daily_entry->total, $daily_entry->total, 1)){
+            return TRUE;
+        }else{
+           
         }
     }
 

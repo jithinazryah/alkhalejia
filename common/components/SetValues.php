@@ -110,7 +110,12 @@ class SetValues extends Component {
                 $model->status = $status;
                 $model->CB = Yii::$app->user->identity->id;
                 $model->DOC = date('Y-m-d');
-                $model->save();
+                if($model->save()){
+                    return TRUE;
+//                    echo 'ha';exit;
+                }else{
+                    var_dump($model->getErrors());exit;
+                }
         }
 
 }

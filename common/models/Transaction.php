@@ -47,7 +47,7 @@ class Transaction extends \yii\db\ActiveRecord
             [['transaction_id'], 'required'],
             [['transaction_date', 'DOC', 'DOU'], 'safe'],
             [['credit_amount', 'debit_amount', 'balance_amount'], 'number'],
-            [['transaction_id'], 'string', 'max' => 500],
+//            [['transaction_id'], 'string', 'max' => 500],
             [['supplier_name', 'supplier_code'], 'string', 'max' => 100],
             [['financial_year'], 'exist', 'skipOnError' => true, 'targetClass' => FinancialYears::className(), 'targetAttribute' => ['financial_year' => 'id']],
             [['transaction_category'], 'exist', 'skipOnError' => true, 'targetClass' => TransactionCategory::className(), 'targetAttribute' => ['transaction_category' => 'id']],
