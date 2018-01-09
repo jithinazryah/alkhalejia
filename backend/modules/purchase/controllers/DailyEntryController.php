@@ -113,10 +113,11 @@ class DailyEntryController extends Controller {
                         $detl_arr = $this->updatePurchaseDetails();
                         $files = UploadedFile::getInstance($model, 'image');
                         $model->received_date = date("Y-m-d h:i", strtotime($model->received_date));
-                        $model->image = $files->extension;
                         if (!empty($files) && !empty($image)) {
                                 unlink(Yii::$app->basePath . '/../uploads/daily-entry/' . $id . '.' . $model->image);
+                $image = $files->extension;
                         }
+            $model->image = $image;
                         $transaction = Yii::$app->db->beginTransaction();
                         try {
                                 if (Yii::$app->SetValues->Attributes($model) && $model->save() && $this->Upload($model, $files) &&
@@ -124,12 +125,13 @@ class DailyEntryController extends Controller {
                                         $transaction->commit();
                                         Yii::$app->session->setFlash('success', "Invoice updated successfully.");
                                 } else {
+                    Yii::$app->session->setFlash('failed', "Invoice updated Failed.");
                                         $transaction->rollBack();
                                 }
+                return $this->redirect(['index']);
                         } catch (Exception $e) {
                                 $transaction->rollBack();
                         }
-                        return $this->redirect(['index']);
                 } else {
                         return $this->render('update', [
                                     'model' => $model,
@@ -149,6 +151,7 @@ class DailyEntryController extends Controller {
 
         public function Savedetails($model, $arr) {
 //        echo '<pre>';        print_r($arr);exit;
+        if (!empty($arr)) {
                 $flag = 0;
                 foreach ($arr as $val) {
                         $total = 0;
@@ -197,6 +200,7 @@ class DailyEntryController extends Controller {
                 } else {
                         return FALSE;
                 }
+        }return TRUE;
         }
 
         public function SaveStock($daily_entry, $models) {
@@ -283,7 +287,7 @@ class DailyEntryController extends Controller {
         /*         * *********update******** */
 
         public function update_details($model, $arr) {
-//        echo '<pre>';        print_r($arr);exit
+//        echo '<pre>';        print_r($arr);exit;
                 foreach ($arr as $val) {
 //            echo $val['detail'];exit;
                         $total = 0;
@@ -314,7 +318,7 @@ class DailyEntryController extends Controller {
                         }
 //            $transaction = Yii::$app->db->beginTransaction();
 //            try {
-                        if (Yii::$app->SetValues->Attributes($model_details) && $model_details->save() && $this->UpdateStock($model_details, $model)
+            if (Yii::$app->SetValues->Attributes($model_details) && $model_details->save() && $this->UpdateStock($model_details, $model) && $this->Updatetransaction($model_details, $model)
                         ) {
 
                         }
@@ -347,6 +351,16 @@ class DailyEntryController extends Controller {
                         return FALSE;
                 }
         }
+
+    public function Updatetransaction($daily_entry, $models) {
+        $financial_year = '';
+        $supplier = \common\models\Contacts::findOne($models->supplier);
+        if (Yii::$app->SetValues->TransactionUpdate(1, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->supplier, $supplier->name, $supplier->code, 0, $daily_entry->total, $daily_entry->total, 1)) {
+            return TRUE;
+        } else {
+            
+        }
+    }
 
         public function UpdatePurchaseDetails() {
 
