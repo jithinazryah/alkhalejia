@@ -142,12 +142,12 @@
                                         <div class="invoice-details"style="margin-top: 26px;">
                                                 <table style="width:100%;border: 1px solid black;border-collapse: collapse;">
                                                         <tr>
-                                                                <th style="width: 10%;font-size: 10px;border: 1px solid;padding: 10px 0px;">Sl No.<br>.لا</th>
-                                                                <th style="width: 40%;font-size: 10px;border: 1px solid;padding: 10px 0px;">Particulars<br>تفاصيل</th>
-                                                                <th style="width: 13%;font-size: 10px;border: 1px solid;padding: 10px 0px;">QUT<br>الكمية</th>
-                                                                <th style="width: 11%;font-size: 10px;border: 1px solid;padding: 10px 0px;">Price<br>السعر</th>
-                                                                <th style="width: 15%;font-size: 10px;border: 1px solid;padding: 10px 0px;">Amount<br>كمية</th>
-                                                                <th style="width: 11%;font-size: 10px;border: 1px solid;padding: 10px 0px;">Tax Amount<br>قيمة الضريبة</th>
+                                                                <th style="width: 10%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Sl No.<br>.لا</th>
+                                                                <th style="width: 40%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Particulars<br>تفاصيل</th>
+                                                                <th style="width: 13%;font-size: 12px;border: 1px solid;padding: 10px 0px;">QUT<br>الكمية</th>
+                                                                <th style="width: 11%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Price<br>السعر</th>
+                                                                <th style="width: 15%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Amount<br>كمية</th>
+                                                                <th style="width: 11%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Tax Amount<br>قيمة الضريبة</th>
                                                         </tr>
                                                         <?php
                                                         $p = 0;
@@ -173,19 +173,24 @@
                                                                 }
                                                                 ?>
                                                                 <tr>
-                                                                        <td style="width: 10%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= $p ?></td>
-                                                                        <td style="width: 40%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= $particulars->service ?></td>
-                                                                        <td style="width: 13%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= $value->quantity ?></td>
-                                                                        <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= $value->unit_price ?></td>
-                                                                        <td style="width: 15%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= $value->total ?></td>
-                                                                        <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= $value->tax_amount ?></td>
+                                                                        <td style="width: 10%;font-size: 11px;border: 1px solid;text-align: center;padding: 50px 0px;"><?= $p ?></td>
+                                                                        <td style="width: 40%;font-size: 11px;border: 1px solid;text-align: center;padding: 50px 0px;"><?= $value->description ?></td>
+                                                                        <td style="width: 13%;font-size: 11px;border: 1px solid;text-align: center;padding: 50px 0px;"><?= $value->quantity ?></td>
+                                                                        <td style="width: 11%;font-size: 11px;border: 1px solid;text-align: center;padding: 50px 0px;"><?= $value->unit_price ?></td>
+                                                                        <td style="width: 15%;font-size: 11px;border: 1px solid;text-align: center;padding: 50px 0px;"><?= $value->total ?></td>
+                                                                        <td style="width: 11%;font-size: 11px;border: 1px solid;text-align: center;padding: 50px 0px;"><?= $value->tax_amount ?></td>
                                                                 </tr>
 
                                                         <?php } ?>
                                                         <tr>
-                                                                <td colspan="4" style="width: 74%;font-size: 10px;border: 1px solid;text-align: left;padding: 10px 0px;"><span style="font-size: 12px;font-weight: 600;text-transform: uppercase;">AED : <?php echo ucwords(Yii::$app->NumToWord->ConvertNumberToWords(round($grand_total, 2))) . ' Only'; ?></span></td>
+                                                                <td colspan="4" style="width: 74%;font-size: 10px;border: 1px solid;text-align: left;padding: 10px 0px;"><span style="font-size: 12px;font-weight: 600;text-transform: uppercase;"></span></td>
                                                                 <td style="width: 15%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= Yii::$app->SetValues->NumberFormat(round($total_amount, 2)); ?></td>
                                                                 <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= Yii::$app->SetValues->NumberFormat(round($total_tax, 2)); ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                                <td colspan="4" style="width: 74%;font-size: 10px;border: 1px solid;text-align: left;padding: 10px 0px;"><span style="font-size: 12px;font-weight: 600;text-transform: uppercase;">AED : <?php echo ucwords(Yii::$app->NumToWord->ConvertNumberToWords(round($grand_total, 2))) . ' Only'; ?></span></td>
+                                                                <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><b>Sub Total</b></td>
+                                                                <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><b><?= Yii::$app->SetValues->NumberFormat(round($grand_total, 2)); ?></b></td>
                                                         </tr>
                                                 </table>
                                         </div>

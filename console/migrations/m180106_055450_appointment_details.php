@@ -26,6 +26,7 @@ class m180106_055450_appointment_details extends Migration {
                     'tax' => $this->integer()->Null(),
                     'tax_amount' => $this->decimal(10, 2)->null(),
                     'sub_total' => $this->decimal(10, 2)->null(),
+                    'description' => $this->text(),
                         ], $tableOptions);
 
                 $this->addForeignKey("fk_appointment_details_service", "appointment_details", "service_id", "services", "id", "RESTRICT", "RESTRICT");

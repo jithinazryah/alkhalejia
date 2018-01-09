@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                         </li>
                                         <li>
-                                                <a><span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Estimated Proforma</span></a>
+                                                <a><span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Services</span></a>
 
                                         </li>
 

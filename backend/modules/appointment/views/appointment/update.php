@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = 'Update';
                                         </li>
                                         <li>
                                                 <?php
-                                                echo Html::a('<span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Estimated Proforma</span>', ['appointment/add', 'id' => $model->id]);
+                                                echo Html::a('<span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Services</span>', ['appointment/add', 'id' => $model->id]);
                                                 ?>
 
                                         </li>
