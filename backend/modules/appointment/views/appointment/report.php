@@ -184,13 +184,13 @@
                                                         <?php } ?>
                                                         <tr>
                                                                 <td colspan="4" style="width: 74%;font-size: 10px;border: 1px solid;text-align: left;padding: 10px 0px;"><span style="font-size: 12px;font-weight: 600;text-transform: uppercase;"></span></td>
-                                                                <td style="width: 15%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= Yii::$app->SetValues->NumberFormat(round($total_amount, 2)); ?></td>
-                                                                <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= Yii::$app->SetValues->NumberFormat(round($total_tax, 2)); ?></td>
+                                                                <td style="width: 15%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= Yii::$app->SetValues->NumberFormat(round($total_amount, 2)); ?><br><br><?= Yii::$app->SetValues->NumberArabic($total_amount); ?></td>
+                                                                <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= Yii::$app->SetValues->NumberFormat(round($total_tax, 2)); ?><br><br><?= Yii::$app->SetValues->NumberArabic($total_tax); ?></td>
                                                         </tr>
                                                         <tr>
                                                                 <td colspan="4" style="width: 74%;font-size: 10px;border: 1px solid;text-align: left;padding: 10px 0px;"><span style="font-size: 12px;font-weight: 600;text-transform: uppercase;">AED : <?php echo ucwords(Yii::$app->NumToWord->ConvertNumberToWords(round($grand_total, 2))) . ' Only'; ?></span></td>
                                                                 <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><b>Sub Total</b></td>
-                                                                <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><b><?= Yii::$app->SetValues->NumberFormat(round($grand_total, 2)); ?></b></td>
+                                                                <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><b><?= Yii::$app->SetValues->NumberFormat(round($grand_total, 2)); ?><br><br><?= Yii::$app->SetValues->NumberArabic($grand_total); ?></b></td>
                                                         </tr>
                                                 </table>
                                         </div>

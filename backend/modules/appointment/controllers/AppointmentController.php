@@ -210,6 +210,7 @@ class AppointmentController extends Controller {
                 echo $this->renderPartial('report', [
                     'appointment' => $appointment,
                     'appointment_details' => $appointment_details,
+                    'print' => true,
                 ]);
 
                 exit;
@@ -229,6 +230,7 @@ class AppointmentController extends Controller {
                 echo $this->renderPartial('report', [
                     'appointment' => $appointment,
                     'appointment_details' => $appointment_details,
+                    'print' => true,
                 ]);
 
                 exit;
