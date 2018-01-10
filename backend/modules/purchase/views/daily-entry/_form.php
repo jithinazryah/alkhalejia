@@ -43,13 +43,16 @@ use yii\web\UploadedFile;
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php
+            $transports = array();
             $services = \common\models\Services::find()->select(['id'])->where(['category' => 2])->asArray()->all();
-            foreach ($services as $service) {
-                $service_[] = $service['id'];
-            }
+            if (!empty($services)) {
+                foreach ($services as $service) {
+                    $service_[] = $service['id'];
+                }
 //            print_r($service_);exit;
 //            $transports = Contacts::find()->where(['in', 'service', $service_])->all();
-            $transports = ArrayHelper::map(Contacts::find()->where(['in', 'service', $service_])->all(), 'id', 'name');
+                $transports = ArrayHelper::map(Contacts::find()->where(['in', 'service', $service_])->all(), 'id', 'name');
+            }
             ?>
 
             <?= $form->field($model, 'transport')->dropDownList($transports, ['prompt' => '-Choose a Transport-']) ?>
