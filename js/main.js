@@ -15,7 +15,22 @@ $(function () {
                         .load($(this).attr("value"));
         });
 
-        //----------------Appointment-----------------//
+        //-------------------Appointment ----------------------//
+
+        $('#appointment-vessel').change(function () {
+                var vessel = $(this).val();
+                $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        data: {vessel: vessel},
+                        url: homeUrl + 'appointment/appointment/appointment-number',
+                        success: function (data) {
+
+                        }
+                });
+        });
+
+        //----------------Appointment service-----------------//
         $('#appointmentdetails-service_id').change(function () {
                 var service_id = $(this).val();
                 $.ajax({

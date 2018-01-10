@@ -14,7 +14,7 @@ use common\components\AppointmentWidget;
 /* @var $this yii\web\View */
 /* @var $model common\models\EstimatedProforma */
 
-$this->title = 'Create Estimated Proforma';
+$this->title = 'Create Service';
 $this->params['breadcrumbs'][] = ['label' => 'Estimated Proformas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
