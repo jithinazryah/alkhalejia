@@ -23,11 +23,11 @@ class SiteController extends Controller {
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                        [
-                        'actions' => ['login', 'error', 'index', 'home', 'forgot', 'new-password'],
+                    [
+                        'actions' => ['login', 'error', 'index', 'home', 'forgot', 'new-password', 'exception'],
                         'allow' => true,
                     ],
-                        [
+                    [
                         'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
@@ -217,6 +217,10 @@ class SiteController extends Controller {
         } else {
 
         }
+    }
+
+    public function actionException() {
+        return $this->render('exception');
     }
 
 }

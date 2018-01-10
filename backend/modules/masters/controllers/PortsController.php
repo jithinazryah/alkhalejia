@@ -14,105 +14,121 @@ use yii\filters\VerbFilter;
  */
 class PortsController extends Controller {
 
-        /**
-         * @inheritdoc
-         */
-        public function behaviors() {
-                return [
-                    'verbs' => [
-                        'class' => VerbFilter::className(),
-                        'actions' => [
-                        // 'delete' => ['POST'],
-                        ],
-                    ],
-                ];
+    /**
+     * @inheritdoc
+     */
+    public function behaviors() {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                // 'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
+    public function beforeAction($action) {
+        if (!parent::beforeAction($action)) {
+            return false;
         }
-
-        /**
-         * Lists all Ports models.
-         * @return mixed
-         */
-        public function actionIndex() {
-                $searchModel = new PortsSearch();
-                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-                return $this->render('index', [
-                            'searchModel' => $searchModel,
-                            'dataProvider' => $dataProvider,
-                ]);
+        if (Yii::$app->user->isGuest) {
+            $this->redirect(['/site/index']);
+            return false;
         }
-
-        /**
-         * Displays a single Ports model.
-         * @param integer $id
-         * @return mixed
-         */
-        public function actionView($id) {
-                return $this->render('view', [
-                            'model' => $this->findModel($id),
-                ]);
+        if (Yii::$app->session['post']['masters'] != 1) {
+            Yii::$app->getSession()->setFlash('exception', 'You have no permission to access this page');
+            $this->redirect(['/site/exception']);
+            return false;
         }
+        return true;
+    }
 
-        /**
-         * Creates a new Ports model.
-         * If creation is successful, the browser will be redirected to the 'view' page.
-         * @return mixed
-         */
-        public function actionCreate() {
-                $model = new Ports();
+    /**
+     * Lists all Ports models.
+     * @return mixed
+     */
+    public function actionIndex() {
+        $searchModel = new PortsSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-                if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model) && $model->save()) {
-                        Yii::$app->getSession()->setFlash('success', 'Port Created Successfully');
-                        return $this->redirect(['index']);
-                }
-                return $this->renderAjax('create', [
-                            'model' => $model,
-                ]);
+        return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Displays a single Ports model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView($id) {
+        return $this->render('view', [
+                    'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Creates a new Ports model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate() {
+        $model = new Ports();
+
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model) && $model->save()) {
+            Yii::$app->getSession()->setFlash('success', 'Port Created Successfully');
+            return $this->redirect(['index']);
         }
+        return $this->renderAjax('create', [
+                    'model' => $model,
+        ]);
+    }
 
-        /**
-         * Updates an existing Ports model.
-         * If update is successful, the browser will be redirected to the 'view' page.
-         * @param integer $id
-         * @return mixed
-         */
-        public function actionUpdate($id) {
-                $model = $this->findModel($id);
+    /**
+     * Updates an existing Ports model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id) {
+        $model = $this->findModel($id);
 
-                if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model) && $model->save()) {
-                        Yii::$app->getSession()->setFlash('success', 'Updated Successfully');
-                        return $this->redirect(['index']);
-                }
-                return $this->renderAjax('update', [
-                            'model' => $model,
-                ]);
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model) && $model->save()) {
+            Yii::$app->getSession()->setFlash('success', 'Updated Successfully');
+            return $this->redirect(['index']);
         }
+        return $this->renderAjax('update', [
+                    'model' => $model,
+        ]);
+    }
 
-        /**
-         * Deletes an existing Ports model.
-         * If deletion is successful, the browser will be redirected to the 'index' page.
-         * @param integer $id
-         * @return mixed
-         */
-        public function actionDelete($id) {
-                $this->findModel($id)->delete();
+    /**
+     * Deletes an existing Ports model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id) {
+        $this->findModel($id)->delete();
 
-                return $this->redirect(['index']);
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the Ports model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Ports the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id) {
+        if (($model = Ports::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
-
-        /**
-         * Finds the Ports model based on its primary key value.
-         * If the model is not found, a 404 HTTP exception will be thrown.
-         * @param integer $id
-         * @return Ports the loaded model
-         * @throws NotFoundHttpException if the model cannot be found
-         */
-        protected function findModel($id) {
-                if (($model = Ports::findOne($id)) !== null) {
-                        return $model;
-                } else {
-                        throw new NotFoundHttpException('The requested page does not exist.');
-                }
-        }
+    }
 
 }

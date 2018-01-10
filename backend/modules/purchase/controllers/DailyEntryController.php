@@ -32,6 +32,22 @@ class DailyEntryController extends Controller {
         ];
     }
 
+    public function beforeAction($action) {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+        if (Yii::$app->user->isGuest) {
+            $this->redirect(['/site/index']);
+            return false;
+        }
+        if (Yii::$app->session['post']['admin'] != 1) {
+            Yii::$app->getSession()->setFlash('exception', 'You have no permission to access this page');
+            $this->redirect(['/site/exception']);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Lists all DailyEntry models.
      * @return mixed
@@ -233,7 +249,7 @@ class DailyEntryController extends Controller {
         if (Yii::$app->SetValues->Transaction(1, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->supplier, $supplier->name, $supplier->code, 0, $daily_entry->total, $daily_entry->total, 1, 2)) {
             return TRUE;
         } else {
-            
+
         }
     }
 
@@ -320,7 +336,7 @@ class DailyEntryController extends Controller {
 //            try {
             if (Yii::$app->SetValues->Attributes($model_details) && $model_details->save() && $this->UpdateStock($model_details, $model) && $this->Updatetransaction($model_details, $model)
             ) {
-                
+
             }
 //            } catch (Exception $e) {
 //                $transaction->rollBack();
@@ -358,7 +374,7 @@ class DailyEntryController extends Controller {
         if (Yii::$app->SetValues->TransactionUpdate(1, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->supplier, $supplier->name, $supplier->code, 0, $daily_entry->total, $daily_entry->total, 1, 2)) {
             return TRUE;
         } else {
-            
+
         }
     }
 

@@ -28,6 +28,22 @@ class AdminPostController extends Controller {
         ];
     }
 
+    public function beforeAction($action) {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+        if (Yii::$app->user->isGuest) {
+            $this->redirect(['/site/index']);
+            return false;
+        }
+        if (Yii::$app->session['post']['admin'] != 1) {
+            Yii::$app->getSession()->setFlash('exception', 'You have no permission to access this page');
+            $this->redirect(['/site/exception']);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Lists all AdminPost models.
      * @return mixed
