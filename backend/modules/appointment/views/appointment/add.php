@@ -14,7 +14,7 @@ use common\components\AppointmentWidget;
 /* @var $this yii\web\View */
 /* @var $model common\models\EstimatedProforma */
 
-$this->title = 'Create Estimated Proforma';
+$this->title = 'Create Service';
 $this->params['breadcrumbs'][] = ['label' => 'Estimated Proformas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -112,17 +112,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         <thead>
                                                                 <tr>
                                                                         <th data-priority="1">#</th>
-                                                                        <th data-priority="1">SERVICES</th>
-                                                                        <th data-priority="3">SUPPLIER</th>
-                                                                        <th data-priority="1">RATE</th>
-                                                                        <th data-priority="1">QUANTITY</th>
-                                                                        <th data-priority="1">TOTAL</th>
-                                                                        <th data-priority="1" style="width: 10%;">VAT</th>
-                                                                        <th data-priority="1">VAT AMOUNT</th>
-                                                                        <th data-priority="1">SUB TOTAL</th>
+                                                                        <th data-priority="1" style="width:10%">SERVICES</th>
+                                                                        <th data-priority="3" style="width:10%">SUPPLIER</th>
+                                                                        <th data-priority="1" style="width:8%">RATE</th>
+                                                                        <th data-priority="1" style="width:5%">QUANTITY</th>
+                                                                        <th data-priority="1" style="width:8%">TOTAL</th>
+                                                                        <th data-priority="1" style="width:10%;">VAT</th>
+                                                                        <th data-priority="1" style="width:5%">VAT AMOUNT</th>
+                                                                        <th data-priority="1" style="width:8%">SUB TOTAL</th>
                                                                         <th data-priority="1">COMMENT</th>
-                                                                        <th data-priority="1">ACTIONS</th>
-                                                                        <th data-priority="1">PRINT</th>
+                                                                        <th data-priority="1" style="width:5%">ACTIONS</th>
                                                                 </tr>
                                                         </thead>
 
@@ -136,7 +135,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         if (count($estimates) > 0) {
                                                                                 ?>
                                                                                 <tr>
-                                                                                        <td colspan="11"><h5 style="font-weight:bold;color: #008cbd;text-align: left;text-transform: uppercase;"><?= $val->service; ?></h5></td>
+                                                                                        <td colspan="10"><h5 style="font-weight:bold;color: #008cbd;text-align: left;text-transform: uppercase;"><?= $val->service; ?></h5></td>
                                                                                         <td></td>
                                                                                 </tr>
                                                                                 <?php
@@ -159,7 +158,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                                 }
                                                                                                 ?>
                                                                                                 <td class="" drop_id="estimatedproforma-supplier" id="<?= $estimate->id ?>-supplier" val="<?= $estimate->supplier ?>"> <?= $selected->name ?></td>
-                                                                                                <td class="edit_text" id="<?= $estimate->id ?>-unit_rate"  val="<?= $estimate->unit_price ?>">
+                                                                                                <td class="" id="<?= $estimate->id ?>-unit_rate"  val="<?= $estimate->unit_price ?>">
                                                                                                         <?php
                                                                                                         if ($estimate->unit_price == '') {
                                                                                                                 echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -174,13 +173,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                                         <?php
                                                                                                         if ($estimate->tax != '') {
                                                                                                                 $tax = \common\models\Tax::findOne($estimate->tax);
-                                                                                                                echo $tax->tax;
+                                                                                                                echo $tax->tax . ' (' . $tax->value . '%)';
                                                                                                         }
                                                                                                         ?>
                                                                                                 </td>
                                                                                                 <td  id="<?= $estimate->id ?>-tax_amount" val="<?= $estimate->tax_amount ?>"><?php if ($estimate->tax_amount != '') { ?> <?= $estimate->tax_amount ?><?php } ?></td>
                                                                                                 <td id="<?= $estimate->id ?>-sub_total" val="<?= $estimate->sub_total ?>"><?php if ($estimate->sub_total != '') { ?> <?= $estimate->sub_total ?><?php } ?></td>
-                                                                                                <td id="<?= $estimate->id ?>-comment" val="<?= $estimate->description ?>"><?php if ($estimate->description != '') { ?> <?= $estimate->description ?><?php } ?></td>
+                                                                                                <td class="edit_text" id="<?= $estimate->id ?>-description" val="<?= $estimate->description ?>"><?php if ($estimate->description != '') { ?> <?= $estimate->description ?><?php } ?></td>
 
                                                                                                 <td>
                                                                                                         <?php
@@ -189,13 +188,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                                                 <?= Html::a('<i class="fa fa-pencil"></i>', ['/appointment/appointment/add', 'id' => $id, 'prfrma_id' => $estimate->id], ['class' => '', 'tittle' => 'Edit']) ?>
                                                                                                                 <?= Html::a('<i class="fa fa-remove"></i>', ['/appointment/appointment/delete-detail', 'id' => $estimate->id], ['class' => '', 'tittle' => 'Edit', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
                                                                                                         <?php } ?>
+                                                                                                        <a>
+                                                                                                                <?= Html::beginForm(['appointment/selected-report'], 'post', ['target' => 'print_popup', 'onSubmit' => "window.open('about:blank','print_popup','width=1200,height=600');",]) ?>
+                                                                                                                <input type="checkbox" name="invoice_type[<?= $estimate->id ?>]" value="<?= $estimate->service_id ?>">
+                                                                                                                <input type="hidden" name="app_id" value="<?= $appointment->id ?>">
+                                                                                                        </a>
                                                                                                 </td>
 
-                                                                                                <td>
-                                                                                                        <?= Html::beginForm(['appointment/selected-report'], 'post', ['target' => 'print_popup', 'onSubmit' => "window.open('about:blank','print_popup','width=1200,height=600');"]) ?>
-                                                                                                        <input type="checkbox" name="invoice_type[<?= $estimate->id ?>]" value="<?= $estimate->service_id ?>">
-                                                                                                        <input type="hidden" name="app_id" value="<?= $appointment->id ?>">
-                                                                                                </td>
+
                                                                                                 <?php
                                                                                                 $epdatotal += $estimate->total;
                                                                                                 $tot_subtoatl += $estimate->sub_total;
@@ -214,8 +214,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                         <td><?php echo Yii::$app->SetValues->NumberFormat($tot_subtoatl) . '/-'; ?></td>
                                                                                         <td colspan=""></td>
                                                                                         <td colspan=""></td>
-                                                                                        <td colspan="">
-                                                                                        </td>
+
                                                                                 </tr>
 
                                                                                 <?php
@@ -232,11 +231,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         <td></td>
                                                                         <td style="font-weight: bold;"><?php echo Yii::$app->SetValues->NumberFormat($grand_tot_subtoatl) . '/-'; ?>
                                                                         <td colspan=""></td>
-                                                                        <td colspan=""></td>
                                                                         <td colspan="">
-                                                                                <?= Html::submitButton('<i class="fa-print"></i><span>Invoice</span>', ['class' => 'btn btn-secondary btn-icon btn-icon-standalone']) ?>
+                                                                                <?= Html::submitButton('<i class="fa-print"></i><span>Invoice</span>', ['class' => 'btn btn-secondary btn-icon btn-icon-standalone',]) ?>
                                                                                 <?= Html::endForm() ?>
                                                                         </td>
+
                                                                 </tr>
                                                                 <?php
                                                                 if ($appointment->status != 0) {
@@ -248,22 +247,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                 <td><?= $form->field($model, 'service_id')->dropDownList(ArrayHelper::map(Services::findAll(['status' => 1]), 'id', 'service'), ['prompt' => '-Service-'])->label(false); ?></td>
                                                                                 <?php
                                                                                 $contacts = Contacts::find()->where(['status' => 1])->all();
-
                                                                                 if (isset($model->service_id) && $model->service_id == 1) {
                                                                                         $contacts = common\models\Materials::find()->where(['status' => 1])->all();
                                                                                 }
                                                                                 ?>
                                                                                 <td><?= $form->field($model, 'supplier')->dropDownList(ArrayHelper::map($contacts, 'id', 'name'), ['prompt' => '-Select-'])->label(false); ?></td>
                                                                                 <td><?= $form->field($model, 'unit_price')->textInput(['placeholder' => ' Rate'])->label(false) ?></td>
-                                                                                <td><?= $form->field($model, 'quantity')->textInput(['placeholder' => 'Quantity'])->label(false) ?></td>
-                                                                                <td><?= $form->field($model, 'total')->textInput(['placeholder' => 'Total'])->label(false) ?></td>
-                                                                                <td><?= $form->field($model, 'tax')->dropDownList(ArrayHelper::map(common\models\Tax::findAll(['status' => 1]), 'id', 'tax'), ['prompt' => '-VAT-'])->label(false); ?></td>
-                                                                                <td><?= $form->field($model, 'tax_amount')->textInput(['placeholder' => 'Vat Amount'])->label(false) ?></td>
-                                                                                <td><?= $form->field($model, 'sub_total')->textInput(['placeholder' => 'Sub Total'])->label(false) ?></td>
+                                                                                <td><?= $form->field($model, 'quantity')->textInput(['placeholder' => 'Quantity', 'value' => 1])->label(false) ?></td>
+                                                                                <td><?= $form->field($model, 'total')->textInput(['placeholder' => 'Total', 'readonly' => true])->label(false) ?></td>
+                                                                                <td><?= $form->field($model, 'tax')->dropDownList(ArrayHelper::map(common\models\Tax::findAll(['status' => 1]), 'id', 'taxname'), ['prompt' => '-VAT-'])->label(false); ?></td>
+                                                                                <td><?= $form->field($model, 'tax_amount')->textInput(['placeholder' => 'Vat Amount', 'readonly' => true])->label(false) ?></td>
+                                                                                <td><?= $form->field($model, 'sub_total')->textInput(['placeholder' => 'Sub Total', 'readonly' => true])->label(false) ?></td>
                                                                                 <td><?= $form->field($model, 'description')->textarea(['placeholder' => 'Comment'])->label(false) ?></td>
                                                                                 <td><?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => 'btn btn-success']) ?>
                                                                                 </td>
-                                                                                <td></td>
                                                                                 <?php ActiveForm::end(); ?>
                                                                         </tr>
                                                                         <tr></tr>
@@ -284,7 +281,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ?>
                                         <div style="float:right;padding-top: 5px;">
                                                 <?php
-                                                echo Html::a('<span> Close Appointment</span>', ['appointment/close-appointment', 'id' => $appointment->id], ['class' => 'btn btn-secondary']);
+                                                echo Html::a('<span> Confirm and Close</span>', ['appointment/close-appointment', 'id' => $appointment->id], ['class' => 'btn btn-secondary']);
                                                 ?>
                                         </div>
                                 <?php } ?>
@@ -300,7 +297,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 background-color: #b9c7a7;
         }
         table.table tr td:last-child a {
-                padding: inherit;padding: 0px 4px;
+                padding: inherit;padding: 4px 4px;
         }
         .error{
                 color: #0553b1;

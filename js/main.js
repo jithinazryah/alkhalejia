@@ -14,33 +14,103 @@ $(function () {
                         .find('#modalContent')
                         .load($(this).attr("value"));
         });
-
-    /***************Daily Entry**********************/
-    $('body').on('change', '.netweight', function () {
-        var ids = $(this).attr('id');
-        var id = ids.split("_");
-        $('#total_' + id[1]).val('');
-        var netweight = $('#' + ids).val();
-        var rate = $('#rate_' + id[1]).val();
-        if (rate != "") {
-            var total = rate * netweight;
-            $('#total_' + id[1]).val(total);
-        }
+        /***************Daily Entry**********************/
+        $('body').on('change', '.netweight', function () {
+                var ids = $(this).attr('id');
+                var id = ids.split("_");
+                $('#total_' + id[1]).val('');
+                var netweight = $('#' + ids).val();
+                var rate = $('#rate_' + id[1]).val();
+                if (rate != "") {
+                        var total = rate * netweight;
+                        $('#total_' + id[1]).val(total);
+                }
 //            alert(rate);
         });
-    $('body').on('change', '.rate', function () {
-        var ids = $(this).attr('id');
-        var id = ids.split("_");
-        $('#total_' + id[1]).val('');
-        var rate = $('#' + ids).val();
-        var netweight = $('#netweight_' + id[1]).val();
-        if (netweight != "") {
-            var total = rate * netweight;
-            $('#total_' + id[1]).val(total);
-                        }
+        $('body').on('change', '.rate', function () {
+                var ids = $(this).attr('id');
+                var id = ids.split("_");
+                $('#total_' + id[1]).val('');
+                var rate = $('#' + ids).val();
+                var netweight = $('#netweight_' + id[1]).val();
+                if (netweight != "") {
+                        var total = rate * netweight;
+                        $('#total_' + id[1]).val(total);
+                }
 //            alert(rate);
+        });
+//
+
+
+
+        //-------------------Appointment ----------------------//
+
+
+        $("#appointmentdetails-service_id").select2({
+                allowClear: true
+        }).on('select2-open', function ()
+        {
+                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+        });
+
+        $("#appointmentdetails-supplier").select2({
+                allowClear: true
+        }).on('select2-open', function ()
+        {
+                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+        });
+
+
+
+        $('#appointment-vessel').change(function () {
+                var vessel = $(this).val();
+                $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        data: {vessel: vessel},
+                        url: homeUrl + 'appointment/appointment/appointment-number',
+                        success: function (data) {
+                                $('#appointment-appointment_number').val(data);
+                        }
                 });
-//            
+        });
+
+        $('.edit_text').on('dblclick', function () {
+
+                var val = $(this).attr('val');
+                var idd = this.id;
+                var res_data = idd.split("-");
+                if (res_data[1] == 'description' || res_data[1] == 'rate_to_category') {
+                        $(this).html('<textarea class="' + idd + '" value="' + val + '">' + val + '</textarea>');
+
+                } else {
+                        $(this).html('<input class="' + idd + '" type="text" value="' + val + '"/>');
+
+                }
+
+                $('.' + idd).focus();
+        });
+
+        $('.edit_text').on('focusout', 'input,textarea', function () {
+                var thiss = $(this).parent('.edit_text');
+                var data_id = thiss.attr('id');
+                var update = thiss.attr('update');
+                var res_id = data_id.split("-");
+                var res_val = $(this).val();
+                $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        data: {id: res_id[0], name: res_id[1], valuee: res_val},
+                        url: homeUrl + 'appointment/appointment/edit-comment',
+                        success: function (data) {
+                                if (data == '') {
+                                        data = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                }
+                                thiss.html(res_val);
+                        }
+                });
+
+        });
 
         //----------------Appointment service-----------------//
         $('#appointmentdetails-service_id').change(function () {
@@ -123,9 +193,24 @@ $(function () {
 
                 var tax = $('#appointmentdetails-tax').val();
                 var total = $('#appointmentdetails-total').val();
-                var tax_amount = (total * tax) / 100;
-                var tax_amount = tax_amount.toFixed(2);
-                $('#appointmentdetails-tax_amount').val(tax_amount);
+
+                $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        data: {tax: tax},
+                        url: homeUrl + 'appointment/appointment/tax',
+                        success: function (data) {
+                                if (data != '') {
+                                        var tax_amount = (total * data) / 100;
+                                        var tax_amount = tax_amount.toFixed(2);
+                                        $('#appointmentdetails-tax_amount').val(tax_amount);
+                                        SubTotal();
+
+                                }
+                        }
+                });
+
+
         }
         function SubTotal() {
                 var subtotal = 0;
