@@ -31,8 +31,11 @@ return [
         'purchase' => [
             'class' => 'backend\modules\purchase\Module',
         ],
-          'appointment' => [
+        'appointment' => [
             'class' => 'backend\modules\appointment\Module',
+        ],
+        'settings' => [
+            'class' => 'backend\modules\settings\Module',
         ],
     ],
     'components' => [

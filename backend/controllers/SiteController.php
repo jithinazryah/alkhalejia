@@ -9,6 +9,7 @@ use yii\filters\AccessControl;
 use common\models\ForgotPasswordTokens;
 use common\models\Employee;
 use common\models\AdminPost;
+use common\models\AppointmentSearch;
 
 /**
  * Site controller
@@ -98,7 +99,13 @@ class SiteController extends Controller {
             if (Yii::$app->user->isGuest) {
                 return $this->redirect(array('site/index'));
             }
-            return $this->render('index');
+            $searchModel = new AppointmentSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+            return $this->render('index', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+            ]);
         } else {
             throw new \yii\web\HttpException(2000, 'Session Expired.');
         }

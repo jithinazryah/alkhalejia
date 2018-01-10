@@ -10,13 +10,12 @@ use common\models\Appointment;
 /**
  * AppointmentSearch represents the model behind the search form about `common\models\Appointment`.
  */
-class AppointmentSearch extends Appointment
-{
+class AppointmentSearch extends Appointment {
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['id', 'vessel', 'material', 'quantity', 'status', 'CB', 'UB'], 'integer'],
             [['appointment_number', 'date', 'port_of_call', 'terminal', 'berth_number', 'eta', 'description', 'DOC', 'DOU'], 'safe'],
@@ -26,8 +25,7 @@ class AppointmentSearch extends Appointment
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -39,9 +37,8 @@ class AppointmentSearch extends Appointment
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
-        $query = Appointment::find();
+    public function search($params) {
+        $query = Appointment::find()->orderBy(['id' => SORT_DESC]);
 
         // add conditions that should always apply here
 
@@ -73,12 +70,13 @@ class AppointmentSearch extends Appointment
         ]);
 
         $query->andFilterWhere(['like', 'appointment_number', $this->appointment_number])
-            ->andFilterWhere(['like', 'port_of_call', $this->port_of_call])
-            ->andFilterWhere(['like', 'terminal', $this->terminal])
-            ->andFilterWhere(['like', 'berth_number', $this->berth_number])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'image', $this->image]);
+                ->andFilterWhere(['like', 'port_of_call', $this->port_of_call])
+                ->andFilterWhere(['like', 'terminal', $this->terminal])
+                ->andFilterWhere(['like', 'berth_number', $this->berth_number])
+                ->andFilterWhere(['like', 'description', $this->description])
+                ->andFilterWhere(['like', 'image', $this->image]);
 
         return $dataProvider;
     }
+
 }
