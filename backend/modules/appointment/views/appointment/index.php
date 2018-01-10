@@ -58,16 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 // 'DOC',
                                                 // 'DOU',
                                                 ['class' => 'yii\grid\ActionColumn',
-                                                    'template' => '{view}{update}{service}',
-                                                    'buttons' => [
-                                                        'service' => function($url, $model, $key) {     // render your custom button
-                                                                return Html::a('<span class="fa fa-shield" style="padding-top: 0px;"></span>', ['/appointment/appointment/add', 'id' => $model->id], [
-                                                                            'title' => Yii::t('app', 'Services'),
-                                                                            'class' => 'actions',
-                                                                ]);
-                                                        },
-                                                    ]
-                                                ],
+                                                    'template' => '{view}{update}'],
                                             ],
                                         ]);
                                         ?>

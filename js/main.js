@@ -15,37 +15,32 @@ $(function () {
                         .load($(this).attr("value"));
         });
 
-
-
-        //-------------------Appointment ----------------------//
-
-
-        $("#appointmentdetails-service_id").select2({
-                allowClear: true
-        }).on('select2-open', function ()
-        {
-                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+    /***************Daily Entry**********************/
+    $('body').on('change', '.netweight', function () {
+        var ids = $(this).attr('id');
+        var id = ids.split("_");
+        $('#total_' + id[1]).val('');
+        var netweight = $('#' + ids).val();
+        var rate = $('#rate_' + id[1]).val();
+        if (rate != "") {
+            var total = rate * netweight;
+            $('#total_' + id[1]).val(total);
+        }
+//            alert(rate);
         });
-
-        $("#appointmentdetails-supplier").select2({
-                allowClear: true
-        }).on('select2-open', function ()
-        {
-                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
-        });
-
-        $('#appointment-vessel').change(function () {
-                var vessel = $(this).val();
-                $.ajax({
-                        type: 'POST',
-                        cache: false,
-                        data: {vessel: vessel},
-                        url: homeUrl + 'appointment/appointment/appointment-number',
-                        success: function (data) {
-
+    $('body').on('change', '.rate', function () {
+        var ids = $(this).attr('id');
+        var id = ids.split("_");
+        $('#total_' + id[1]).val('');
+        var rate = $('#' + ids).val();
+        var netweight = $('#netweight_' + id[1]).val();
+        if (netweight != "") {
+            var total = rate * netweight;
+            $('#total_' + id[1]).val(total);
                         }
+//            alert(rate);
                 });
-        });
+//            
 
         //----------------Appointment service-----------------//
         $('#appointmentdetails-service_id').change(function () {

@@ -110,20 +110,20 @@ use yii\web\UploadedFile;
                     <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
                         <div class="form-group field-staffperviousemployer-designation">
                             <label class="control-label" for="">Net Weight</label>
-                            <?= $form->field($model_details, 'net_weight[]')->textInput(['required' => 'required'])->label(FALSE) ?>
+                            <?= $form->field($model_details, 'net_weight[]')->textInput(['required' => 'required', 'class' => 'form-control netweight', 'id' => 'netweight_1'])->label(FALSE) ?>
                         </div>
                     </div>
                     <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                         <div class="form-group field-staffperviousemployer-designation">
                             <label class="control-label" for="">Rate</label>
-                            <?= $form->field($model_details, 'rate[]')->textInput(['required' => 'required'])->label(FALSE) ?>
+                            <?= $form->field($model_details, 'rate[]')->textInput(['required' => 'required', 'class' => 'form-control rate', 'id' => 'rate_1'])->label(FALSE) ?>
                         </div>
                     </div>
 
                     <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                         <div class="form-group field-staffperviousemployer-designation">
                             <label class="control-label" for="">Total</label>
-                            <?= $form->field($model_details, 'total[]')->textInput(['required' => 'required', 'disabled' => 'disabled'])->label(FALSE) ?>
+                            <?= $form->field($model_details, 'total[]')->textInput(['required' => 'required', 'readonly' => 'readonly', 'id' => 'total_1'])->label(FALSE) ?> 
                         </div>
                     </div>
 
@@ -136,7 +136,7 @@ use yii\web\UploadedFile;
 
 
 
-                    <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
+                    <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
                         <div class="form-group field-staffperviousemployer-designation">
                             <label class="control-label" for="">Description</label>
                             <?= $form->field($model_details, 'description[]')->textInput()->label(FALSE) ?>
@@ -186,20 +186,20 @@ use yii\web\UploadedFile;
                         <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
                             <div class="form-group field-staffperviousemployer-designation">
                                 <label class="control-label" for="">Net Weight</label>
-                                <input type="text" class="form-control" name="update[net_weight][]" value="<?= $detail->net_weight ?>">
+                                <input type="text" class="form-control netweight" id="netweight_<?= $srl?>" name="update[net_weight][]" value="<?= $detail->net_weight ?>">
                             </div>
                         </div>
                         <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                             <div class="form-group field-staffperviousemployer-designation">
                                 <label class="control-label" for="">Rate</label>
-                                <input type="text" class="form-control" name="update[rate][]" value="<?= $detail->rate ?>">
+                                <input type="text" class="form-control rate" id="rate_<?= $srl?>" name="update[rate][]" value="<?= $detail->rate ?>">
                             </div>
                         </div>
 
                         <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                             <div class="form-group field-staffperviousemployer-designation">
                                 <label class="control-label" for="">Total</label>
-                                <input type="text" class="form-control" name="update[total][]" value="<?= $detail->total ?>">
+                                <input type="text" class="form-control" readonly="readonly" required="required" id="total_<?= $srl?>" name="update[total][]" value="<?= $detail->total ?>">
                             </div>
                         </div>
 
@@ -280,5 +280,32 @@ use yii\web\UploadedFile;
             }
             return false;
         });
+
+//        $('.netweight').on('change', function () {
+//            var ids = $(this).attr('id');
+//            var id = ids.split("_");
+//            $('#total_' + id[1]).val('');
+//            var netweight = $('#' + ids).val();
+//            var rate = $('#rate_' + id[1]).val();
+//            if (rate != "") {
+//                var total = rate*netweight;
+//                $('#total_' + id[1]).val(total);
+//            }
+////            alert(rate);
+//        });
+//        $('.rate').on('change', function () {
+//            var ids = $(this).attr('id');
+//            var id = ids.split("_");
+//            $('#total_' + id[1]).val('');
+//            var rate = $('#' + ids).val();
+//            var netweight = $('#netweight_' + id[1]).val();
+//            if (netweight != "") {
+//                var total = rate*netweight;
+//                $('#total_' + id[1]).val(total);
+//            }
+////            alert(rate);
+//        });
+//            
+
     });
 </script>

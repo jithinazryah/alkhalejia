@@ -29,19 +29,19 @@
                 <div class='col-md-2 col-sm-12 col-xs-12 left_padd'>
                         <div class="form-group field-staffperviousemployer-designation">
                                 <label class="control-label" for="">Net Weight</label>
-                                <input type="text" class="form-control" required="required" name="DailyEntryDetails[net_weight][]">
+                                <input type="text" class="form-control netweight" id="netweight_<?= $srl?>" required="required" name="DailyEntryDetails[net_weight][]">
                         </div>
                 </div>
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                         <div class="form-group field-staffperviousemployer-designation">
                                 <label class="control-label" for="">Rate</label>
-                                <input type="text" class="form-control" required="required" name="DailyEntryDetails[rate][]">
+                                <input type="text" class="form-control rate" id='rate_<?= $srl?>' required="required" name="DailyEntryDetails[rate][]">
                         </div>
                 </div>
                 <div class='col-md-1 col-sm-12 col-xs-12 left_padd'>
                         <div class="form-group field-staffperviousemployer-designation">
                                 <label class="control-label" for="">Total</label>
-                                <input type="text" class="form-control" required="required" name="DailyEntryDetails[total][]">
+                                <input type="text" class="form-control total" id='total_<?= $srl?>' readonly="readonly" required="required" name="DailyEntryDetails[total][]">
                         </div>
                 </div>
 

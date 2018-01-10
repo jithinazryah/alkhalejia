@@ -19,52 +19,51 @@ use Yii;
  *
  * @property Employee[] $employees
  */
-class AdminPost extends \yii\db\ActiveRecord {
+class AdminPost extends \yii\db\ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'admin_post';
+    }
 
-        /**
-         * @inheritdoc
-         */
-        public static function tableName() {
-                return 'admin_post';
-        }
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['admin', 'masters', 'status', 'CB', 'UB'], 'integer'],
+            [['DOC', 'DOU'], 'safe'],
+            [['post_name'], 'string', 'max' => 100],
+        ];
+    }
 
-        /**
-         * @inheritdoc
-         */
-        public function rules() {
-                return [
-                        [['admin', 'masters', 'status', 'CB', 'UB', 'daily_entry', 'appointement', 'stock', 'reports'], 'integer'],
-                        [['DOC', 'DOU'], 'safe'],
-                        [['post_name'], 'string', 'max' => 100],
-                        [['post_name'], 'required'],
-                ];
-        }
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'post_name' => 'Post Name',
+            'admin' => 'Admin',
+            'masters' => 'Masters',
+            'status' => 'Status',
+            'CB' => 'Cb',
+            'UB' => 'Ub',
+            'DOC' => 'Doc',
+            'DOU' => 'Dou',
+        ];
+    }
 
-        /**
-         * @inheritdoc
-         */
-        public function attributeLabels() {
-                return [
-                    'id' => 'ID',
-                    'post_name' => 'Post Name',
-                    'admin' => 'Admin',
-                    'masters' => 'Masters',
-                    'daily_entry' => 'Daily Entry',
-                    'appointement' => 'Appointement',
-                    'stock' => 'Stock',
-                    'status' => 'Status',
-                    'CB' => 'Cb',
-                    'UB' => 'Ub',
-                    'DOC' => 'Doc',
-                    'DOU' => 'Dou',
-                ];
-        }
-
-        /**
-         * @return \yii\db\ActiveQuery
-         */
-        public function getEmployees() {
-                return $this->hasMany(Employee::className(), ['post_id' => 'id']);
-        }
-
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmployees()
+    {
+        return $this->hasMany(Employee::className(), ['post_id' => 'id']);
+    }
 }

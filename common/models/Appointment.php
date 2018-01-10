@@ -64,7 +64,7 @@ class Appointment extends \yii\db\ActiveRecord {
                     'eta' => 'Eta',
                     'description' => 'Description',
                     'status' => 'Status',
-                    'image' => 'Choose files to upload',
+                    'image' => 'File Upload',
                     'CB' => 'Cb',
                     'UB' => 'Ub',
                     'DOC' => 'Doc',
