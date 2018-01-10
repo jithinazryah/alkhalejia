@@ -59,4 +59,8 @@ class Tax extends \yii\db\ActiveRecord {
                 return $value;
         }
 
+        public function getTaxname() {
+                return $this->tax . " (" . $this->value . '%)';
+        }
+
 }

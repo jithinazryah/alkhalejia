@@ -151,6 +151,10 @@ AppAsset::register($this);
                                                                         <li>
                                                                                 <?= Html::a('Ports', ['/masters/ports/index'], ['class' => 'title']) ?>
                                                                         </li>
+
+                                                                        <li>
+                                                                                <?= Html::a('Terminals', ['/masters/terminals/index'], ['class' => 'title']) ?>
+                                                                        </li>
                                                                         <li>
                                                                                 <?= Html::a('Yards', ['/masters/yard/index'], ['class' => 'title']) ?>
                                                                         </li>

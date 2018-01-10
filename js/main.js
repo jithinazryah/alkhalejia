@@ -15,7 +15,24 @@ $(function () {
                         .load($(this).attr("value"));
         });
 
+
+
         //-------------------Appointment ----------------------//
+
+
+        $("#appointmentdetails-service_id").select2({
+                allowClear: true
+        }).on('select2-open', function ()
+        {
+                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+        });
+
+        $("#appointmentdetails-supplier").select2({
+                allowClear: true
+        }).on('select2-open', function ()
+        {
+                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+        });
 
         $('#appointment-vessel').change(function () {
                 var vessel = $(this).val();
@@ -67,6 +84,9 @@ $(function () {
                                                 var res = $.parseJSON(data);
                                                 $("#appointmentdetails-unit_price").val(res['rate']);
                                                 $("#appointmentdetails-tax").val(res['tax']);
+                                                Total();
+                                                Tax();
+                                                SubTotal();
                                         } else {
                                                 $("#appointmentdetails-supplier").prop('disabled', true);
                                         }
@@ -80,15 +100,17 @@ $(function () {
         });
 
 
-        $('#appointmentdetails-quantity').change(function () {
+        $('#appointmentdetails-quantity').keyup(function () {
                 Total();
+                Tax();
                 SubTotal();
         });
-        $('#appointmentdetails-unit_price').change(function () {
+        $('#appointmentdetails-unit_price').keyup(function () {
                 Total();
                 SubTotal();
         });
         $('#appointmentdetails-tax').change(function () {
+
                 Tax();
                 SubTotal();
         });
@@ -103,6 +125,7 @@ $(function () {
         }
 
         function Tax() {
+
                 var tax = $('#appointmentdetails-tax').val();
                 var total = $('#appointmentdetails-total').val();
                 var tax_amount = (total * tax) / 100;
@@ -110,13 +133,14 @@ $(function () {
                 $('#appointmentdetails-tax_amount').val(tax_amount);
         }
         function SubTotal() {
-
+                var subtotal = 0;
                 var total = $('#appointmentdetails-total').val();
                 var tax = $('#appointmentdetails-tax_amount').val();
                 if (tax == '') {
                         tax = 0;
                 }
-                var subtotal = parseFloat(total) + parseFloat(tax);
+                if (total != '')
+                        var subtotal = parseFloat(total) + parseFloat(tax);
 
                 $('#appointmentdetails-sub_total').val(subtotal.toFixed(2));
         }

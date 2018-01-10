@@ -54,7 +54,7 @@
                         margin-left: 6px !important;
                 }
         </style>
-        <table class="main-tabl" border="0">
+        <table class="main-tabl" border="0" style="font-family: Roboto, sans-serif !important;">
                 <thead>
                         <tr>
                                 <td>
@@ -86,37 +86,23 @@
                                                 </div>
                                         </div>
                                         <br/>
-                                        <div class="close-estimate-attival-sailing" style="margin-bottom: 10px;">
+                                        <div class="close-estimate-heading-top" style="margin-bottom:25px;">
                                                 <div class="main-left">
                                                         <table class="tb2">
                                                                 <tr>
-                                                                        <td></td> <td style="width: 50px;"></td>
-                                                                        <td style="max-width: 405px">
-                                                                        </td>
-                                                                </tr>
-                                                        </table>
-                                                </div>
-                                                <div class="main-right">
-                                                        <table class="tb2">
-                                                                <tr>
-                                                                        <td style="font-size: 15px;">Invoice No</td> <td style="width: 50px;text-align: center;font-size: 15px;">:</td>
-                                                                        <td style="max-width: 200px;font-size: 15px;"><?= 'INV00001' ?>
-                                                                        </td>
-                                                                </tr>
-                                                        </table>
-                                                </div>
-                                        </div>
-                                        <br/>
-                                        <div class="close-estimate-attival-sailing" style="margin-bottom: 10px;">
-                                                <div class="main-left">
-                                                        <table class="tb2">
-                                                                <tr>
-                                                                        <td style="font-size: 15px;">Vessel</td> <td style="width: 50px;font-size: 15px;">:</td>
                                                                         <td style="max-width: 405px;font-size: 15px;">
-                                                                                <?php
-                                                                                $vessel = common\models\Ships::findOne($appointment->vessel);
-                                                                                echo $vessel->name;
-                                                                                ?>
+                                                                                <table>
+                                                                                        <tr>
+                                                                                                <td>Vessel</td>
+                                                                                                <td style="padding: 0px 10px;">:</td>
+                                                                                                <td>
+                                                                                                        <?php
+                                                                                                        $vessel = common\models\Ships::findOne($appointment->vessel);
+                                                                                                        echo $vessel->name;
+                                                                                                        ?>
+                                                                                                </td>
+                                                                                        </tr>
+                                                                                </table>
                                                                         </td>
                                                                 </tr>
                                                         </table>
@@ -124,14 +110,27 @@
                                                 <div class="main-right">
                                                         <table class="tb2">
                                                                 <tr>
-                                                                        <td style="font-size: 15px;">Date</td> <td style="width: 50px;text-align: center;font-size: 15px;">:</td>
-                                                                        <td style="max-width: 200px;font-size: 15px;"><?= date('d-m-Y') ?>
+                                                                        <td style="max-width: 405px"><b></b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td style="max-width: 405px;font-size: 15px;">
+                                                                                <table>
+                                                                                        <tr>
+                                                                                                <td>Invoice No</td>
+                                                                                                <td style="padding: 0px 10px;">:</td>
+                                                                                                <td></td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                                <td>Date</td>
+                                                                                                <td style="padding: 0px 10px;">:</td>
+                                                                                                <td></td>
+                                                                                        </tr>
+                                                                                </table>
                                                                         </td>
                                                                 </tr>
                                                         </table>
                                                 </div>
-                                        </div>
-                                        <br/>
+                                                <br/>
                                 </td>
                         </tr>
 
@@ -139,7 +138,7 @@
                 <tbody>
                         <tr>
                                 <td>
-                                        <div class="invoice-details"style="margin-top: 26px;">
+                                        <div class="invoice-details"style="margin-top: 26px;margin-bottom: 10px;">
                                                 <table style="width:100%;border: 1px solid black;border-collapse: collapse;">
                                                         <tr>
                                                                 <th style="width: 10%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Sl No.<br>.لا</th>
@@ -173,29 +172,71 @@
                                                                 }
                                                                 ?>
                                                                 <tr>
-                                                                        <td style="width: 10%;font-size: 11px;border: 1px solid;text-align: center;padding: 50px 0px;"><?= $p ?></td>
-                                                                        <td style="width: 40%;font-size: 11px;border: 1px solid;text-align: center;padding: 50px 0px;"><?= $value->description ?></td>
-                                                                        <td style="width: 13%;font-size: 11px;border: 1px solid;text-align: center;padding: 50px 0px;"><?= $value->quantity ?></td>
-                                                                        <td style="width: 11%;font-size: 11px;border: 1px solid;text-align: center;padding: 50px 0px;"><?= $value->unit_price ?></td>
-                                                                        <td style="width: 15%;font-size: 11px;border: 1px solid;text-align: center;padding: 50px 0px;"><?= $value->total ?></td>
-                                                                        <td style="width: 11%;font-size: 11px;border: 1px solid;text-align: center;padding: 50px 0px;"><?= $value->tax_amount ?></td>
+                                                                        <td style="width: 10%;font-size: 11px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= $p ?></td>
+                                                                        <td style="width: 40%;font-size: 11px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= $value->description ?></td>
+                                                                        <td style="width: 13%;font-size: 11px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= $value->quantity ?></td>
+                                                                        <td style="width: 11%;font-size: 11px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= $value->unit_price ?></td>
+                                                                        <td style="width: 15%;font-size: 11px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= $value->total ?></td>
+                                                                        <td style="width: 11%;font-size: 11px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= $value->tax_amount ?></td>
                                                                 </tr>
 
                                                         <?php } ?>
+
+                                                        <?php
+                                                        if (isset($appointment_details) && $appointment_details != '') {
+                                                                $count = count($appointment_details);
+                                                                $loop_count = 5 - $count;
+                                                                if ($loop_count > 0) {
+                                                                        for ($i = 0; $i <= $loop_count; $i++) {
+                                                                                ?>
+                                                                                <tr>
+                                                                                        <td style="width: 10%;font-size: 11px;border: 1px solid;text-align: center;padding: 10px 0px;"></td>
+                                                                                        <td style="width: 40%;font-size: 11px;border: 1px solid;text-align: center;padding: 10px 0px;"></td>
+                                                                                        <td style="width: 13%;font-size: 11px;border: 1px solid;text-align: center;padding: 10px 0px;"></td>
+                                                                                        <td style="width: 11%;font-size: 11px;border: 1px solid;text-align: center;padding: 10px 0px;"></td>
+                                                                                        <td style="width: 15%;font-size: 11px;border: 1px solid;text-align: center;padding: 10px 0px;"></td>
+                                                                                        <td style="width: 11%;font-size: 11px;border: 1px solid;text-align: center;padding: 10px 0px;"></td>
+                                                                                </tr>
+                                                                                <?php
+                                                                        }
+                                                                }
+                                                        }
+                                                        ?>
                                                         <tr>
                                                                 <td colspan="4" style="width: 74%;font-size: 10px;border: 1px solid;text-align: left;padding: 10px 0px;"><span style="font-size: 12px;font-weight: 600;text-transform: uppercase;"></span></td>
                                                                 <td style="width: 15%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= Yii::$app->SetValues->NumberFormat(round($total_amount, 2)); ?><br><br><?= Yii::$app->SetValues->NumberArabic($total_amount); ?></td>
                                                                 <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><?= Yii::$app->SetValues->NumberFormat(round($total_tax, 2)); ?><br><br><?= Yii::$app->SetValues->NumberArabic($total_tax); ?></td>
                                                         </tr>
+
+                                                </table>
+                                        </div>
+                                        <br/>
+                                        <div class="invoice-details"style="margin-bottom: 10px;">
+                                                <table style="width:75%;border: 1px solid black;border-collapse: collapse;float: right;">
                                                         <tr>
-                                                                <td colspan="4" style="width: 74%;font-size: 10px;border: 1px solid;text-align: left;padding: 10px 0px;"><span style="font-size: 12px;font-weight: 600;text-transform: uppercase;">AED : <?php echo ucwords(Yii::$app->NumToWord->ConvertNumberToWords(round($grand_total, 2))) . ' Only'; ?></span></td>
-                                                                <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><b>Sub Total</b></td>
-                                                                <td style="width: 11%;font-size: 10px;border: 1px solid;text-align: center;padding: 10px 0px;"><b><?= Yii::$app->SetValues->NumberFormat(round($grand_total, 2)); ?><br><br><?= Yii::$app->SetValues->NumberArabic($grand_total); ?></b></td>
+                                                                <th style="width:40%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">Total Amount(Excl VAT)</th>
+                                                                <th style="width:10%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">AED</th>
+                                                                <th style="width:25%;text-align: right;padding: 15px 10px;font-size: 12px;font-weight: 600;"><?= Yii::$app->SetValues->NumberFormat(round($total_amount, 2)); ?><br><br><?= Yii::$app->SetValues->NumberArabic($total_amount); ?></th>
+                                                        </tr>
+                                                        <tr>
+                                                                <th style="width:40%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">Total VAT Amount</th>
+                                                                <th style="width:10%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">AED</th>
+                                                                <th style="width:25%;text-align: right;padding: 15px 10px;font-size: 12px;font-weight: 600;"><?= Yii::$app->SetValues->NumberFormat(round($total_tax, 2)); ?><br><br><?= Yii::$app->SetValues->NumberArabic($total_tax); ?></th>
+                                                        </tr>
+                                                        <tr style="border-top: 1px solid;">
+                                                                <th style="width:40%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">Total Amount</th>
+                                                                <th style="width:10%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">AED</th>
+                                                                <th style="width:25%;text-align: right;padding: 15px 10px;font-size: 12px;font-weight: 600;"><?= Yii::$app->SetValues->NumberFormat(round($grand_total, 2)); ?><br><br><?= Yii::$app->SetValues->NumberArabic($grand_total); ?></th>
+                                                        </tr>
+                                                        <tr style="border-top: 1px solid;">
+                                                                <th colspan="3" style="width:40%;text-align: left;padding: 15px 10px;"><span style="font-size: 12px;font-weight: 600;text-transform: uppercase;">AED : <?php echo ucwords(Yii::$app->NumToWord->ConvertNumberToWords(round($grand_total, 2))) . ' Only'; ?></span></th>
                                                         </tr>
                                                 </table>
                                         </div>
+                                        <div style="clear:both"></div>
+                                        <br/>
                                         <div class="invoice-details"style="margin-bottom: 10px;">
-                                                <table style="width:100%;border: 1px solid black;border-collapse: collapse;border-top: none;">
+                                                <table style="width:100%;border: 1px solid black;border-collapse: collapse;">
                                                         <tr>
                                                                 <th style="width: 33%;font-size: 10px;padding: 10px 0px;">Signed By</th>
                                                                 <th style="width: 33%;font-size: 10px;padding: 10px 0px;">Signed By</th>
