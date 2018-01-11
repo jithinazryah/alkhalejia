@@ -92,6 +92,7 @@ $(function () {
         });
 
         $('.edit_text').on('focusout', 'input,textarea', function () {
+                //$(document).on('focusout', '.edit_text', function (e) {
                 var thiss = $(this).parent('.edit_text');
                 var data_id = thiss.attr('id');
                 var update = thiss.attr('update');
@@ -107,6 +108,7 @@ $(function () {
                                         data = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                                 }
                                 thiss.html(res_val);
+                                $.pjax.reload({container: '#some_pjax_id', async: false});
                         }
                 });
 
@@ -204,6 +206,7 @@ $(function () {
                                         var tax_amount = (total * data) / 100;
                                         var tax_amount = tax_amount.toFixed(2);
                                         $('#appointmentdetails-tax_amount').val(tax_amount);
+                                        $('#tax-amount-show').html(tax_amount);
                                         SubTotal();
 
                                 }

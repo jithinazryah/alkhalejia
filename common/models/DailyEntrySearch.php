@@ -10,24 +10,24 @@ use common\models\DailyEntry;
 /**
  * DailyEntrySearch represents the model behind the search form about `common\models\DailyEntry`.
  */
-class DailyEntrySearch extends DailyEntry {
-
+class DailyEntrySearch extends DailyEntry
+{
     /**
      * @inheritdoc
      */
-    public $ticket;
-
-    public function rules() {
+    public function rules()
+    {
         return [
             [['id', 'material', 'supplier', 'transport', 'payment_status', 'yard_id', 'status', 'CB', 'UB'], 'integer'],
-            [['received_date', 'ticket', 'DOC', 'DOU'], 'safe'],
+            [['received_date', 'DOC', 'DOU'], 'safe'],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function scenarios() {
+    public function scenarios()
+    {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -39,9 +39,9 @@ class DailyEntrySearch extends DailyEntry {
      *
      * @return ActiveDataProvider
      */
-    public function search($params) {
+    public function search($params)
+    {
         $query = DailyEntry::find();
-        $query->joinWith(['dailyEntryDetails']);
 
         // add conditions that should always apply here
 
@@ -72,9 +72,7 @@ class DailyEntrySearch extends DailyEntry {
             'DOC' => $this->DOC,
             'DOU' => $this->DOU,
         ]);
-        $query->andFilterWhere(['like', 'daily_entry_details.ticket_no', $this->ticket]);
 
         return $dataProvider;
     }
-
 }

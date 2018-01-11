@@ -17,7 +17,7 @@
                         .main-tabl{
                                 -webkit-print-color-adjust: exact;
                                 margin: auto;
-                                tr{ page-break-inside:avoid; page-break-after:auto; }
+                                /*tr{ page-break-inside:avoid; page-break-after:auto; }*/
                         }
 
                 }
@@ -37,13 +37,13 @@
                 }
                 .main-right{
                         float: right;
+
                 }
                 .heading{
                         width: 98%;
                         text-align: center;
                         font-weight: bold;
                         font-size: 17px;
-                        padding-top: 20px;
                 }
                 .print{
                         margin-top: 18px;
@@ -57,10 +57,25 @@
         <table class="main-tabl" border="0" style="font-family: Roboto, sans-serif !important;">
                 <thead>
                         <tr>
+                                <td colspan="2" style="padding-bottom: 1em;">
+                                        <div class="heading" style="font-weight:normal">
+                                                <span style="text-transform:uppercase;font-weight:bold">Alkhalejia For Aggregates</span><br>
+                                                <span style="text-decoration:underline">Trading,import and export </span><br>
+                                                TEL: 072041315 FAX: 072041317 <br>
+                                                Sales- Purchases : 0505300331
+                                        </div>
+                                </td>
+
+
+
+                        </tr>
+
+
+                        <tr>
                                 <td>
                                         <div class="heading"><h2>TAX INVOICE</h2></div>
                                         <br/>
-                                        <div class="close-estimate-heading-top" style="margin-bottom:78px;">
+                                        <div class="close-estimate-heading-top" style="margin-bottom:48px;">
                                                 <div class="main-left">
                                                         <table class="tb2">
                                                                 <tr>
@@ -71,7 +86,7 @@
                                                                 </tr>
                                                         </table>
                                                 </div>
-                                                <div class="main-right">
+                                                <div class="main-right" style="margin-right: 21px;">
                                                         <table class="tb2">
                                                                 <tr>
                                                                         <td style="max-width: 405px"><b>Bill From :</b></td>
@@ -141,12 +156,12 @@
                                         <div class="invoice-details"style="margin-top: 26px;margin-bottom: 10px;">
                                                 <table style="width:100%;border: 1px solid black;border-collapse: collapse;">
                                                         <tr>
-                                                                <th style="width: 10%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Sl No.<br>.Ù„Ø§</th>
-                                                                <th style="width: 40%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Particulars<br>ØªÙ�Ø§ØµÙŠÙ„</th>
-                                                                <th style="width: 13%;font-size: 12px;border: 1px solid;padding: 10px 0px;">QUT<br>Ø§Ù„ÙƒÙ…ÙŠØ©</th>
-                                                                <th style="width: 11%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Price<br>Ø§Ù„Ø³Ø¹Ø±</th>
-                                                                <th style="width: 15%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Amount<br>ÙƒÙ…ÙŠØ©</th>
-                                                                <th style="width: 11%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Tax Amount<br>Ù‚ÙŠÙ…Ø© Ø§Ù„Ø¶Ø±ÙŠØ¨Ø©</th>
+                                                                <th style="width: 10%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Sl No.<br>.لا</th>
+                                                                <th style="width: 40%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Particulars<br>تفاصيل</th>
+                                                                <th style="width: 13%;font-size: 12px;border: 1px solid;padding: 10px 0px;">QUT<br>الكمية</th>
+                                                                <th style="width: 11%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Price<br>السعر</th>
+                                                                <th style="width: 15%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Amount<br>كمية</th>
+                                                                <th style="width: 11%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Tax Amount<br>قيمة الضريبة</th>
                                                         </tr>
                                                         <?php
                                                         $p = 0;
@@ -185,7 +200,7 @@
                                                         <?php
                                                         if (isset($appointment_details) && $appointment_details != '') {
                                                                 $count = count($appointment_details);
-                                                                $loop_count = 5 - $count;
+                                                                $loop_count = 0 - $count;
                                                                 if ($loop_count > 0) {
                                                                         for ($i = 0; $i <= $loop_count; $i++) {
                                                                                 ?>
@@ -214,27 +229,32 @@
                                         <div class="invoice-details"style="margin-bottom: 10px;">
                                                 <table style="width:75%;border: 1px solid black;border-collapse: collapse;float: right;">
                                                         <tr>
-                                                                <th style="width:40%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">Total Amount(Excl VAT)</th>
-                                                                <th style="width:10%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">AED</th>
-                                                                <th style="width:25%;text-align: right;padding: 15px 10px;font-size: 12px;font-weight: 600;"><?= Yii::$app->SetValues->NumberFormat(round($total_amount, 2)); ?><br><br><?= Yii::$app->SetValues->NumberArabic($total_amount); ?></th>
+                                                                <td style="width:40%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">Total Amount(Excl VAT)</td>
+                                                                <td style="width:10%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">AED</td>
+                                                                <td style="width:25%;text-align: right;padding: 15px 10px;font-size: 12px;font-weight: 600;"><?= Yii::$app->SetValues->NumberFormat(round($total_amount, 2)); ?></td>
+                                                                <td style="width:25%;text-align: right;padding: 15px 10px;font-size: 12px;font-weight: 600;"><?= Yii::$app->SetValues->NumberArabic($total_amount); ?></td>
                                                         </tr>
                                                         <tr>
-                                                                <th style="width:40%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">Total VAT Amount</th>
-                                                                <th style="width:10%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">AED</th>
-                                                                <th style="width:25%;text-align: right;padding: 15px 10px;font-size: 12px;font-weight: 600;"><?= Yii::$app->SetValues->NumberFormat(round($total_tax, 2)); ?><br><br><?= Yii::$app->SetValues->NumberArabic($total_tax); ?></th>
+                                                                <td style="width:40%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">Total VAT Amount</td>
+                                                                <td style="width:10%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">AED</td>
+                                                                <td style="width:25%;text-align: right;padding: 15px 10px;font-size: 12px;font-weight: 600;"><?= Yii::$app->SetValues->NumberFormat(round($total_tax, 2)); ?></td>
+                                                                <td style="width:25%;text-align: right;padding: 15px 10px;font-size: 12px;font-weight: 600;"><?= Yii::$app->SetValues->NumberArabic($total_tax); ?></td>
                                                         </tr>
                                                         <tr style="border-top: 1px solid;">
-                                                                <th style="width:40%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">Total Amount</th>
-                                                                <th style="width:10%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">AED</th>
-                                                                <th style="width:25%;text-align: right;padding: 15px 10px;font-size: 12px;font-weight: 600;"><?= Yii::$app->SetValues->NumberFormat(round($grand_total, 2)); ?><br><br><?= Yii::$app->SetValues->NumberArabic($grand_total); ?></th>
+                                                                <td style="width:40%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">Total Amount</td>
+                                                                <td style="width:10%;text-align: left;padding: 15px 10px;font-size: 12px;font-weight: 600;">AED</td>
+                                                                <td style="width:25%;text-align: right;padding: 15px 10px;font-size: 12px;font-weight: 600;"><?= Yii::$app->SetValues->NumberFormat(round($grand_total, 2)); ?></td>
+                                                                <td style="width:25%;text-align: right;padding: 15px 10px;font-size: 12px;font-weight: 600;"><?= Yii::$app->SetValues->NumberArabic($grand_total); ?></td>
                                                         </tr>
                                                         <tr style="border-top: 1px solid;">
-                                                                <th colspan="3" style="width:40%;text-align: left;padding: 15px 10px;"><span style="font-size: 12px;font-weight: 600;text-transform: uppercase;">AED : <?php echo ucwords(Yii::$app->NumToWord->ConvertNumberToWords(round($grand_total, 2))) . ' Only'; ?></span></th>
+                                                                <td colspan="4" style="width:40%;text-align: left;padding: 15px 10px;"><span style="font-size: 12px;font-weight: 600;text-transform: uppercase;">AED : <?php echo ucwords(Yii::$app->NumToWord->ConvertNumberToWords(round($grand_total, 2))) . ' Only'; ?></span></td>
                                                         </tr>
                                                 </table>
                                         </div>
                                         <div style="clear:both"></div>
                                         <br/>
+
+
                                         <div class="invoice-details"style="margin-bottom: 10px;">
                                                 <table style="width:100%;border: 1px solid black;border-collapse: collapse;">
                                                         <tr>
@@ -249,6 +269,9 @@
                                                         </tr>
                                                 </table>
                                         </div>
+
+                                </td></tr>
+                        <tr><td>
                                         <div class="bank-details">
                                                 <table style="width:100%;">
                                                         <tr>
@@ -313,5 +336,11 @@
         }
         ?>
         <button onclick="window.close();" style="font-weight: bold !important;">Close</button>
-
+        <?php
+        if ($save) {
+                ?>
+                <a href="<?= Yii::$app->homeUrl ?>appointment/close-estimate/save-report?estid=<?php echo implode('_', $est_id) ?>"><button onclick="" style="font-weight: bold !important;">Save</button></a>
+                <?php
+        }
+        ?>
 </div>

@@ -36,7 +36,7 @@ class AppointmentDetails extends \yii\db\ActiveRecord {
         public function rules() {
                 return [
                         [['appointment_id', 'service_id', 'supplier'], 'required'],
-                        [['appointment_id', 'service_id', 'supplier', 'quantity', 'tax'], 'integer'],
+                        [['appointment_id', 'service_id', 'supplier', 'quantity', 'tax', 'unit'], 'integer'],
                         [['unit_price', 'total', 'tax_amount', 'sub_total'], 'number'],
                         [['description'], 'string'],
                         [['appointment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Appointment::className(), 'targetAttribute' => ['appointment_id' => 'id']],
@@ -55,6 +55,7 @@ class AppointmentDetails extends \yii\db\ActiveRecord {
                     'supplier' => 'Supplier',
                     'unit_price' => 'Unit Price',
                     'quantity' => 'Quantity',
+                    'unit' => 'Unit',
                     'total' => 'Total',
                     'tax' => 'Tax',
                     'tax_amount' => 'Tax Amount',

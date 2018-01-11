@@ -22,6 +22,7 @@ class m180106_055450_appointment_details extends Migration {
                     'supplier' => $this->integer()->notNull(),
                     'unit_price' => $this->decimal(10, 2)->Null(),
                     'quantity' => $this->integer()->Null(),
+                    'unit' => $this->integer()->null(),
                     'total' => $this->decimal(10, 2)->null(),
                     'tax' => $this->integer()->Null(),
                     'tax_amount' => $this->decimal(10, 2)->null(),

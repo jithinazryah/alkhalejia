@@ -74,8 +74,9 @@ class AppointmentController extends Controller {
                                 }
                                 $model = $this->findModel($model->id);
                                 $appointment_number = \common\models\Ships::findOne($model->vessel)->code;
+
                                 $model->appointment_number = $appointment_number . $model->id;
-                                $model->update();
+                                $model->save();
                                 return $this->redirect(['add', 'id' => $model->id]);
                         }
                 } else {
@@ -395,14 +396,26 @@ class AppointmentController extends Controller {
                         $name = $_POST['name'];
                         $value = $_POST['valuee'];
                         $estimate = AppointmentDetails::find()->where(['id' => $id])->one();
+                        if ($name == 'unit_price' || $name == 'quantity') {
+                                if ($name == 'unit_price') {
+                                        $estimate->unit_price = $value;
+                                } else if ($name == 'quantity') {
+                                        $estimate->quantity = $value;
+                                }
+
+                                $estimate->total = $estimate->unit_price * $estimate->quantity;
+                                $tax = \common\models\Tax::findOne($estimate->tax);
+                                $estimate->tax_amount = ($estimate->total * $tax->value) / 100;
+                                $estimate->sub_total = $estimate->total + $estimate->tax_amount;
+                        }
 
                         if ($value != '') {
                                 $estimate->$name = $value;
-                                if ($estimate->save()) {
-                                        return 1;
-                                } else {
-                                        return 2;
-                                }
+                        }
+                        if ($estimate->save()) {
+                                return 1;
+                        } else {
+                                return 2;
                         }
                 }
         }

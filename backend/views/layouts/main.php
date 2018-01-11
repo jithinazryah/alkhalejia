@@ -139,25 +139,22 @@ AppAsset::register($this);
                                                                         <span class="title">Masters</span>
                                                                 </a>
                                                                 <ul>
-
                                                                         <li>
                                                                                 <?= Html::a('Service', ['/masters/services/index'], ['class' => 'title']) ?>
                                                                         </li>
-
-                                                                        <li>
-                                                                                <?= Html::a('Contacts', ['/masters/contacts/index'], ['class' => 'title']) ?>
-                                                                        </li>
-
                                                                         <li>
                                                                                 <?= Html::a('Materials', ['/masters/materials/index'], ['class' => 'title']) ?>
                                                                         </li>
                                                                         <li>
                                                                                 <?= Html::a('Ships', ['/masters/ships/index'], ['class' => 'title']) ?>
                                                                         </li>
-
+                                                                        <li>
+                                                                                <?= Html::a('Contacts', ['/masters/contacts/index'], ['class' => 'title']) ?>
+                                                                        </li>
                                                                         <li>
                                                                                 <?= Html::a('Ports', ['/masters/ports/index'], ['class' => 'title']) ?>
                                                                         </li>
+
 
                                                                         <li>
                                                                                 <?= Html::a('Terminals', ['/masters/terminals/index'], ['class' => 'title']) ?>
@@ -172,7 +169,7 @@ AppAsset::register($this);
                                                                         <li>
                                                                                 <?= Html::a('Tax', ['/masters/tax/index'], ['class' => 'title']) ?>
                                                                         </li>
-
+                                                                       
                                                                         <!--                                    <li>
                                                                         <?php // Html::a('Service Category', ['/masters/service-category/index'], ['class' => 'title']) ?>
                                                                                                             </li>-->
@@ -485,15 +482,7 @@ AppAsset::register($this);
 
                 <!-- JavaScripts initializations and stuff -->
                 <script src="<?= Yii::$app->homeUrl; ?>js/xenon-custom.js"></script>
-
-                <!------------------------------------------------------ popup---------------------------------------------------->
-                <div class="modal fade" id="modal-6">
-                        <div class="modal-dialog" id="modal-pop-up">
-
-                        </div>
-                </div>
-                <!----
                 <?php $this->endBody() ?>
-                        </body>
-                </html>
-                <?php $this->endPage() ?>
+        </body>
+</html>
+<?php $this->endPage() ?>

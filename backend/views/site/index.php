@@ -30,7 +30,7 @@ use common\models\Ships;
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
                         'rowOptions' => function ($model, $key, $index, $grid) {
-                            $url = 'http://' . Yii::$app->getRequest()->serverName . Yii::$app->homeUrl . 'appointment/appointment/view?id=' . $model->id;
+                            $url = 'http://' . Yii::$app->getRequest()->serverName . Yii::$app->homeUrl . 'appointment/appointment/update?id=' . $model->id;
                             return ['data-id' => $model->id, 'onclick' => "window.location.href='{$url}'", 'onmouseover' => "this.style.backgroundColor='rgba(167, 167, 167, 0.52)';this.style.cursor='pointer'", 'onmouseout' => "this.style.backgroundColor=''"];
                         },
                         'columns' => [
