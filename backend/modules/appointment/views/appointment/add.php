@@ -170,7 +170,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                                         }
                                                                                                         ?>
                                                                                                 </td>
-                                                                                                <td class="edit_text" id="<?= $estimate->id ?>-quantity" val="<?= $estimate->quantity ?>"><?php if ($estimate->quantity != '') { ?> <?= $estimate->quantity ?><?php } ?></td>
+                                                                                                <td class="edit_text" id="<?= $estimate->id ?>-quantity" val="<?= $estimate->quantity ?>">
+                                                                                                        <?php
+                                                                                                        if ($estimate->quantity != '') {
+                                                                                                                if (isset($estimate->unit) && $estimate->unit != '') {
+                                                                                                                        $unit_detail = common\models\Units::findOne($estimate->unit);
+                                                                                                                        echo $estimate->quantity . ' (' . $unit_detail->unit_symbol . ')';
+                                                                                                                } else {
+                                                                                                                        echo $estimate->quantity;
+                                                                                                                }
+                                                                                                        }
+                                                                                                        ?>
+                                                                                                </td>
                                                                                                 <td  id="<?= $estimate->id ?>-total" val="<?= $estimate->total ?>"><?php if ($estimate->total != '') { ?> <?= $estimate->total ?><?php } ?></td>
                                                                                                 <td  id="<?= $estimate->id ?>-tax" val="<?= $estimate->tax ?>">
 
@@ -255,14 +266,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                 ?>
                                                                                 <td><?= $form->field($model, 'supplier')->dropDownList(ArrayHelper::map($contacts, 'id', 'name'), ['prompt' => '-Select-'])->label(false); ?></td>
                                                                                 <td><?= $form->field($model, 'unit_price')->textInput(['placeholder' => ' Rate'])->label(false) ?></td>
-                                                                                <td><?= $form->field($model, 'quantity')->textInput(['placeholder' => 'Quantity', 'value' => 1])->label(false) ?></td>
+                                                                                <td><?= $form->field($model, 'quantity')->textInput(['placeholder' => 'Quantity', 'value' => 1,])->label(false) ?><span id="unit-text" style="margin-left:5px"></span></td>
                                                                                 <td><?= $form->field($model, 'total')->textInput(['placeholder' => 'Total', 'readonly' => true])->label(false) ?></td>
                                                                                 <td><div style="border: 1px solid #9a9a9a;height: 40px;"><?= $form->field($model, 'tax')->dropDownList(ArrayHelper::map(common\models\Tax::findAll(['status' => 1]), 'id', 'taxname'), ['prompt' => '-VAT-', 'style' => 'border:none'])->label(false); ?>   <span id="tax-amount-show"></span></div></td>
                                                                                 <td style="display:none"><?= $form->field($model, 'tax_amount')->textInput(['placeholder' => 'Vat Amount', 'readonly' => true])->label(false) ?></td>
                                                                                 <td><?= $form->field($model, 'sub_total')->textInput(['placeholder' => 'Sub Total', 'readonly' => true])->label(false) ?></td>
                                                                                 <td><?= $form->field($model, 'description')->textarea(['placeholder' => 'Comment'])->label(false) ?></td>
+                                                                                <?= $form->field($model, 'unit')->hiddenInput()->label(false) ?>
                                                                                 <td><?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => 'btn btn-success']) ?>
                                                                                 </td>
+
                                                                                 <?php ActiveForm::end(); ?>
                                                                         </tr>
                                                                         <tr></tr>
@@ -309,6 +322,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 font-weight: bold;
         }.field-appointmentdetails-tax{
                 width:65%!important;
+                display: inline-block;
+        }.field-appointmentdetails-quantity{
+                width:70%!important;
                 display: inline-block;
         }
 

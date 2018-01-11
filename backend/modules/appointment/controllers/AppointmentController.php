@@ -375,6 +375,7 @@ class AppointmentController extends Controller {
                 if (Yii::$app->request->isAjax) {
                         $service_id = $_POST['service_id'];
                         $supplier_id = $_POST['supplier_id'];
+                        $unit = '';
                         if ($service_id == 1) {
                                 $detail = \common\models\Materials::findOne($supplier_id);
                                 $rate = $detail->selling_price;
@@ -384,8 +385,11 @@ class AppointmentController extends Controller {
                                 $rate = $detail->unit_rate;
                                 $tax = $detail->tax;
                         }
-
-                        $data = ['rate' => $rate, 'tax' => $tax];
+                        if (isset($detail->unit)) {
+                                $unit_detail = \common\models\Units::findOne($detail->unit);
+                                $unit = $unit_detail->unit_symbol;
+                        }
+                        $data = ['rate' => $rate, 'tax' => $tax, 'unit' => $unit];
                         echo json_encode($data);
                 }
         }

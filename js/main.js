@@ -126,7 +126,7 @@ $(function () {
                                 if (data != '') {
                                         $("#appointmentdetails-supplier").html(data);
                                         $("#appointmentdetails-unit_price").val('');
-                                        $("#appointmentdetails-tax").val('');
+
                                 } else {
                                         $("#appointmentdetails-supplier").prop('disabled', true);
                                 }
@@ -151,6 +151,9 @@ $(function () {
                                                 var res = $.parseJSON(data);
                                                 $("#appointmentdetails-unit_price").val(res['rate']);
                                                 $("#appointmentdetails-tax").val(res['tax']);
+                                                $("#appointmentdetails-tax").val(res['tax']);
+                                                $("#appointmentdetails-unit").val(res['tax']);
+                                                $("#unit-text").html(res['unit']);
                                                 Total();
                                                 Tax();
                                                 SubTotal();
