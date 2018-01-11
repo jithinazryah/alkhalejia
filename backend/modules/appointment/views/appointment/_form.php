@@ -18,10 +18,12 @@ use common\models\Terminals;
 
         <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
         <div class="row">
+
+
                 <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
                         <?php $vessel = ArrayHelper::map(Ships::findAll(['status' => 1]), 'id', 'name'); ?>
                         <?= $form->field($model, 'vessel')->dropDownList($vessel, ['prompt' => '--Select--']) ?>
-
+                        <a href="" id="appointment-vessel-11"  class="new-link-box add-option-dropdown" ><i class="fa fa-plus" aria-hidden="true"></i> New</a>
                 </div>
 
                 <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>

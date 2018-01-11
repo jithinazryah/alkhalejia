@@ -225,6 +225,29 @@ $(function () {
                 $('#appointmentdetails-sub_total').val(subtotal.toFixed(2));
         }
 
+        /*
+         * Add dropdown popup
+         */
+
+        $(document).on('click', '.add-option-dropdown', function (e) {
+                e.preventDefault();
+                var id_attr = $(this).attr('id');
+                var type = id_attr.split('-');
+
+
+                $.ajax({
+                        type: 'POST',
+                        url: homeUrl + 'dropdown/showform',
+                        data: {type: type[1], field_id: type[0]},
+                        success: function (data) {
+
+                                $("#modal-pop-up").html(data);
+                                $('#modal-6').modal('show', {backdrop: 'static'});
+
+                        }
+                });
+        });
+
 
 });
 function showLoader() {

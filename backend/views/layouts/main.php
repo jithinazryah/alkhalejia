@@ -20,7 +20,7 @@ AppAsset::register($this);
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta name="description" content="Xenon Boostrap Admin Panel" />
                 <meta name="author" content="" />
-                <title>Al Khalejia Admin</title>
+                <title>Al Khalejia</title>
                 <script src="<?= Yii::$app->homeUrl; ?>js/jquery-1.11.1.min.js"></script>
                 <script type="text/javascript">
                         var homeUrl = '<?= Yii::$app->homeUrl; ?>';
@@ -485,7 +485,15 @@ AppAsset::register($this);
 
                 <!-- JavaScripts initializations and stuff -->
                 <script src="<?= Yii::$app->homeUrl; ?>js/xenon-custom.js"></script>
+
+                <!------------------------------------------------------ popup---------------------------------------------------->
+                <div class="modal fade" id="modal-6">
+                        <div class="modal-dialog" id="modal-pop-up">
+
+                        </div>
+                </div>
+                <!----
                 <?php $this->endBody() ?>
-        </body>
-</html>
-<?php $this->endPage() ?>
+                        </body>
+                </html>
+                <?php $this->endPage() ?>
