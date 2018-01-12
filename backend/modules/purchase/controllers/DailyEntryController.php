@@ -246,10 +246,10 @@ class DailyEntryController extends Controller {
     public function Addtransaction($daily_entry, $models) {
         $financial_year = '';
         $supplier = \common\models\Contacts::findOne($models->supplier);
-        if (Yii::$app->SetValues->Transaction(1, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->supplier, $supplier->name, $supplier->code, 0, $daily_entry->total, $daily_entry->total, 1, 2)) {
+        if (Yii::$app->SetValues->Transaction(1, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->supplier, $supplier->name, $supplier->code, 0, $daily_entry->total, $daily_entry->total, 1, 1, 2)) {
             return TRUE;
         } else {
-
+            
         }
     }
 
@@ -336,7 +336,7 @@ class DailyEntryController extends Controller {
 //            try {
             if (Yii::$app->SetValues->Attributes($model_details) && $model_details->save() && $this->UpdateStock($model_details, $model) && $this->Updatetransaction($model_details, $model)
             ) {
-
+                
             }
 //            } catch (Exception $e) {
 //                $transaction->rollBack();
@@ -371,10 +371,10 @@ class DailyEntryController extends Controller {
     public function Updatetransaction($daily_entry, $models) {
         $financial_year = '';
         $supplier = \common\models\Contacts::findOne($models->supplier);
-        if (Yii::$app->SetValues->TransactionUpdate(1, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->supplier, $supplier->name, $supplier->code, 0, $daily_entry->total, $daily_entry->total, 1, 2)) {
+        if (Yii::$app->SetValues->TransactionUpdate(1, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->supplier, $supplier->name, $supplier->code, 0, $daily_entry->total, $daily_entry->total, 1, 1, 2)) {
             return TRUE;
         } else {
-
+            
         }
     }
 
