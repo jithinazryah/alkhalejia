@@ -59,7 +59,7 @@
                         <tr>
                                 <td colspan="2" style="padding-bottom: 1em;">
                                         <div class="heading" style="font-weight:normal">
-                                                <span style="text-transform:uppercase;font-weight:bold">Alkhalejia For Aggregates</span><br>
+                                                <span style="text-transform:uppercase;font-weight:bold;font-size:20px">Alkhalejia For Aggregates</span><br>
                                                 <span style="text-decoration:underline">Trading,import and export </span><br>
                                                 TEL: 072041315 FAX: 072041317 <br>
                                                 Sales- Purchases : 0505300331
@@ -73,9 +73,9 @@
 
                         <tr>
                                 <td>
-                                        <div class="heading"><h2>TAX INVOICE</h2></div>
+                                        <div class="heading"><h2 style="font-size:15px;">TAX INVOICE</h2></div>
                                         <br/>
-                                        <div class="close-estimate-heading-top" style="margin-bottom:48px;">
+                                        <div class="close-estimate-heading-top" style="margin-bottom:30px;">
                                                 <div class="main-left">
                                                         <table class="tb2">
                                                                 <tr>
@@ -87,7 +87,7 @@
                                                         </table>
                                                 </div>
                                                 <div class="main-right" style="margin-right: 21px;">
-                                                        <table class="tb2">
+                                                        <!--<table class="tb2">
                                                                 <tr>
                                                                         <td style="max-width: 405px"><b>Bill From :</b></td>
                                                                 </tr>
@@ -97,7 +97,7 @@
                                                                 <tr>
                                                                         <td style="max-width: 405px;font-size: 15px;"><b>VAT ID : VAT123</td>
                                                                 </tr>
-                                                        </table>
+                                                        </table>-->
                                                 </div>
                                         </div>
                                         <br/>
@@ -153,7 +153,7 @@
                 <tbody>
                         <tr>
                                 <td>
-                                        <div class="invoice-details"style="margin-top: 26px;margin-bottom: 10px;">
+                                        <div class="invoice-details"style="margin-top: 26px;">
                                                 <table style="width:100%;border: 1px solid black;border-collapse: collapse;">
                                                         <tr>
                                                                 <th style="width: 10%;font-size: 12px;border: 1px solid;padding: 10px 0px;">Sl No.<br>.لا</th>
@@ -200,7 +200,7 @@
                                                         <?php
                                                         if (isset($appointment_details) && $appointment_details != '') {
                                                                 $count = count($appointment_details);
-                                                                $loop_count = 0 - $count;
+                                                                $loop_count = 3 - $count;
                                                                 if ($loop_count > 0) {
                                                                         for ($i = 0; $i <= $loop_count; $i++) {
                                                                                 ?>
@@ -275,31 +275,31 @@
                                         <div class="bank-details">
                                                 <table style="width:100%;">
                                                         <tr>
-                                                                <th style="width: 100%;font-size: 12px;padding: 10px 0px;text-align: left;">Please transfer the amount in our <b>AED</b> bank account stated in below details:</th>
+                                                                <th style="width: 100%;font-size: 12px;text-align: left;">Please transfer the amount in our <b>AED</b> bank account stated in below details:</th>
                                                         </tr>
                                                         <tr>
-                                                                <td style="width: 25%;font-size: 11px;padding: 10px 0px;float: left;">ACCOUNT NAME</td>
-                                                                <td style="font-size: 11px;padding: 10px 0px;float: left;text-transform: uppercase;">: <b>Alkhalejia</b></td>
+                                                                <td style="width: 25%;font-size: 11px;float: left;">ACCOUNT NAME</td>
+                                                                <td style="font-size: 11px;float: left;text-transform: uppercase;">: <b>Alkhalejia</b></td>
                                                         </tr>
                                                         <tr>
-                                                                <td style="width: 25%;font-size: 11px;padding: 10px 0px;float: left;">ACCOUNT NO</td>
-                                                                <td style="font-size: 11px;padding: 10px 0px;float: left;text-transform: uppercase;">: 1234567890123456</td>
+                                                                <td style="width: 25%;font-size: 11px;float: left;">ACCOUNT NO</td>
+                                                                <td style="font-size: 11px;float: left;text-transform: uppercase;">: 1234567890123456</td>
                                                         </tr>
                                                         <tr>
-                                                                <td style="width: 25%;font-size: 11px;padding: 10px 0px;float: left;">BANK NAME</td>
-                                                                <td style="font-size: 11px;padding: 10px 0px;float: left;text-transform: uppercase;">: United Emirates Bank</td>
+                                                                <td style="width: 25%;font-size: 11px;float: left;">BANK NAME</td>
+                                                                <td style="font-size: 11px;float: left;text-transform: uppercase;">: United Emirates Bank</td>
                                                         </tr>
                                                         <tr>
-                                                                <td style="width: 25%;font-size: 11px;padding: 10px 0px;float: left;">BRANCH</td>
-                                                                <td style="font-size: 11px;padding: 10px 0px;float: left;text-transform: uppercase;">: UAE</td>
+                                                                <td style="width: 25%;font-size: 11px;float: left;">BRANCH</td>
+                                                                <td style="font-size: 11px;float: left;text-transform: uppercase;">: UAE</td>
                                                         </tr>
                                                         <tr>
-                                                                <td style="width: 25%;font-size: 11px;padding: 10px 0px;float: left;">IBAN NO</td>
-                                                                <td style="font-size: 11px;padding: 10px 0px;float: left;text-transform: uppercase;">: 34535454</td>
+                                                                <td style="width: 25%;font-size: 11px;float: left;">IBAN NO</td>
+                                                                <td style="font-size: 11px;float: left;text-transform: uppercase;">: 34535454</td>
                                                         </tr>
                                                         <tr>
-                                                                <td style="width: 25%;font-size: 11px;padding: 10px 0px;float: left;">SWIFT CODE</td>
-                                                                <td style="font-size: 11px;padding: 10px 0px;float: left;text-transform: uppercase;">: 546546</td>
+                                                                <td style="width: 25%;font-size: 11px;float: left;">SWIFT CODE</td>
+                                                                <td style="font-size: 11px;float: left;text-transform: uppercase;">: 546546</td>
                                                         </tr>
                                                 </table>
                                         </div>
