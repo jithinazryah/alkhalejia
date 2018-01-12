@@ -231,7 +231,7 @@ class DailyEntryController extends Controller {
         $yard_code = \common\models\Yard::findOne($models->yard_id)->code;
         $model->yard_code = $yard_code;
         $model->material_cost = $daily_entry->rate;
-        $model->weight_in = $daily_entry->net_weight;
+        $model->quantity_in = $daily_entry->net_weight;
         $model->total_cost = $daily_entry->total;
         Yii::$app->SetValues->Attributes($model);
         if ($model->save()) {
@@ -356,7 +356,7 @@ class DailyEntryController extends Controller {
         $yard_code = \common\models\Yard::findOne($models->yard_id)->code;
         $model->yard_code = $yard_code;
         $model->material_cost = $daily_entry->rate;
-        $model->weight_in = $daily_entry->net_weight;
+        $model->quantity_in = $daily_entry->net_weight;
         $model->total_cost = $daily_entry->total;
         Yii::$app->SetValues->Attributes($model);
         if ($model->save()) {
