@@ -59,7 +59,7 @@
                         <tr>
                                 <td colspan="2" style="padding-bottom: 1em;">
                                         <div class="heading" style="font-weight:normal">
-                                                <span style="text-transform:uppercase;font-weight:bold;font-size:20px">Alkhalejia For Aggregates</span><br>
+                                                <span style="text-transform:uppercase;font-weight:bold;font-size:30px">Alkhalejia For Aggregates</span><br>
                                                 <span style="text-decoration:underline">Trading,import and export </span><br>
                                                 TEL: 072041315 FAX: 072041317 <br>
                                                 Sales- Purchases : 0505300331
