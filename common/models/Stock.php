@@ -100,4 +100,21 @@ class Stock extends \yii\db\ActiveRecord {
         return $diff;
     }
 
+    public function dailyQtyTotal($id, $doc) {
+        $qty_in__sum = Stock::find()->where(['material_id' => $id, 'DOC' => $doc])->sum('quantity_in');
+        $qty_out__sum = Stock::find()->where(['material_id' => $id, 'DOC' => $doc])->sum('quantity_out');
+        $diff = $qty_in__sum - $qty_out__sum;
+        return $diff;
+    }
+
+    public function monthlyQtyTotal($id, $doc) {
+        $date = date('Y-m', strtotime($doc));
+        $date1 = $date . '-01';
+        $date2 = $date . '-31';
+        $qty_in__sum = Stock::find()->where(['material_id' => $id])->andWhere(['between', 'DOC', $date1, $date2])->sum('quantity_in');
+        $qty_out__sum = Stock::find()->where(['material_id' => $id])->andWhere(['between', 'DOC', $date1, $date2])->sum('quantity_out');
+        $diff = $qty_in__sum - $qty_out__sum;
+        return $diff;
+    }
+
 }

@@ -46,8 +46,8 @@ use common\models\Vessel;
         </tr>
 
         <tr>
-                <td class="labell">BERTH NO </td><td class="value">: <?= $appointment->berth_number; ?> </td>
-                <td class="labell">Material </td><td class="value">:
+                <td class="labell">BERTH NUMBER </td><td class="value">: <?= $appointment->berth_number; ?> </td>
+                <td class="labell">MATERIAL </td><td class="value">:
                         <?php
                         if (isset($appointment->material)) {
                                 $material = common\models\Materials::findOne($appointment->material);

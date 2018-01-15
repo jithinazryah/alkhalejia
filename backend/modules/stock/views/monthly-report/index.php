@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 /* @var $searchModel common\models\StockSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Daily Wise Report';
+$this->title = 'Monthly  Report';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="stock-index">
@@ -36,11 +36,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'method' => 'get',
                             ]);
                             ?>
+                            
                             <?=
                             $form->field($searchModel, 'DOC')->widget(DatePicker::className(), [
                                 //'language' => 'ru',
 //                                    'dateFormat' => 'yyyy-MM-dd',
-                                'options' => ['class' => 'form-control']
+                                'options' => ['class' => 'form-control'],
+                                'pluginOptions' => ['startView' =>
+                                    'year', 'minViewMode' => 'months','format' => 'yyyy-mm']
+                                
                             ])->label('Date');
                             ?>
 
@@ -76,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'header' => 'Quantity',
                                 'filter' => '',
                                 'value' => function ($data) {
-                                    return $data->dailyQtyTotal($data->material_id,$data->DOC);
+                                    return $data->monthlyQtyTotal($data->material_id, $data->DOC);
                                 },
                             ],
                             // 'weight_in',
@@ -90,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'header' => 'Date',
                                 'filter' => '',
                                 'value' => function ($data) {
-                                    return $data->DOC;
+                                    return date('Y-M', strtotime($data->DOC));
                                 },
                             ],
 //                            'DOC',

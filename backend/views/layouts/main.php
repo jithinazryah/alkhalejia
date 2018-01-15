@@ -147,6 +147,9 @@ AppAsset::register($this);
                                     <li>
                                         <?= Html::a('Daily Wise Report', ['/stock/daily-wise-report/index'], ['class' => 'title']) ?>
                                     </li>
+                                    <li>
+                                        <?= Html::a('Monthly Report', ['/stock/monthly-report/index'], ['class' => 'title']) ?>
+                                    </li>
                                 </ul>
                             </li>
                             <?php
