@@ -121,6 +121,11 @@ class StockAdjDtlController extends Controller {
         }
     }
 
+    /**
+     * Creates a new StockAdjDtl model and StockAdjMst Model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
     public function actionAdd() {
         $model = new StockAdjDtl();
         $model_stock_master = new StockAdjMst();
@@ -151,6 +156,10 @@ class StockAdjDtlController extends Controller {
         ]);
     }
 
+    /**
+     * Set values into StockAdjMst object.
+     * @return $model_stock_master
+     */
     public function SaveStockMaster($model_stock_master, $data, $flag) {
         $model_stock_master->document_date = date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $model_stock_master->document_date)));
         if ($flag == 1) {
@@ -311,31 +320,6 @@ class StockAdjDtlController extends Controller {
         $model->status = 1;
         $model->save();
         return $this->redirect(Yii::$app->request->referrer);
-    }
-
-    public function generateDocumentNo($purchase_date, $voucher_type) {
-        $year = date("Y", strtotime(str_replace('/', '-', $purchase_date)));
-        $series = \common\models\VoucherSeries::find()->where(['voucher_type' => $voucher_type, 'financial_year' => $year])->one();
-        if (empty($series)) {
-            $document_no = '';
-        } else {
-            $digit = '%0' . $series->digits . 'd';
-            $document_no = $series->prefix . (sprintf($digit, $series->sequence_no));
-        }
-        $document_data = array('document-no' => $document_no, 'financial-year-id' => $series->financial_year_id, 'financial-year' => $series->financial_year);
-        return $document_data;
-    }
-
-    public function GetFinancialYear($invoice_date) {
-        $sale_date = date('Y-m-d', strtotime($invoice_date));
-        $financial_datas = \common\models\FinancialYears::find()->all();
-        foreach ($financial_datas as $value) {
-            $contractDateBegin = date('Y-m-d', strtotime($value->start_period));
-            $contractDateEnd = date('Y-m-d', strtotime($value->end_period));
-            if (($sale_date > $contractDateBegin) && ($sale_date < $contractDateEnd)) {
-                return $value;
-            }
-        }
     }
 
     public function actionGetItems() {
