@@ -258,11 +258,12 @@ class StockAdjDtlController extends Controller {
         $stock->UB = Yii::$app->user->identity->id;
         $stock->DOC = date('Y-m-d');
         if ($stock->save()) {
-            if ($this->AddTransaction($aditional, $stock)) {
-                $flag = 1;
-            } else {
-                $flag = 0;
-            }
+            $flag = 1;
+//            if ($this->AddTransaction($aditional, $stock)) {
+//                $flag = 1;
+//            } else {
+//                $flag = 0;
+//            }
         } else {
             $flag = 0;
         }
