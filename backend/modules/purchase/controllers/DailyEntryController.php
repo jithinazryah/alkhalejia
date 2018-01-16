@@ -110,15 +110,21 @@ class DailyEntryController extends Controller {
         $daily_entry = DailyEntry::findOne($id);
         if ($model->load(Yii::$app->request->post())) {
             $model->daily_entry_id = $id;
+            $transaction = Yii::$app->db->beginTransaction();
             if (!isset($prfrma_id)) {
                 if (Yii::$app->SetValues->Attributes($model) && $model->save() && $this->SaveStock($model, $daily_entry) && $this->Addtransaction($model, $daily_entry)) {
-                    return $this->redirect(['add', 'id' => $id]);
+                    $transaction->commit();
+                } else {
+                    $transaction->rollBack();
                 }
             } else {
                 if (Yii::$app->SetValues->Attributes($model) && $model->save() && $this->UpdateStock($model, $daily_entry) && $this->Updatetransaction($model, $daily_entry)) {
-                    return $this->redirect(['add', 'id' => $id]);
+                    $transaction->commit();
+                } else {
+                    $transaction->rollBack();
                 }
             }
+            return $this->redirect(['add', 'id' => $id]);
         }
         $estimates = DailyEntryDetails::findAll(['daily_entry_id' => $id]);
         return $this->render('add', [
