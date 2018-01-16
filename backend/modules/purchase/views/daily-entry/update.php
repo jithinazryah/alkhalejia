@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\DailyEntry */
 
-$this->title = 'Update Daily Entry: ' . $model->id;
+$this->title = 'Update Daily Entry ';
 $this->params['breadcrumbs'][] = ['label' => 'Daily Entries', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

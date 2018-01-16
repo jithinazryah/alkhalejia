@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <!------------------------------------------- Daily Entry Details ------------------------------------------------------------------>
                 <?php
-                Pjax::begin(['id' => 'some_pjax_id']);
+//                Pjax::begin(['id' => 'some_pjax_id']);
                 ?>
                 <div class="outterr">
 
@@ -116,12 +116,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <tr class="formm">
                                         <?php $form = ActiveForm::begin(); ?>
                                         <td></td>
-                                        <td><?= $form->field($model, 'ticket_no')->textInput(['placeholder' => ' Ticket No'])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'truck_number')->textInput(['placeholder' => ' Truck No'])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'net_weight')->textInput(['placeholder' => ' Net Weight'])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'rate')->textInput(['placeholder' => ' Rate'])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'total')->textInput(['placeholder' => ' Total'])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'transport_amount')->textInput(['placeholder' => ' Transporter Amount'])->label(false) ?></td>
+                                        <td><?= $form->field($model, 'ticket_no')->textInput(['placeholder' => ' Ticket No', 'required' => TRUE])->label(false) ?></td>
+                                        <td><?= $form->field($model, 'truck_number')->textInput(['placeholder' => ' Truck No', 'required' => TRUE])->label(false) ?></td>
+                                        <td><?= $form->field($model, 'net_weight')->textInput(['placeholder' => ' Net Weight', 'required' => TRUE])->label(false) ?></td>
+                                        <td><?= $form->field($model, 'rate')->textInput(['placeholder' => ' Rate', 'required' => TRUE])->label(false) ?></td>
+                                        <td><?= $form->field($model, 'total')->textInput(['placeholder' => ' Total', 'required' => TRUE, 'readonly' => TRUE])->label(false) ?></td>
+                                        <td><?= $form->field($model, 'transport_amount')->textInput(['placeholder' => ' Transporter Amount', 'required' => TRUE])->label(false) ?></td>
                                         <td><?= $form->field($model, 'description')->textInput(['placeholder' => ' Description'])->label(false) ?></td>
                                         <td><?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => 'btn btn-success']) ?>
                                         </td>
@@ -138,7 +138,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
 
                 </div>
-                <?php Pjax::end(); ?>
+                <?php // Pjax::end(); ?>
 
                 <!------------------------------------------------------------------------------------------------------------->
 
@@ -179,5 +179,40 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 
 </style>
+<script>
+    $("document").ready(function () {
+
+        /*
+         * Double click enter function
+         * */
+
+        $('#dailyentrydetails-net_weight').on('keyup', function () {
+            var net_weight = $('#dailyentrydetails-net_weight').val();
+            var rate = $('#dailyentrydetails-rate').val();
+            if (net_weight === undefined || net_weight === null) {
+                // do something
+            }
+        });
+
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#dailyentrydetails-net_weight").keyup(function () {
+            multiply();
+        });
+        $("#dailyentrydetails-rate").keyup(function () {
+            multiply();
+        });
+    });
+    function multiply() {
+        var rate = $("#dailyentrydetails-rate").val();
+        var unit = $("#dailyentrydetails-net_weight").val();
+        if (rate != '' && unit != '') {
+            $("#dailyentrydetails-total").val(rate * unit);
+        }
+
+    }
+</script>
 
 
