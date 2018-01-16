@@ -223,6 +223,8 @@ class EmployeeController extends Controller {
             $files = UploadedFile::getInstance($model, 'photo');
             if (empty($files)) {
                 $model->photo = $photo_;
+            } else {
+                $model->photo = $files->extension;
             }
             if ($model->save()) {
                 if (!empty($files)) {

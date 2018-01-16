@@ -42,7 +42,7 @@ class Materials extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['name', 'code', 'size', 'tax', 'unit', 'purchase_price', 'selling_price'], 'required'],
+            [['name', 'code', 'size', 'tax', 'unit', 'purchase_price'], 'required'],
             [['tax', 'unit', 'status', 'CB', 'UB'], 'integer'],
             [['purchase_price', 'selling_price'], 'number'],
             [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],

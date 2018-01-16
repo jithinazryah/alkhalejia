@@ -39,7 +39,7 @@ AppAsset::register($this);
 
 
         <div class="page-container">
-            <div class="sidebar-menu toggle-others fixed">
+            <div class="sidebar-menu toggle-others fixed collapsed">
 
                 <div class="sidebar-menu-inner">
                     <header class="logo-env">

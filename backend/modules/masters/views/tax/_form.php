@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class='col-md-4 col-sm-6 col-xs-12 left_padd'>    <?= $form->field($model, 'tax')->textInput(['maxlength' => true]) ?>
 
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>    <?= $form->field($model, 'value')->textInput(['maxlength' => true]) ?>
+        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>    <?= $form->field($model, 'value')->textInput(['maxlength' => true]) ?><strong class="percent-styl">%</strong>
 
         </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>    <?= $form->field($model, 'status')->dropDownList(['1' => 'Enable', '0' => 'Disable']) ?>
 

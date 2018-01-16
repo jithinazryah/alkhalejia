@@ -45,7 +45,7 @@ class Contacts extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['name', 'code', 'type', 'phone', 'email', 'service'], 'required'],
-            [['type',  'status', 'CB', 'UB', 'service'], 'integer'],
+            [['type', 'status', 'CB', 'UB', 'service'], 'integer'],
             [['address', 'description'], 'string'],
             [['email'], 'email'],
             [['DOC', 'DOU'], 'safe'],
@@ -65,7 +65,7 @@ class Contacts extends \yii\db\ActiveRecord {
             'id' => 'ID',
             'name' => 'Name',
             'code' => 'Code',
-            'tax_id' => 'Tax ID',
+            'tax_id' => 'VAT ID',
             'type' => 'Type',
 //            'category' => 'Category',
             'phone' => 'Phone',

@@ -310,6 +310,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             $('#sales-qty-count-' + current_row_id).val(res.result['existing_stock']);
                             $('#stock-check-' + current_row_id).css('display', 'block');
                             $("#stock-check-" + current_row_id + " span").text(res.result['existing_stock']);
+                            $("#stock-check-" + current_row_id + " span").text(res.result['existing_stock']);
+
                         } else {
                             $('#sales-qty-count-' + current_row_id).val('');
                             $('#stock-check-' + current_row_id).css('display', 'none');

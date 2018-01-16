@@ -26,21 +26,19 @@ use Yii;
  *
  * @property DailyEntry $dailyEntry
  */
-class DailyEntryDetails extends \yii\db\ActiveRecord
-{
+class DailyEntryDetails extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'daily_entry_details';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
 //            [['daily_entry_id', 'ticket_no', 'truck_number', 'gross_weight', 'tare_weight', 'net_weight', 'rate', 'total', 'transport_amount'], 'required'],
             [['daily_entry_id', 'status', 'CB', 'UB'], 'integer'],
@@ -56,8 +54,7 @@ class DailyEntryDetails extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'daily_entry_id' => 'Daily Entry ID',
@@ -81,8 +78,8 @@ class DailyEntryDetails extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDailyEntry()
-    {
+    public function getDailyEntry() {
         return $this->hasOne(DailyEntry::className(), ['id' => 'daily_entry_id']);
     }
+
 }

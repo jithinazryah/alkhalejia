@@ -21,11 +21,27 @@ $this->params['breadcrumbs'][] = 'Update';
             </div>
             <div class="panel-body">
                 <?= Html::a('<i class="fa-th-list"></i><span> Manage Daily Entry</span>', ['index'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?>
+                <?= Html::a('<i class="fa-th-list"></i><span> Create Daily Entry</span>', ['create'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?>
+
+                <ul class="nav nav-tabs nav-tabs-justified">
+                    <li  class="active">
+                        <?php
+                        echo Html::a('<span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Daily Entry</span>', ['daily-entry/update', 'id' => $model->id]);
+                        ?>
+
+                    </li>
+                    <li>
+                        <?php
+                        echo Html::a('<span class="visible-xs"><i class="fa-home"></i></span><span class="hidden-xs">Daily Entry Details</span>', ['daily-entry/add', 'id' => $model->id]);
+                        ?>
+
+                    </li>
+
+                </ul>
                 <div class="panel-body"><div class="daily-entry-create">
                         <?=
                         $this->render('_form', [
                             'model' => $model,
-                            'model_details' => $model_details,
                         ])
                         ?>
                     </div>

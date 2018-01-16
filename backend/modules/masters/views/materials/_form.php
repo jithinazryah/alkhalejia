@@ -30,7 +30,12 @@ use common\models\Units;
     </div>
     <div class="row">
         <div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
-            <?php $tax = ArrayHelper::map(Tax::findAll(['status' => 1]), 'id', 'tax'); ?>
+            <?php
+            $tax = ArrayHelper::map(Tax::find()->where(['status' => 1])->all(), 'id', function($model) {
+                        return $model['tax'] . ' ( ' . $model['value'] . ' % )';
+                    }
+            );
+            ?>
             <?= $form->field($model, 'tax')->dropDownList($tax, ['prompt' => '-Choose a Tax-']) ?>
 
         </div>

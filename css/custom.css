@@ -591,3 +591,9 @@ a {
     color: red;
     cursor: pointer;
 }
+.percent-styl{
+    font-size: 18px;
+    position: absolute;
+    top: 32%;
+    right: 10px;
+}
