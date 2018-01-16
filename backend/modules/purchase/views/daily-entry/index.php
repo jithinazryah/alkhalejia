@@ -60,6 +60,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return Contacts::findOne($data->transport)->name;
                                 },
                             ],
+                            [
+                                'attribute' => 'ticket',
+                                // 'value' => 'dailyEntryDetails.ticket',
+                                'value' => function($model, $key, $index, $column) {
+                                    $ticket_number = $model->dailyEntryDetails;
+                                    foreach ($ticket_number as $ticket_no) {
+                                        $tickt_no[] = $ticket_no['ticket_no'];
+                                    }
+                                    if (!empty($tickt_no)) {
+                                        return implode(",", $tickt_no);
+                                    }
+                                },
+//                                'filter' => [1 => 'Yes', 0 => 'No'],
+                            ],
 //                            'transport',
                             // 'payment_status',
                             // 'yard_id',
