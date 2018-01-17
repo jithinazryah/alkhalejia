@@ -12,6 +12,8 @@ use yii\filters\VerbFilter;
 use common\models\Stock;
 use common\models\Transaction;
 use yii\web\UploadedFile;
+use yii\widgets\ActiveForm;
+use yii\web\Response;
 
 /**
  * DailyEntryController implements the CRUD actions for DailyEntry model.
@@ -196,9 +198,19 @@ class DailyEntryController extends Controller {
     }
 
     public function Addtransaction($daily_entry, $models) {
+        $flag = 0;
         $financial_year = '';
         $supplier = \common\models\Contacts::findOne($models->supplier);
-        if (Yii::$app->SetValues->Transaction(1, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->supplier, $supplier->name, $supplier->code, 0, $daily_entry->total, $daily_entry->total, 1, 1, 2)) {
+        $transporter = \common\models\Contacts::findOne($models->transport);
+        if (Yii::$app->SetValues->Transaction(1, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->supplier, $supplier->name, $supplier->code, 0, $daily_entry->total, $daily_entry->total, 1, 2)) {
+            $flag = 1;
+        }
+        if ($daily_entry->transport_amount > 0) {
+            if (Yii::$app->SetValues->Transaction(2, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->transport, $transporter->name, $transporter->code, 0, $daily_entry->transport_amount, $daily_entry->transport_amount, 1, 2)) {
+                $flag = 1;
+            }
+        }
+        if ($flag == 1) {
             return TRUE;
         } else {
             return FALSE;
@@ -255,13 +267,102 @@ class DailyEntryController extends Controller {
     }
 
     public function Updatetransaction($daily_entry, $models) {
+        $flag = 0;
         $financial_year = '';
         $supplier = \common\models\Contacts::findOne($models->supplier);
-        if (Yii::$app->SetValues->TransactionUpdate(1, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->supplier, $supplier->name, $supplier->code, 0, $daily_entry->total, $daily_entry->total, 1, 1, 2)) {
+        $transporter = \common\models\Contacts::findOne($models->transport);
+        if (Yii::$app->SetValues->TransactionUpdate(1, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->supplier, $supplier->name, $supplier->code, 0, $daily_entry->total, $daily_entry->total, 1, 2)) {
+            $flag = 1;
+        }
+        if ($daily_entry->transport_amount > 0) {
+            if (Yii::$app->SetValues->TransactionUpdate(2, $daily_entry->id, date('Y-m-d', strtotime($models->received_date)), $financial_year, $models->transport, $transporter->name, $transporter->code, 0, $daily_entry->transport_amount, $daily_entry->transport_amount, 1, 2)) {
+                $flag = 1;
+            }
+        }
+        if ($flag == 1) {
             return TRUE;
         } else {
             return FALSE;
         }
+    }
+
+    /**
+     * Creates a new Contacts model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionSupplier() {
+        $model = new \common\models\Contacts();
+
+        if (Yii::$app->request->post()) {
+            $model->service = Yii::$app->request->post()['service'];
+            $model->name = Yii::$app->request->post()['name'];
+            $model->code = Yii::$app->request->post()['code'];
+            $model->tax_id = Yii::$app->request->post()['tax_id'];
+            $model->type = Yii::$app->request->post()['type'];
+            $model->phone = Yii::$app->request->post()['phone'];
+            $model->email = Yii::$app->request->post()['email'];
+            $model->city = Yii::$app->request->post()['city'];
+            $model->status = Yii::$app->request->post()['status'];
+            $model->address = Yii::$app->request->post()['address'];
+            $model->description = Yii::$app->request->post()['description'];
+            Yii::$app->SetValues->Attributes($model);
+            if ($model->validate() && $model->save()) {
+                echo json_encode(array("con" => "1", 'id' => $model->id, 'name' => $model->name)); //Success
+                exit;
+            } else {
+                var_dump($model->getErrors());
+                exit;
+                $array = $model->getErrors();
+                $error = isset($array['name']['0']) ? $array['name']['0'] : 'Internal error';
+                echo json_encode(array("con" => "2", 'error' => $error));
+                exit;
+            }
+        }
+        return $this->renderAjax('create-supplier', [
+                    'model' => $model,
+        ]);
+    }
+
+    public function actionValidate() {
+        $model = new \common\models\Contacts();
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+    }
+
+    public function actionTransporter() {
+        $model = new \common\models\Contacts();
+
+        if (Yii::$app->request->post()) {
+            $model->service = Yii::$app->request->post()['service'];
+            $model->name = Yii::$app->request->post()['name'];
+            $model->code = Yii::$app->request->post()['code'];
+            $model->tax_id = Yii::$app->request->post()['tax_id'];
+            $model->type = Yii::$app->request->post()['type'];
+            $model->phone = Yii::$app->request->post()['phone'];
+            $model->email = Yii::$app->request->post()['email'];
+            $model->city = Yii::$app->request->post()['city'];
+            $model->status = Yii::$app->request->post()['status'];
+            $model->address = Yii::$app->request->post()['address'];
+            $model->description = Yii::$app->request->post()['description'];
+            Yii::$app->SetValues->Attributes($model);
+            if ($model->validate() && $model->save()) {
+                echo json_encode(array("con" => "1", 'id' => $model->id, 'name' => $model->name)); //Success
+                exit;
+            } else {
+                var_dump($model->getErrors());
+                exit;
+                $array = $model->getErrors();
+                $error = isset($array['name']['0']) ? $array['name']['0'] : 'Internal error';
+                echo json_encode(array("con" => "2", 'error' => $error));
+                exit;
+            }
+        }
+        return $this->renderAjax('create-transporter', [
+                    'model' => $model,
+        ]);
     }
 
 }

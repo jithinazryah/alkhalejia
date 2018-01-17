@@ -597,3 +597,21 @@ a {
     top: 32%;
     right: 10px;
 }
+.extra_btn {
+    font-weight: 600;
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    font-size: 12px;
+    color: #17a0bf!important;
+    border: none;
+    border: none ! important;
+    background-color: #f9f9f9 !important;
+}
+.popup-err-msg{
+    color: red;
+    position: absolute;
+    top: 60px;
+    left: 15px;
+    font-size: 11px;
+}

@@ -8,6 +8,8 @@ use common\models\Materials;
 use common\models\Contacts;
 use common\models\Yard;
 use yii\web\UploadedFile;
+use yii\helpers\Url;
+use common\components\ModalViewWidget;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\DailyEntry */
@@ -15,7 +17,9 @@ use yii\web\UploadedFile;
 ?>
 
 <div class="daily-entry-form form-inline">
-
+    <?php
+    echo ModalViewWidget::widget();
+    ?>
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
@@ -37,25 +41,14 @@ use yii\web\UploadedFile;
 
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
-            <?php $suppliers = ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 2]), 'id', 'name'); ?>
+            <?php $suppliers = ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 2, 'service' => 1]), 'id', 'name'); ?>
             <?= $form->field($model, 'supplier')->dropDownList($suppliers, ['prompt' => '-Choose a Supplier-']) ?>
-
+            <?= Html::button('<span> Add Supplier</span>', ['value' => Url::to('supplier'), 'class' => 'btn btn-icon btn-white extra_btn supplier_add modalButton']) ?>
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
-            <?php
-            $transports = array();
-            $services = \common\models\Services::find()->select(['id'])->where(['category' => 2])->asArray()->all();
-            if (!empty($services)) {
-                foreach ($services as $service) {
-                    $service_[] = $service['id'];
-                }
-//            print_r($service_);exit;
-//            $transports = Contacts::find()->where(['in', 'service', $service_])->all();
-                $transports = ArrayHelper::map(Contacts::find()->where(['in', 'service', $service_])->all(), 'id', 'name');
-            }
-            ?>
-
-            <?= $form->field($model, 'transport')->dropDownList($transports, ['prompt' => '-Choose a Transport-']) ?>
+            <?php $transports = ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 2, 'service' => 2]), 'id', 'name'); ?>
+            <?= $form->field($model, 'transport')->dropDownList($transports, ['prompt' => '-Choose a Transporter-']) ?>
+            <?= Html::button('<span> Add Transporter</span>', ['value' => Url::to('transporter'), 'class' => 'btn btn-icon btn-white extra_btn supplier_add modalButton']) ?>
         </div>
     </div>
     <div class="row">
@@ -85,3 +78,12 @@ use yii\web\UploadedFile;
     <?php ActiveForm::end(); ?>
 
 </div>
+<script>
+    $(document).on('click', '.modalButton', function () {
+        $('#modal').modal('show')
+                .find('#modalContent')
+                .load($(this).attr("value"));
+
+    });
+</script>
+
