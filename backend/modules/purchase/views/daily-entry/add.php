@@ -182,6 +182,8 @@ $this->params['breadcrumbs'][] = $this->title;
         }.field-appointmentdetails-quantity{
                 width:70%!important;
                 display: inline-block;
+        } .formm td{
+                padding: 5px !important;
         }
 
 </style>

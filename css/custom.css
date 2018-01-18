@@ -619,3 +619,7 @@ a {
         padding: 4px !important;
         font-size: 10px !important;
 }
+#appointment-table .form-control{
+        padding: 4px !important;
+        font-size: 12px !important;
+}

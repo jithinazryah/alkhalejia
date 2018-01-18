@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use common\models\Materials;
 use common\models\Contacts;
+use kartik\daterange\DateRangePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\DailyEntrySearch */
@@ -35,7 +36,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'columns' => [
                                                     ['class' => 'yii\grid\SerialColumn'],
 //                            'id',
-                                                'received_date',
+                                                // 'received_date',
+                                                [
+                                                    'attribute' => 'received_date',
+                                                    'value' => function($model) {
+                                                            return \Yii::$app->formatter->asDatetime($model->received_date, "php:d-M-Y h:i s");
+                                                    },
+                                                    'filter' => DateRangePicker::widget(['model' => $searchModel, 'attribute' => 'received_date', 'pluginOptions' => ['format' => 'd-m-Y', 'autoUpdateInput' => false]]),
+                                                ],
                                                     [
                                                     'attribute' => 'material',
                                                     'format' => 'raw',
