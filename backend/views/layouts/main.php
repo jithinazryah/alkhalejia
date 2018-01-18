@@ -15,6 +15,7 @@ AppAsset::register($this);
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <link rel="shortcut icon" href="<?= yii::$app->homeUrl; ?>images/fav.png" type="image/png" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -46,11 +47,11 @@ AppAsset::register($this);
                         <!-- logo -->
                         <div class="logo">
                             <a href="" class="logo-expanded">
-                                <h2>Al Khalejia</h2>
+                                <img width="61" height="" src="<?= Yii::$app->homeUrl ?>images/logo.png"/>
                             </a>
 
                             <a href="" class="logo-collapsed">
-                                <h2>ALK</h2>
+                                <img width="39" height="" src="<?= Yii::$app->homeUrl ?>images/fav.png"/>
                             </a>
                         </div>
                         <!-- This will toggle the mobile menu and will be visible only on mobile devices -->
@@ -105,6 +106,9 @@ AppAsset::register($this);
                                 <ul>
                                     <li>
                                         <?= Html::a('Daily Entry', ['/purchase/daily-entry/index'], ['class' => 'title']) ?>
+                                    </li>
+                                    <li>
+                                        <?= Html::a('Payments', ['/purchase/payment/index'], ['class' => 'title']) ?>
                                     </li>
                                 </ul>
                             </li>

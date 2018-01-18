@@ -27,7 +27,7 @@ $this->title = 'Login';
             <div class="errors-container">
             </div>
             <div class="forgot-header">
-                <h2>AL KHALEJIA</h2>
+                <img width="150" height="" src="<?= Yii::$app->homeUrl ?>images/logo.png"/>
                 <h4>Forgot Your Password ?</h4>
                 <hr/>
                 <h5>Let us help you</h5>

@@ -83,25 +83,9 @@
                 <th style="width:100%">
                     <div class="header">
                         <div class="main-left">
-                            <?php
-                            if (!empty($epda_template)) {
-                                if ($epda_template->left_logo != '') {
-                                    $dirPath = Yii::getAlias(Yii::$app->params['uploadPath']) . '/uploads/report_template/' . $epda_template->id . '/' . $epda_template->left_logo;
-                                    if (file_exists($dirPath)) {
-                                        $img = '<img width="90px" height="75px" src="' . Yii::$app->homeUrl . 'uploads/report_template/' . $epda_template->id . '/' . $epda_template->left_logo . '"/>';
-                                    } else {
-                                        $img = '<img width="90px" height="75px" src="' . Yii::$app->homeUrl . 'images/logoleft.jpg"/>';
-                                    }
-                                } else {
-                                    $img = '<img width="90px" height="75px" src="' . Yii::$app->homeUrl . 'images/logoleft.jpg"/>';
-                                }
-                            } else {
-                                $img = '<img width="90px" height="75px" src="' . Yii::$app->homeUrl . 'images/logoleft.jpg"/>';
-                            }
-                            echo $img;
-                            ?>
+                            <img width="" height="" src="<?= Yii::$app->homeUrl ?>images/logo.png"/>
                         </div>
-                        <div class="main-right">
+                        <div class="main-right" style="padding-top: 12px;">
                             <div class="heading" style="font-weight:normal">
                                 <strong style="text-transform:uppercase;font-size:11px;">Alkhalejia For Aggregates</strong>
                                 <p>Trading,import and export</p>
@@ -119,7 +103,7 @@
         <tbody>
             <tr>
                 <td>
-                    <div class="heading"><h2 style="font-size:17px;letter-spacing: 4px;">TAX INVOICE</h2></div>
+                    <div class="heading"><h2 style="font-size:17px;letter-spacing: 4px;padding-top: 10px;">TAX INVOICE</h2></div>
                     <br/>
                     <div class="close-estimate-heading-top" style="margin-bottom:30px;">
                         <div class="main-left left-address" style="padding-top: 10px;">
@@ -179,7 +163,7 @@
 
             <tr>
                 <td>
-                    <div class="invoice-details"style="margin-top: 10px;min-height: 450px;">
+                    <div class="invoice-details"style="margin-top: 10px;min-height: 375px;">
                         <table style="width:100%;border-collapse: collapse;text-align: left;">
                             <tr style="background: #4e5254;color: white !important;">
                                 <th style="width: 10%;font-size: 12px;padding: 10px 5px;">Sl No.</th>
@@ -275,7 +259,7 @@
                     <br/>
 
 
-                    <div class="invoice-details"style="margin-bottom: 10px;margin-top: 15px;">
+                    <div class="invoice-details"style="margin-bottom: 10px;margin-top: 90px;">
                         <table style="width:100%;">
                             <tr>
                                 <th style="width: 33%;font-size: 10px;padding: 10px 0px;">Signed By</th>
