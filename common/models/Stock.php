@@ -31,90 +31,90 @@ use Yii;
  */
 class Stock extends \yii\db\ActiveRecord {
 
-    /**
-     * @inheritdoc
-     */
-    public static function tableName() {
-        return 'stock';
-    }
+        /**
+         * @inheritdoc
+         */
+        public static function tableName() {
+                return 'stock';
+        }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules() {
-        return [
-            [['transaction_type', 'transaction_id', 'material_id', 'yard_id', 'quantity_in', 'quantity_out', 'weight_in', 'weight_out', 'status', 'CB', 'UB'], 'integer'],
-            [['transaction_id'], 'required'],
-            [['material_cost', 'total_cost'], 'number'],
-            [['DOC', 'DOU'], 'safe'],
-            [['material_code', 'yard_code'], 'string', 'max' => 20],
-            [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Materials::className(), 'targetAttribute' => ['material_id' => 'id']],
-            [['yard_id'], 'exist', 'skipOnError' => true, 'targetClass' => Yard::className(), 'targetAttribute' => ['yard_id' => 'id']],
-        ];
-    }
+        /**
+         * @inheritdoc
+         */
+        public function rules() {
+                return [
+                        [['transaction_type', 'transaction_id', 'material_id', 'yard_id', 'quantity_out', 'weight_in', 'weight_out', 'status', 'CB', 'UB'], 'integer'],
+                        [['transaction_id'], 'required'],
+                        [['material_cost', 'total_cost', 'quantity_in',], 'number'],
+                        [['DOC', 'DOU'], 'safe'],
+                        [['material_code', 'yard_code'], 'string', 'max' => 20],
+                        [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Materials::className(), 'targetAttribute' => ['material_id' => 'id']],
+                        [['yard_id'], 'exist', 'skipOnError' => true, 'targetClass' => Yard::className(), 'targetAttribute' => ['yard_id' => 'id']],
+                ];
+        }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels() {
-        return [
-            'id' => 'ID',
-            'transaction_type' => 'Transaction Type',
-            'transaction_id' => 'Transaction ID',
-            'material_id' => 'Material ID',
-            'material_code' => 'Material Code',
-            'yard_id' => 'Yard ID',
-            'yard_code' => 'Yard Code',
-            'material_cost' => 'Material Cost',
-            'quantity_in' => 'Quantity In',
-            'quantity_out' => 'Quantity Out',
-            'weight_in' => 'Weight In',
-            'weight_out' => 'Weight Out',
-            'total_cost' => 'Total Cost',
-            'status' => 'Status',
-            'CB' => 'Cb',
-            'UB' => 'Ub',
-            'DOC' => 'Doc',
-            'DOU' => 'Dou',
-        ];
-    }
+        /**
+         * @inheritdoc
+         */
+        public function attributeLabels() {
+                return [
+                    'id' => 'ID',
+                    'transaction_type' => 'Transaction Type',
+                    'transaction_id' => 'Transaction ID',
+                    'material_id' => 'Material ID',
+                    'material_code' => 'Material Code',
+                    'yard_id' => 'Yard ID',
+                    'yard_code' => 'Yard Code',
+                    'material_cost' => 'Material Cost',
+                    'quantity_in' => 'Quantity In',
+                    'quantity_out' => 'Quantity Out',
+                    'weight_in' => 'Weight In',
+                    'weight_out' => 'Weight Out',
+                    'total_cost' => 'Total Cost',
+                    'status' => 'Status',
+                    'CB' => 'Cb',
+                    'UB' => 'Ub',
+                    'DOC' => 'Doc',
+                    'DOU' => 'Dou',
+                ];
+        }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMaterial() {
-        return $this->hasOne(Materials::className(), ['id' => 'material_id']);
-    }
+        /**
+         * @return \yii\db\ActiveQuery
+         */
+        public function getMaterial() {
+                return $this->hasOne(Materials::className(), ['id' => 'material_id']);
+        }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getYard() {
-        return $this->hasOne(Yard::className(), ['id' => 'yard_id']);
-    }
+        /**
+         * @return \yii\db\ActiveQuery
+         */
+        public function getYard() {
+                return $this->hasOne(Yard::className(), ['id' => 'yard_id']);
+        }
 
-    public function getQtyTotal($id) {
-        $qty_in__sum = Stock::find()->where(['material_id' => $id])->sum('quantity_in');
-        $qty_out__sum = Stock::find()->where(['material_id' => $id])->sum('quantity_out');
-        $diff = $qty_in__sum - $qty_out__sum;
-        return $diff;
-    }
+        public function getQtyTotal($id) {
+                $qty_in__sum = Stock::find()->where(['material_id' => $id])->sum('quantity_in');
+                $qty_out__sum = Stock::find()->where(['material_id' => $id])->sum('quantity_out');
+                $diff = $qty_in__sum - $qty_out__sum;
+                return $diff;
+        }
 
-    public function dailyQtyTotal($id, $doc) {
-        $qty_in__sum = Stock::find()->where(['material_id' => $id, 'DOC' => $doc])->sum('quantity_in');
-        $qty_out__sum = Stock::find()->where(['material_id' => $id, 'DOC' => $doc])->sum('quantity_out');
-        $diff = $qty_in__sum - $qty_out__sum;
-        return $diff;
-    }
+        public function dailyQtyTotal($id, $doc) {
+                $qty_in__sum = Stock::find()->where(['material_id' => $id, 'DOC' => $doc])->sum('quantity_in');
+                $qty_out__sum = Stock::find()->where(['material_id' => $id, 'DOC' => $doc])->sum('quantity_out');
+                $diff = $qty_in__sum - $qty_out__sum;
+                return $diff;
+        }
 
-    public function monthlyQtyTotal($id, $doc) {
-        $date = date('Y-m', strtotime($doc));
-        $date1 = $date . '-01';
-        $date2 = $date . '-31';
-        $qty_in__sum = Stock::find()->where(['material_id' => $id])->andWhere(['between', 'DOC', $date1, $date2])->sum('quantity_in');
-        $qty_out__sum = Stock::find()->where(['material_id' => $id])->andWhere(['between', 'DOC', $date1, $date2])->sum('quantity_out');
-        $diff = $qty_in__sum - $qty_out__sum;
-        return $diff;
-    }
+        public function monthlyQtyTotal($id, $doc) {
+                $date = date('Y-m', strtotime($doc));
+                $date1 = $date . '-01';
+                $date2 = $date . '-31';
+                $qty_in__sum = Stock::find()->where(['material_id' => $id])->andWhere(['between', 'DOC', $date1, $date2])->sum('quantity_in');
+                $qty_out__sum = Stock::find()->where(['material_id' => $id])->andWhere(['between', 'DOC', $date1, $date2])->sum('quantity_out');
+                $diff = $qty_in__sum - $qty_out__sum;
+                return $diff;
+        }
 
 }
