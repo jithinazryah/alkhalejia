@@ -70,11 +70,12 @@ class PurchaseOrderMstController extends Controller {
             $invoice = UploadedFile::getInstance($model, 'invoice');
             $email_confirm = UploadedFile::getInstance($model, 'email_confirmation');
             $delivery_note = UploadedFile::getInstance($model, 'delivery_note');
-            $model = $this->SetImageValues($model, $invoice, $email_confirm, $delivery_note);
+            $other = UploadedFile::getInstance($model, 'other');
+            $model = $this->SetImageValues($model, $invoice, $email_confirm, $delivery_note, $other);
             if ($model->save()) {
-                $this->SaveImage($model, $invoice, $email_confirm, $delivery_note);
+                $this->SaveImage($model, $invoice, $email_confirm, $delivery_note, $other);
                 $this->SaveAdditionalInfo($model);
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['add', 'id' => $model->id]);
             }
         } return $this->render('create', [
                     'model' => $model,
@@ -92,15 +93,17 @@ class PurchaseOrderMstController extends Controller {
         $invoice_ = $model->invoice;
         $email_confirmation_ = $model->email_confirmation;
         $delivery_note_ = $model->delivery_note;
+        $other_ = $model->other;
         if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model)) {
             $model->date = date('Y-m-d', strtotime($model->date));
             $model->eta = date('Y-m-d', strtotime($model->date));
             $invoice = UploadedFile::getInstance($model, 'invoice');
             $email_confirm = UploadedFile::getInstance($model, 'email_confirmation');
             $delivery_note = UploadedFile::getInstance($model, 'delivery_note');
-            $model = $this->SetImageUpdate($model, $invoice, $email_confirm, $delivery_note, $invoice_, $email_confirmation_, $delivery_note_);
+            $other = UploadedFile::getInstance($model, 'other');
+            $model = $this->SetImageUpdate($model, $invoice, $email_confirm, $delivery_note, $other, $invoice_, $email_confirmation_, $delivery_note_, $other_);
             if ($model->save()) {
-                $this->SaveImage($model, $invoice, $email_confirm, $delivery_note);
+                $this->SaveImage($model, $invoice, $email_confirm, $delivery_note, $other);
                 $this->SaveAdditionalInfo($model);
                 return $this->redirect(['update', 'id' => $model->id]);
             }
@@ -214,15 +217,18 @@ class PurchaseOrderMstController extends Controller {
      * for Set Image Values
      */
 
-    public function SetImageValues($model, $invoice, $email_confirm, $delivery_note) {
+    public function SetImageValues($model, $invoice, $email_confirm, $delivery_note, $other) {
         if (!empty($invoice)) {
             $model->invoice = $invoice->extension;
         }
-        if (!empty($invoice)) {
+        if (!empty($email_confirm)) {
             $model->email_confirmation = $email_confirm->extension;
         }
-        if (!empty($invoice)) {
+        if (!empty($delivery_note)) {
             $model->delivery_note = $delivery_note->extension;
+        }
+        if (!empty($other)) {
+            $model->other = $other->extension;
         }
         return $model;
     }
@@ -231,7 +237,7 @@ class PurchaseOrderMstController extends Controller {
      * for Set Image Values
      */
 
-    public function SaveImage($model, $invoice, $email_confirm, $delivery_note) {
+    public function SaveImage($model, $invoice, $email_confirm, $delivery_note, $other) {
         if (!empty($invoice)) {
             $this->upload($model, $invoice, 'invoice');
         }
@@ -241,6 +247,9 @@ class PurchaseOrderMstController extends Controller {
         if (!empty($delivery_note)) {
             $this->upload($model, $delivery_note, 'delivery_note');
         }
+        if (!empty($other)) {
+            $this->upload($model, $other, 'other');
+        }
         return;
     }
 
@@ -248,7 +257,7 @@ class PurchaseOrderMstController extends Controller {
      * for Set Image Values on update
      */
 
-    public function SetImageUpdate($model, $invoice, $email_confirm, $delivery_note, $invoice_, $email_confirmation_, $delivery_note_) {
+    public function SetImageUpdate($model, $invoice, $email_confirm, $delivery_note, $other, $invoice_, $email_confirmation_, $delivery_note_, $other_) {
         if (empty($invoice)) {
             $model->invoice = $invoice_;
         } else {
@@ -263,6 +272,11 @@ class PurchaseOrderMstController extends Controller {
             $model->delivery_note = $delivery_note_;
         } else {
             $model->delivery_note = $delivery_note->extension;
+        }
+        if (empty($other)) {
+            $model->other = $other_;
+        } else {
+            $model->other = $other->extension;
         }
         return $model;
     }
@@ -331,9 +345,13 @@ class PurchaseOrderMstController extends Controller {
         $order_details = PurchaseOrderDtl::findAll(['purchase_order_mst_id' => $id]);
         $order = PurchaseOrderMst::findOne($id);
         if ($model->load(Yii::$app->request->post())) {
-            $model->appointment_id = $id;
-            if ($model->save()) {
+            $model->purchase_order_mst_id = $id;
+            if (Yii::$app->SetValues->Attributes($model) && $model->save()) {
                 return $this->redirect(['add', 'id' => $id]);
+            } else {
+                var_dump($model->getErrors());
+                echo 'sdgfd';
+                exit;
             }
         }
 

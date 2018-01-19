@@ -33,6 +33,10 @@ Use common\models\Ports;
 
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?php $categorys = ArrayHelper::map(common\models\TransactionCategory::findAll(['status' => 1,]), 'id', 'category'); ?>
+            <?= $form->field($model, 'category')->dropDownList($categorys, ['prompt' => '-Choose a Category-']) ?>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php $vessel = ArrayHelper::map(Ships::findAll(['status' => 1]), 'id', 'name'); ?>
             <?= $form->field($model, 'vessel')->dropDownList($vessel, ['prompt' => '--Select--']) ?>
 
@@ -41,11 +45,12 @@ Use common\models\Ports;
             <?= $form->field($model, 'reference_no')->textInput(['maxlength' => true]) ?>
 
         </div>
-        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'appointment_no')->textInput(['maxlength' => true]) ?>
-        </div>
     </div>
     <div class="row">
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?php $appointment_nos = ArrayHelper::map(common\models\Appointment::findAll(['status' => 1,]), 'id', 'appointment_number'); ?>
+            <?= $form->field($model, 'appointment_no')->dropDownList($appointment_nos, ['prompt' => '-Choose a Appointment-']) ?>
+        </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php $suppliers = ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 2, 'service' => 1]), 'id', 'name'); ?>
             <?= $form->field($model, 'attenssion')->dropDownList($suppliers, ['prompt' => '-Choose a Supplier-']) ?>
@@ -67,9 +72,14 @@ Use common\models\Ports;
             ]);
             ?>
         </div>
-        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+    </div>
+    <div class="row">
+        <div class='col-md-6 col-sm-6 col-xs-12 left_padd'>
             <?php $ports = ArrayHelper::map(Ports::findAll(['status' => 1]), 'id', 'port_name'); ?>
             <?= $form->field($model, 'port')->dropDownList($ports, ['prompt' => '--Select--']) ?>
+        </div>
+        <div class='col-md-6 col-sm-6 col-xs-12 left_padd'>
+            <?= $form->field($model, 'status')->dropDownList(['1' => 'Enabled', '0' => 'Disabled']) ?>
         </div>
     </div>
     <div class="row">
@@ -95,7 +105,7 @@ Use common\models\Ports;
             <?= $form->field($model, 'delivery_note')->fileInput() ?>
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'status')->dropDownList(['1' => 'Enabled', '0' => 'Disabled']) ?>
+            <?= $form->field($model, 'other')->fileInput() ?>
         </div>
     </div>
     <hr class="appoint_history" />

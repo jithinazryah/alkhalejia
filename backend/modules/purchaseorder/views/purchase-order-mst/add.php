@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\Pjax;
 use common\models\Contacts;
 use yii\helpers\ArrayHelper;
 use common\components\PurchaseOrderWidget;
@@ -10,8 +9,8 @@ use common\components\PurchaseOrderWidget;
 /* @var $this yii\web\View */
 /* @var $model common\models\EstimatedProforma */
 
-$this->title = 'Add Daily Entry Details';
-$this->params['breadcrumbs'][] = ['label' => 'Daily Entry Details', 'url' => ['index']];
+$this->title = 'Add Purchase Order Details';
+$this->params['breadcrumbs'][] = ['label' => 'Purchase Order Details', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -50,23 +49,29 @@ $this->params['breadcrumbs'][] = $this->title;
                     </li>
 
                 </ul>
+
                 <!------------------------------------------------------------------------------------------------------------->
 
 
                 <!------------------------------------------- Daily Entry Details ------------------------------------------------------------------>
+                <?php
+//                Pjax::begin(['id' => 'some_pjax_id']);
+                ?>
                 <div class="outterr">
 
                     <div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
+
                         <table cellspacing="0" class="table table-small-font table-bordered table-striped" id="daily-entry-table">
                             <thead>
                                 <tr>
-                                    <th data-priority="1" style="width:2%">#</th>
-                                    <th data-priority="1" style="width:10%">Material</th>
-                                    <th data-priority="3" style="width:10%">Rate</th>
-                                    <th data-priority="1" style="width:8%">NET WEIGHT</th>
-                                    <th data-priority="1" style="width:10%">RATE</th>
-                                    <th data-priority="1" style="width:10%">TOTAL</th>
-                                    <th data-priority="1" style="width:10%;">TRANSPORTER AMOUNT</th>
+                                    <th data-priority="1" style="widyh:2%">#</th>
+                                    <th data-priority="1" style="width:10%">MATERIAL</th>
+                                    <th data-priority="1" style="width:8%">RATE</th>
+                                    <th data-priority="1" style="width:5%">QUANTITY</th>
+                                    <th data-priority="1" style="width:8%">TOTAL</th>
+                                    <th data-priority="1" style="width:10%;">VAT</th>
+                                    <th data-priority="1" style="width:5%;display: none;">VAT AMOUNT</th>
+                                    <th data-priority="1" style="width:8%">SUB TOTAL</th>
                                     <th data-priority="1">DESCRIPTION</th>
                                     <th data-priority="1" style="width:5%">ACTIONS</th>
                                 </tr>
@@ -77,46 +82,86 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?php
                                 $epdatotal = 0;
                                 $tot_subtoatl = 0;
-                                foreach ($estimates as $estimate) {
+                                foreach ($order_details as $order_detail) {
                                     $i++;
                                     ?>
-
                                     <tr>
                                         <td><?= $i; ?></td>
-                                        <td><?= $estimate->ticket_no; ?></td>
-                                        <td><?= $estimate->truck_number; ?></td>
-                                        <td class="edit_daily" id="<?= $estimate->id ?>-net_weight" val="<?= $estimate->net_weight; ?>"><?= Yii::$app->SetValues->NumberFormat($estimate->net_weight); ?></td>
-                                        <td class="edit_daily" id="<?= $estimate->id ?>-rate" val="<?= $estimate->rate ?>"><?= $estimate->rate; ?></td>
-                                        <td><?= $estimate->total; ?></td>
-                                        <td class="edit_daily" id="<?= $estimate->id ?>-transport_amount" val="<?= $estimate->transport_amount ?>"><?= $estimate->transport_amount; ?></td>
-                                        <td><?= $estimate->description; ?></td>
+                                        <td class="" drop_id="estimatedproforma-material_id" id="<?= $order_detail->id ?>-material_id" val="<?= $order_detail->material_id ?>"><?= $order_detail->material_id ?></td>
+                                        <td class="edit_text" id="<?= $order_detail->id ?>-unit_price"  val="<?= $order_detail->unit_price ?>">
+                                            <?php
+                                            if ($order_detail->unit_price == '') {
+                                                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                            } else {
+                                                echo Yii::$app->SetValues->NumberFormat($order_detail->unit_price);
+                                            }
+                                            ?>
+                                        </td>
+                                        <td class="edit_text" id="<?= $order_detail->id ?>-qty" val="<?= $order_detail->qty ?>">
+                                            <?php
+                                            if ($order_detail->qty != '') {
+                                                if (isset($order_detail->unit) && $order_detail->unit != '') {
+                                                    $unit_detail = common\models\Units::findOne($order_detail->unit);
+                                                    echo $order_detail->qty . ' (' . $unit_detail->unit_symbol . ')';
+                                                } else {
+                                                    echo $order_detail->qty;
+                                                }
+                                            }
+                                            ?>
+                                        </td>
+                                        <td  id="<?= $order_detail->id ?>-total" val="<?= $order_detail->total ?>"><?php if ($order_detail->total != '') { ?> <?= $order_detail->total ?><?php } ?></td>
+                                        <td  id="<?= $order_detail->id ?>-tax" val="<?= $order_detail->tax ?>">
+
+                                            <?php
+                                            $tax = \common\models\Tax::findOne($order_detail->tax);
+                                            if ($order_detail->tax_amount != '') {
+                                                ?> <?= $order_detail->tax_amount . ' (' . $tax->value . '%)' ?><?php } ?>
+                                        </td>
+                                        <td style="display:none" id="<?= $order_detail->id ?>-tax_amount" val="<?= $order_detail->tax_amount ?>"><?php if ($order_detail->tax_amount != '') { ?> <?= $order_detail->tax_amount ?><?php } ?></td>
+                                        <td id="<?= $order_detail->id ?>-sub_total" val="<?= $order_detail->sub_total ?>"><?php if ($order_detail->sub_total != '') { ?> <?= $order_detail->sub_total ?><?php } ?></td>
+                                        <td class="edit_text" id="<?= $order_detail->id ?>-description" val="<?= $order_detail->description ?>"><?php if ($order_detail->description != '') { ?> <span title="<?= $order_detail->description ?>"><?= substr($order_detail->description, 0, 30) . '...'; ?></span><?php } ?></td>
+
                                         <td>
                                             <?php
-                                            if ($daily_entry->status != 0) {
+                                            if ($appointment->status != 0) {
                                                 ?>
-                                                <?= Html::a('<i class="fa fa-pencil"></i>', ['/purchase/daily-entry/add', 'id' => $id, 'prfrma_id' => $estimate->id], ['class' => '', 'tittle' => 'Edit']) ?>
-                                                <?php // Html::a('<i class="fa fa-remove"></i>', ['/purchase/daily-entry/delete-detail', 'id' => $estimate->id], ['class' => '', 'tittle' => 'Edit', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
+                                                <?= Html::a('<i class="fa fa-pencil"></i>', ['/appointment/appointment/add', 'id' => $id, 'prfrma_id' => $estimate->id], ['class' => '', 'tittle' => 'Edit']) ?>
+                                                <?= Html::a('<i class="fa fa-remove"></i>', ['/appointment/appointment/delete-detail', 'id' => $estimate->id], ['class' => '', 'tittle' => 'Edit', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
                                             <?php } ?>
+                                            <a>
+                                                <?= Html::beginForm(['appointment/selected-report'], 'post', ['target' => 'print_popup', 'onSubmit' => "window.open('about:blank','print_popup','width=1200,height=600');",]) ?>
+                                                <input type="hidden" name="app_id" value="<?= $order->id ?>">
+                                            </a>
                                         </td>
+
+
+                                        <?php
+                                        $epdatotal += $order_detail->total;
+                                        $tot_subtoatl += $order_detail->sub_total;
+                                        $grand_epdatotal += $order_detail->total;
+                                        $grand_tot_subtoatl += $order_detail->sub_total;
+                                        ?>
                                     </tr>
                                     <?php
                                 }
                                 ?>
 
                                 <?php
-                                if ($daily_entry->status != 0) {
+                                if ($order->status != 0) {
                                     ?>
 
                                     <tr class="formm">
                                         <?php $form = ActiveForm::begin(); ?>
                                         <td></td>
-                                        <td><?= $form->field($model, 'ticket_no')->textInput(['placeholder' => ' Ticket No', 'required' => TRUE])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'truck_number')->textInput(['placeholder' => ' Truck No', 'required' => TRUE])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'net_weight')->textInput(['placeholder' => ' Net Weight', 'required' => TRUE])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'rate')->textInput(['placeholder' => ' Rate', 'required' => TRUE])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'total')->textInput(['placeholder' => ' Total', 'required' => TRUE, 'readonly' => TRUE])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'transport_amount')->textInput(['placeholder' => ' Transporter Amount', 'required' => TRUE])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'description')->textInput(['placeholder' => ' Description'])->label(false) ?></td>
+                                        <td><?= $form->field($model, 'material_id')->dropDownList(ArrayHelper::map(common\models\Materials::findAll(['status' => 1]), 'id', 'name'), ['prompt' => '-Material-'])->label(false); ?></td>
+                                        <td><?= $form->field($model, 'unit_price')->textInput(['placeholder' => ' Rate'])->label(false) ?></td>
+                                        <td><?= $form->field($model, 'qty')->textInput(['placeholder' => 'Quantity', 'value' => 1,])->label(false) ?><span id="unit-text" style="margin-left:5px"></span></td>
+                                        <td><?= $form->field($model, 'total')->textInput(['placeholder' => 'Total', 'readonly' => true])->label(false) ?></td>
+                                        <td><div style="border: 1px solid #9a9a9a;height: 40px;"><?= $form->field($model, 'tax')->dropDownList(ArrayHelper::map(common\models\Tax::findAll(['status' => 1]), 'id', 'taxname'), ['prompt' => '-VAT-', 'style' => 'border:none'])->label(false); ?>   <span id="tax-amount-show"></span></div></td>
+                                        <td style="display:none"><?= $form->field($model, 'tax_amount')->textInput(['placeholder' => 'Vat Amount', 'readonly' => true])->label(false) ?></td>
+                                        <td><?= $form->field($model, 'sub_total')->textInput(['placeholder' => 'Sub Total', 'readonly' => true])->label(false) ?></td>
+                                        <td><?= $form->field($model, 'description')->textarea(['placeholder' => 'Comment'])->label(false) ?></td>
+                                        <?= $form->field($model, 'unit')->hiddenInput()->label(false) ?>
                                         <td><?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => 'btn btn-success']) ?>
                                         </td>
 
@@ -129,14 +174,16 @@ $this->params['breadcrumbs'][] = $this->title;
                             </tbody>
 
                         </table>
+
                     </div>
 
                 </div>
+                <?php // Pjax::end(); ?>
 
                 <!------------------------------------------------------------------------------------------------------------->
 
                 <?php
-                if ($appointment->status != 0) {
+                if ($order->status != 0) {
                     ?>
                     <div style="float:right;padding-top: 5px;">
                         <?php

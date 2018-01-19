@@ -18,9 +18,9 @@ class PurchaseOrderDtlSearch extends PurchaseOrderDtl
     public function rules()
     {
         return [
-            [['id', 'purchase_order_mst_id', 'material_id', 'unit', 'qty', 'tax', 'status', 'CB', 'UB'], 'integer'],
-            [['material_code', 'material_name', 'description', 'DOC', 'DOU'], 'safe'],
-            [['unit_price', 'total', 'tax_amount', 'sub_total'], 'number'],
+            [['id', 'purchase_order_mst_id', 'qty', 'status', 'CB', 'UB'], 'integer'],
+            [['total'], 'number'],
+            [['description', 'DOC', 'DOU'], 'safe'],
         ];
     }
 
@@ -62,14 +62,8 @@ class PurchaseOrderDtlSearch extends PurchaseOrderDtl
         $query->andFilterWhere([
             'id' => $this->id,
             'purchase_order_mst_id' => $this->purchase_order_mst_id,
-            'material_id' => $this->material_id,
-            'unit' => $this->unit,
-            'unit_price' => $this->unit_price,
             'qty' => $this->qty,
             'total' => $this->total,
-            'tax' => $this->tax,
-            'tax_amount' => $this->tax_amount,
-            'sub_total' => $this->sub_total,
             'status' => $this->status,
             'CB' => $this->CB,
             'UB' => $this->UB,
@@ -77,9 +71,7 @@ class PurchaseOrderDtlSearch extends PurchaseOrderDtl
             'DOU' => $this->DOU,
         ]);
 
-        $query->andFilterWhere(['like', 'material_code', $this->material_code])
-            ->andFilterWhere(['like', 'material_name', $this->material_name])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

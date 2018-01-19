@@ -44,10 +44,10 @@ class PurchaseOrderMst extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['date', 'eta', 'DOC', 'DOU', 'payment_terms', 'agent_details'], 'safe'],
-            [['vessel', 'attenssion', 'port', 'status', 'CB', 'UB'], 'integer'],
+            [['date', 'eta', 'DOC', 'DOU', 'payment_terms', 'agent_details', 'category', 'other'], 'safe'],
+            [['vessel', 'attenssion', 'port', 'status', 'CB', 'UB', 'appointment_no'], 'integer'],
             [['address'], 'string'],
-            [['reference_no', 'appointment_no', 'invoice_no', 'invoice', 'email_confirmation', 'delivery_note'], 'string', 'max' => 100],
+            [['reference_no', 'invoice_no', 'invoice', 'email_confirmation', 'delivery_note'], 'string', 'max' => 100],
         ];
     }
 
@@ -62,8 +62,10 @@ class PurchaseOrderMst extends \yii\db\ActiveRecord {
             'reference_no' => 'Reference No',
             'appointment_no' => 'Appointment No',
             'invoice_no' => 'Invoice No',
-            'attenssion' => 'Attenssion',
+            'attenssion' => 'Supplier',
             'address' => 'Address',
+            'category' => 'Category',
+            'other' => 'Other',
             'invoice' => 'Invoice',
             'email_confirmation' => 'Email Confirmation',
             'delivery_note' => 'Delivery Note',
