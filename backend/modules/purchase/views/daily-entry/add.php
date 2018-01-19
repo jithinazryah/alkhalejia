@@ -65,9 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="outterr">
 
                                         <div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
-                                                <?php
-                                                Pjax::begin(['id' => 'daily_entry_id']);
-                                                ?>
+
                                                 <table cellspacing="0" class="table table-small-font table-bordered table-striped" id="daily-entry-table">
                                                         <thead>
                                                                 <tr>
@@ -140,7 +138,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         </tbody>
 
                                                 </table>
-                                                <?php Pjax::end(); ?>
+
                                         </div>
 
                                 </div>

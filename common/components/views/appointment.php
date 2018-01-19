@@ -20,6 +20,9 @@ use common\models\Vessel;
         .appoint td{
                 padding: 10px;
         }
+        .appoint  .labell{
+                width:10% !important;
+        }
 </style>
 <table class="appoint">
         <tr>

@@ -275,7 +275,9 @@ class AppointmentController extends Controller {
                                 $flag = 1;
                                 if ($value->service_id == 1) {
                                         if ($this->SaveStock($value)) {
-                                                $flag = 1;
+                                                if ($this->MaterialUse($value)) {
+                                                        $flag = 1;
+                                                }
                                         } else {
                                                 $flag = 0;
                                         }
@@ -332,6 +334,15 @@ class AppointmentController extends Controller {
                 }
         }
 
+        public function MaterialUse($details) {
+                $model = new \common\models\MaterialUse;
+                $model->appointment_id = $details->appointment_id;
+                $model->material_id = $details->supplier;
+                $model->quantity = $details->quantity;
+                $model->sell_date = date('Y-m-d');
+                $model->save();
+        }
+
         /**
          * Deletes an existing Appointment model.
          * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -381,7 +392,7 @@ class AppointmentController extends Controller {
 
                 if (Yii::$app->request->isAjax) {
                         $service_id = $_POST['service_id'];
-                        if ($service_id == 1) {
+                        if ($service_id == 16) {
                                 $materials = \common\models\Materials::find()->where(['status' => 1])->all();
                                 $options = '<option value="">-Materials-</option>';
                                 foreach ($materials as $materials) {
