@@ -30,35 +30,31 @@ use Yii;
  *
  * @property PurchaseOrderDtl[] $purchaseOrderDtls
  */
-class PurchaseOrderMst extends \yii\db\ActiveRecord
-{
+class PurchaseOrderMst extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'purchase_order_mst';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['date', 'eta', 'DOC', 'DOU'], 'safe'],
+            [['date', 'eta', 'DOC', 'DOU', 'payment_terms', 'agent_details'], 'safe'],
             [['vessel', 'attenssion', 'port', 'status', 'CB', 'UB'], 'integer'],
             [['address'], 'string'],
             [['reference_no', 'appointment_no', 'invoice_no', 'invoice', 'email_confirmation', 'delivery_note'], 'string', 'max' => 100],
-            [['payment_terms', 'agent_details'], 'string', 'max' => 500],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'date' => 'Date',
@@ -86,8 +82,8 @@ class PurchaseOrderMst extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPurchaseOrderDtls()
-    {
+    public function getPurchaseOrderDtls() {
         return $this->hasMany(PurchaseOrderDtl::className(), ['purchase_order_mst_id' => 'id']);
     }
+
 }

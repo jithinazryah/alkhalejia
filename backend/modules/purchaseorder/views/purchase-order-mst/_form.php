@@ -2,6 +2,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use common\models\Ships;
+use kartik\date\DatePicker;
+use common\models\Contacts;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\PurchaseOrderMst */
@@ -12,51 +16,73 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
-        <div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'date')->textInput() ?>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?php
+            $model->date = date('d-M-Y');
+            ?>
+            <?=
+            $form->field($model, 'date')->widget(DatePicker::classname(), [
+                'type' => DatePicker::TYPE_INPUT,
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'format' => 'dd-M-yyyy'
+                ]
+            ]);
+            ?>
 
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'vessel')->textInput() ?>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?php $vessel = ArrayHelper::map(Ships::findAll(['status' => 1]), 'id', 'name'); ?>
+            <?= $form->field($model, 'vessel')->dropDownList($vessel, ['prompt' => '--Select--']) ?>
 
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?= $form->field($model, 'reference_no')->textInput(['maxlength' => true]) ?>
 
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?= $form->field($model, 'appointment_no')->textInput(['maxlength' => true]) ?>
-
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
+        </div>
+    </div>
+    <div class="row">
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?php $suppliers = ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 2, 'service' => 1]), 'id', 'name'); ?>
+            <?= $form->field($model, 'attenssion')->dropDownList($suppliers, ['prompt' => '-Choose a Supplier-']) ?>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?= $form->field($model, 'invoice_no')->textInput(['maxlength' => true]) ?>
-
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'attenssion')->textInput() ?>
-
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'address')->textarea(['rows' => 6]) ?>
-
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'invoice')->textInput(['maxlength' => true]) ?>
-
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'email_confirmation')->textInput(['maxlength' => true]) ?>
-
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'delivery_note')->textInput(['maxlength' => true]) ?>
-
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?= $form->field($model, 'eta')->textInput() ?>
-
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?= $form->field($model, 'port')->textInput() ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class='col-md-4 col-sm-4 col-xs-12 left_padd'>
+            <?= $form->field($model, 'address')->textarea(['rows' => 3]) ?>
+        </div>
+        <div class='col-md-4 col-sm-4 col-xs-12 left_padd'>
+            <?= $form->field($model, 'payment_terms')->textarea(['rows' => 3]) ?>
+        </div>
+        <div class='col-md-4 col-sm-4 col-xs-12 left_padd'>
+            <?= $form->field($model, 'agent_details')->textarea(['rows' => 3]) ?>
+        </div>
+    </div>
 
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'payment_terms')->textInput(['maxlength' => true]) ?>
-
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'agent_details')->textInput(['maxlength' => true]) ?>
-
-        </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'status')->textInput() ?>
-
+    <div class="row">
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?= $form->field($model, 'invoice')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?= $form->field($model, 'email_confirmation')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?= $form->field($model, 'delivery_note')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?= $form->field($model, 'status')->dropDownList(['1' => 'Enabled', '0' => 'Disabled']) ?>
         </div>
     </div>
     <div class="row">
