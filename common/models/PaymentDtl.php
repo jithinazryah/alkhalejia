@@ -24,23 +24,21 @@ use Yii;
  *
  * @property PaymentMst $paymentMst
  */
-class PaymentDtl extends \yii\db\ActiveRecord
-{
+class PaymentDtl extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'payment_dtl';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['payment_mst_id', 'transaction_id', 'status', 'CB', 'UB'], 'integer'],
+            [['payment_mst_id', 'transaction_id', 'status', 'CB', 'UB', 'transaction_category'], 'integer'],
             [['document_date', 'DOC', 'DOU'], 'safe'],
             [['total_amount', 'due_amount', 'paid_amount'], 'number'],
             [['CB', 'UB'], 'required'],
@@ -52,11 +50,11 @@ class PaymentDtl extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'payment_mst_id' => 'Payment Mst ID',
+            'transaction_category' => 'Transaction Category',
             'transaction_id' => 'Transaction ID',
             'document_no' => 'Document No',
             'document_date' => 'Document Date',
@@ -75,8 +73,8 @@ class PaymentDtl extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPaymentMst()
-    {
+    public function getPaymentMst() {
         return $this->hasOne(PaymentMst::className(), ['id' => 'payment_mst_id']);
     }
+
 }

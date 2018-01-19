@@ -36,7 +36,7 @@ class PaymentController extends \yii\web\Controller {
     }
 
     public function actionAdd($id = NULL) {
-        $supplier = ArrayHelper::map(\common\models\Contacts::find()->where(['type' => 2])->all(), 'id', 'name');
+        $transaction_categories = ArrayHelper::map(\common\models\TransactionCategory::find()->where(['<>', 'id', 16])->all(), 'id', 'category');
         $model = new PaymentDtl();
         $model_master = new PaymentMst();
         if ($model_master->load(Yii::$app->request->post())) {
@@ -46,7 +46,7 @@ class PaymentController extends \yii\web\Controller {
                 $arr = $this->SavePaymentDetails($model_master, $data);
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
-                    if ($model_master->save() && $this->AddPaymentDetails($arr, $model_master)) {
+                    if ($model_master->save() && $this->AddPaymentDetails($arr, $model_master) && $this->AddNotification($model_master)) {
                         $transaction->commit();
                     } else {
                         $transaction->rollBack();
@@ -60,7 +60,7 @@ class PaymentController extends \yii\web\Controller {
         return $this->render('add', [
                     'model' => $model,
                     'model_master' => $model_master,
-                    'supplier' => $supplier,
+                    'transaction_categories' => $transaction_categories,
         ]);
     }
 
@@ -68,7 +68,7 @@ class PaymentController extends \yii\web\Controller {
         $model_master->transaction_type = 2;
         $model_master->document_date = date("Y-m-d", strtotime($model_master->document_date));
         if (isset($model_master->cheque_due_date) && $model_master->cheque_due_date != '') {
-            $model_master->document_date = date("Y-m-d", strtotime($model_master->cheque_due_date));
+            $model_master->cheque_due_date = date("Y-m-d", strtotime($model_master->cheque_due_date));
         }
         $model_master->status = 1;
         Yii::$app->SetValues->Attributes($model_master);
@@ -119,7 +119,7 @@ class PaymentController extends \yii\web\Controller {
             $aditional->total_amount = $val['invoice_amount'];
             $aditional->due_amount = $val['sale_balance'];
             $aditional->paid_amount = $val['payed_amount'];
-            $aditional->status = 0;
+            $aditional->status = 1;
             $aditional->CB = Yii::$app->user->identity->id;
             $aditional->UB = Yii::$app->user->identity->id;
             $aditional->DOC = date('Y-m-d');
@@ -138,6 +138,22 @@ class PaymentController extends \yii\web\Controller {
         }
     }
 
+    public function AddNotification($model_master) {
+        if ($model_master->payment_mode == 2) {
+            $model = new \common\models\ChequeNotification();
+            $model->payment_id = $model_master->id;
+            $model->cheque_no = $model_master->cheque_no;
+            $model->cheque_due_date = $model_master->cheque_due_date;
+            $model->cheque_amount = $model_master->paid_amount;
+            $model->status = 1;
+            $model->CB = Yii::$app->user->identity->id;
+            $model->UB = Yii::$app->user->identity->id;
+            $model->DOC = date('Y-m-d');
+            $model->save();
+        }
+        return TRUE;
+    }
+
     public function actionSelectPayments() {
         if (Yii::$app->request->isAjax) {
             $supplier = $_POST['id'];
@@ -150,6 +166,19 @@ class PaymentController extends \yii\web\Controller {
                 $data = '<p style="font-size: 17px;color:red;">Due amount is not available for this account</p>';
             }
             return $data;
+        }
+    }
+
+    public function actionSelectSupplier() {
+        if (Yii::$app->request->isAjax) {
+            $category = $_POST['id'];
+            $Suppliers = \common\models\Contacts::findAll(['service' => $category, 'status' => 1]);
+            $options = '<option value="">-Choose a Supplier-</option>';
+            foreach ($Suppliers as $Supplier) {
+                $options .= "<option value='" . $Supplier->id . "'>" . $Supplier->name . "</option>";
+            }
+
+            echo $options;
         }
     }
 

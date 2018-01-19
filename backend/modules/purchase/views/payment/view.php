@@ -95,7 +95,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             <tr>
                                 <td class="labell">Total Amount</td><td class="colen">:</td><td class="value"> <?= $model->paid_amount; ?></td>
-                                <td class="labell">Reference </td><td class="colen">:</td><td class="value"> <?= $model->reference; ?></td>
+                                <td class="labell">Cheque Number </td><td class="colen">:</td><td class="value"> <?= $model->cheque_no; ?></td>
+                                <td class="labell">Cheque Due Date </td><td class="colen">:</td><td class="value"> <?= $model->cheque_due_date; ?></td>
                             </tr>
 
                         </table>

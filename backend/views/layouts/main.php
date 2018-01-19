@@ -47,11 +47,11 @@ AppAsset::register($this);
                         <!-- logo -->
                         <div class="logo">
                             <a href="" class="logo-expanded">
-                                <img width="61" height="" src="<?= Yii::$app->homeUrl ?>images/logo.png"/>
+                                <img width="62" height="" src="<?= Yii::$app->homeUrl ?>images/logo.png"/>
                             </a>
 
                             <a href="" class="logo-collapsed">
-                                <img width="39" height="" src="<?= Yii::$app->homeUrl ?>images/fav.png"/>
+                                <img width="40" height="" src="<?= Yii::$app->homeUrl ?>images/fav.png"/>
                             </a>
                         </div>
                         <!-- This will toggle the mobile menu and will be visible only on mobile devices -->
@@ -100,7 +100,7 @@ AppAsset::register($this);
                             ?>
                             <li>
                                 <a href="">
-                                    <i class="fa fa-shopping-cart"></i>
+                                    <i class="fa fa-shopping-bag"></i>
                                     <span class="title">Purchase</span>
                                 </a>
                                 <ul>
@@ -133,12 +133,31 @@ AppAsset::register($this);
                             <?php
                         }
                         ?>
+
+                        <?php
+                        if (Yii::$app->session['post']['daily_entry'] == 1) {
+                            ?>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <span class="title">Purchase Order</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <?= Html::a('Purchase Order', ['/purchaseorder/purchase-order-mst/index'], ['class' => 'title']) ?>
+                                    </li>
+                                </ul>
+                            </li>
+                            <?php
+                        }
+                        ?>
+
                         <?php
                         if (Yii::$app->session['post']['admin'] == 1) {
                             ?>
                             <li>
                                 <a href="">
-                                    <i class="fa fa-file"></i>
+                                    <i class="fa fa-building-o"></i>
                                     <span class="title">Stock</span>
                                 </a>
                                 <ul>
@@ -253,6 +272,21 @@ AppAsset::register($this);
                             <a href="" data-toggle="sidebar">
                                 <i class="fa-bars"></i>
                             </a>
+                        </li>
+                        <li class="dropdown hover-line hover-line-notify" style="min-height: 48px;">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Notifications">
+                                <i class="fa-bell-o"></i>
+                                <!--<span class="badge badge-purple" id="notify-count"></span>-->
+                                <span class="badge badge-purple" id="notify-count">6</span>
+                            </a>
+                            <ul class="dropdown-menu notifications">
+                                <li class="top">
+                                    <p class="small">
+                                        <!--                                        <a href="#" class="pull-right">Mark all Read</a>-->
+                                        You have <strong id="notify-counts"></strong> new notifications.
+                                    </p>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                     <!-- Right links for user info navbar -->

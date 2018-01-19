@@ -20,6 +20,7 @@ class m180118_061845_create_payment extends Migration {
         $this->createTable('{{%payment_mst}}', [
             'id' => $this->primaryKey(),
             'transaction_type' => $this->integer()->Null()->comment('1-Receipt,2=Payment'),
+            'transaction_category' => $this->integer()->Null(),
             'document_no' => $this->string(100)->Null(),
             'document_date' => $this->date()->Null(),
             'supplier' => $this->integer()->Null(),
@@ -41,6 +42,7 @@ class m180118_061845_create_payment extends Migration {
             'id' => $this->primaryKey(),
             'payment_mst_id' => $this->integer()->Null(),
             'transaction_id' => $this->integer()->Null(),
+            'transaction_category' => $this->integer()->Null(),
             'document_no' => $this->string(100)->Null(),
             'document_date' => $this->date()->Null(),
             'total_amount' => $this->decimal(10, 2)->Null(),

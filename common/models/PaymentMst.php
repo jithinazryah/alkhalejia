@@ -40,11 +40,14 @@ class PaymentMst extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['supplier', 'payment_mode', 'paid_amount', 'document_date', 'document_no'], 'required'],
+            [['supplier', 'payment_mode', 'paid_amount', 'document_date', 'document_no', 'transaction_category'], 'required'],
             [['transaction_type', 'supplier', 'payment_mode', 'status', 'CB', 'UB'], 'integer'],
             [['document_date', 'cheque_due_date', 'DOC', 'DOU'], 'safe'],
             [['due_amount', 'paid_amount'], 'number'],
             [['document_no', 'cheque_no', 'reference'], 'string', 'max' => 100],
+            [['cheque_no', 'cheque_due_date'], 'required', 'when' => function ($model) {
+                    return $model->payment_mode == 2;
+                }, 'whenClient' => "function (attribute, value) { return $('#paymentmst-payment_mode').val() == '2'; }"],
         ];
     }
 
@@ -55,6 +58,7 @@ class PaymentMst extends \yii\db\ActiveRecord {
         return [
             'id' => 'ID',
             'transaction_type' => 'Transaction Type',
+            'transaction_category' => 'Transaction Category',
             'document_no' => 'Document No',
             'document_date' => 'Document Date',
             'supplier' => 'Supplier',

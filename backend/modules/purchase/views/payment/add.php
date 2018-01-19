@@ -53,21 +53,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-md-5">
                                     <div class="col-md-12">
                                         <div class="col-md-4">
-                                            <span><label class="control-label control-label1" for="paymentmst-bp_code">Date</label></span>
+                                            <span><label class="control-label control-label1" for="paymentmst-bp_code">Transaction Category</label></span>
                                         </div>
                                         <div class="col-md-8">
-                                            <?php
-                                            $model_master->document_date = date('d-M-Y');
-                                            ?>
-                                            <?=
-                                            $form->field($model_master, 'document_date')->widget(DatePicker::classname(), [
-                                                'type' => DatePicker::TYPE_INPUT,
-                                                'pluginOptions' => [
-                                                    'autoclose' => true,
-                                                    'format' => 'dd-M-yyyy'
-                                                ]
-                                            ])->label(FALSE);
-                                            ?>
+                                            <?= $form->field($model_master, 'transaction_category')->dropDownList($transaction_categories, ['prompt' => '-Choose Supplier-', 'class' => 'form-control'])->label(FALSE) ?>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -75,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <span><label class="control-label control-label1" for="paymentmst-bp_code">Supplier</label></span>
                                         </div>
                                         <div class="col-md-8">
-                                            <?= $form->field($model_master, 'supplier')->dropDownList($supplier, ['prompt' => '-Choose Supplier-', 'class' => 'form-control'])->label(FALSE) ?>
+                                            <?= $form->field($model_master, 'supplier')->dropDownList(['prompt' => '-Choose Supplier-'])->label(FALSE) ?>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -112,6 +101,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="col-md-4">
+                                                <span><label class="control-label control-label1" for="paymentmst-bp_code">Date</label></span>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <?php
+                                                $model_master->document_date = date('d-M-Y');
+                                                ?>
+                                                <?=
+                                                $form->field($model_master, 'document_date')->widget(DatePicker::classname(), [
+                                                    'type' => DatePicker::TYPE_INPUT,
+                                                    'pluginOptions' => [
+                                                        'autoclose' => true,
+                                                        'format' => 'dd-M-yyyy'
+                                                    ]
+                                                ])->label(FALSE);
+                                                ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-4">
                                                 <span><label class="control-label control-label1" for="paymentmst-bp_code">Payment No</label></span>
                                             </div>
                                             <div class="col-md-8">
@@ -132,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" style="margin-top: 55px;">
+                                    <div class="row" style="">
                                         <div class="col-md-12">
                                             <div class="col-md-4">
                                                 <span><label class="control-label control-label1" for="paymentmst-bp_code">Reference</label></span>
@@ -288,6 +296,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             }
         });
+        $(document).on('keyup', '.payed_amount', function (e) {
+            $('#checkbox-payall').attr('checked', false);
+            $('#auto-allocation').attr('checked', false);
+            calculateTotal();
+        });
+
+        $(document).on('change', '#paymentmst-transaction_category', function (e) {
+            var idd = $('#paymentmst-transaction_category').val();
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                async: false,
+                data: {id: idd},
+                url: '<?= Yii::$app->homeUrl ?>purchase/payment/select-supplier',
+                success: function (data) {
+                    $("#paymentmst-supplier").html(data);
+                }
+            });
+        });
+
     });
     function loadpayment() {
         var idd = $('#paymentmst-supplier').val();
@@ -301,11 +329,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 $(".add-receipt-details").html(data);
                 $('#paymentmst-due_amount').val($('.due_amount_total').val());
             }
-        });
-        $(document).on('keyup', '.payed_amount', function (e) {
-            $('#checkbox-payall').attr('checked', false);
-            $('#auto-allocation').attr('checked', false);
-            calculateTotal();
         });
     }
     function calculateTotal() {
