@@ -26,14 +26,45 @@ use yii\helpers\Html;
 </style>
 <table class="appoint">
     <tr>
-        <td class="labell">Received Date </td><td class="value">:
+        <td class="labell">DATE </td><td class="value">:
             <?= $Order->date; ?>
         </td>
-        <td class="labell">Reference No </td><td class="value">:
+        <td class="labell">VESSEL-NAME </td><td class="value">:
+            <?php
+            if (isset($Order->vessel)) {
+                $vessel = common\models\Ships::findOne($Order->vessel);
+                if (isset($vessel))
+                    echo $vessel->name;
+            }
+            ?>
+
+        </td>
+        <td class="labell">REFERENCE NO </td><td class="value">:
             <?= $Order->reference_no; ?>
         </td>
-        <td class="labell">Invoice No </td><td class="value">:
+    </tr>
+    <tr>
+        <td class="labell">INVOICE NO </td><td class="value">:
             <?= $Order->invoice_no; ?>
+        </td>
+        <td class="labell">APPOINTMENT NO </td><td class="value">:
+            <?php
+            if (isset($Order->appointment_no)) {
+                $appointment_no = \common\models\Appointment::findOne($Order->appointment_no);
+                if (isset($appointment_no))
+                    echo $appointment_no->appointment_number;
+            }
+            ?>
+        </td>
+        <td class="labell">SUPPLIER-NAME </td><td class="value">:
+            <?php
+            if (isset($Order->attenssion)) {
+                $contacts = common\models\Contacts::findOne($Order->attenssion);
+                if (isset($contacts))
+                    echo $contacts->name;
+            }
+            ?>
+
         </td>
     </tr>
 

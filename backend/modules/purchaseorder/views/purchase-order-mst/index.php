@@ -32,10 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
                         'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
+                                ['class' => 'yii\grid\SerialColumn'],
 //                                                            'id',
                             'date',
-                            [
+                                [
                                 'attribute' => 'vessel',
                                 'format' => 'raw',
                                 'filter' => Html::activeDropDownList($searchModel, 'vessel', ArrayHelper::map(Ships::find()->all(), 'id', 'name'), ['class' => 'form-control', 'id' => 'name', 'prompt' => '']),
@@ -64,8 +64,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'template' => '{view}{update}{service}',
                                 'buttons' => [
                                     'service' => function($url, $model, $key) {     // render your custom button
-                                        return Html::a('<span class="fa fa-shield" style="padding-top: 0px;"></span>', ['/appointment/appointment/add', 'id' => $model->id], [
-                                                    'title' => Yii::t('app', 'Services'),
+                                        return Html::a('<span class="fa fa-shield" style="padding-top: 0px;"></span>', ['/purchaseorder/purchase-order-mst/add', 'id' => $model->id], [
+                                                    'title' => Yii::t('app', 'Order Details'),
                                                     'class' => 'actions',
                                         ]);
                                     },

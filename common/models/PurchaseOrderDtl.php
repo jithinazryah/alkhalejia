@@ -20,35 +20,32 @@ use Yii;
  *
  * @property PurchaseOrderMst $purchaseOrderMst
  */
-class PurchaseOrderDtl extends \yii\db\ActiveRecord
-{
+class PurchaseOrderDtl extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'purchase_order_dtl';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['purchase_order_mst_id', 'qty', 'status', 'CB', 'UB'], 'integer'],
-            [['total'], 'number'],
-            [['description'], 'string'],
-            [['DOC', 'DOU'], 'safe'],
-            [['purchase_order_mst_id'], 'exist', 'skipOnError' => true, 'targetClass' => PurchaseOrderMst::className(), 'targetAttribute' => ['purchase_order_mst_id' => 'id']],
+                [['purchase_order_mst_id', 'qty', 'status', 'CB', 'UB', 'unit'], 'integer'],
+                [['total', 'rate'], 'number'],
+                [['description'], 'string'],
+                [['DOC', 'DOU'], 'safe'],
+                [['purchase_order_mst_id'], 'exist', 'skipOnError' => true, 'targetClass' => PurchaseOrderMst::className(), 'targetAttribute' => ['purchase_order_mst_id' => 'id']],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'purchase_order_mst_id' => 'Purchase Order Mst ID',
@@ -66,8 +63,8 @@ class PurchaseOrderDtl extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPurchaseOrderMst()
-    {
+    public function getPurchaseOrderMst() {
         return $this->hasOne(PurchaseOrderMst::className(), ['id' => 'purchase_order_mst_id']);
     }
+
 }

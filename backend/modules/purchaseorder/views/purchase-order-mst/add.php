@@ -25,9 +25,21 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php //Pjax::begin();     ?>
             <div class="panel-body">
                 <?= PurchaseOrderWidget::widget(['id' => $order->id]) ?>
+
                 <hr class="appoint_history" />
 
-
+                <div class="row" style="margin-left: 0px;">
+                    <div style="float:left;padding-top: 5px;">
+                        <?php
+                        echo Html::a('<i class="fa-print"></i><span>Purchase Order</span>', ['purchase-order-mst/purchase-order', 'id' => $order->id], ['class' => 'btn btn-secondary btn-icon btn-icon-standalone', 'target' => '_blank']);
+                        ?>
+                    </div>
+                    <div style="float:left;padding-top: 5px;padding-left: 25px;">
+                        <?php
+                        echo Html::a('<i class="fa-print"></i><span>Purchase Cover</span>', ['purchase-order-mst/purchase-cover', 'id' => $order->id], ['class' => 'btn btn-secondary btn-icon btn-icon-standalone', 'target' => '_blank']);
+                        ?>
+                    </div>
+                </div>
                 <!---------------------------------------------------- Generate Print  ------------------------------------------->
 
                 <!------------------------------------------------------------------------------------------------------------->
@@ -64,15 +76,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         <table cellspacing="0" class="table table-small-font table-bordered table-striped" id="daily-entry-table">
                             <thead>
                                 <tr>
-                                    <th data-priority="1" style="widyh:2%">#</th>
-                                    <th data-priority="1" style="width:10%">MATERIAL</th>
-                                    <th data-priority="1" style="width:8%">RATE</th>
-                                    <th data-priority="1" style="width:5%">QUANTITY</th>
-                                    <th data-priority="1" style="width:8%">TOTAL</th>
-                                    <th data-priority="1" style="width:10%;">VAT</th>
-                                    <th data-priority="1" style="width:5%;display: none;">VAT AMOUNT</th>
-                                    <th data-priority="1" style="width:8%">SUB TOTAL</th>
+                                    <th data-priority="1" style="width:2%">#</th>
                                     <th data-priority="1">DESCRIPTION</th>
+                                    <th data-priority="1" style="width:10%">RATE</th>
+                                    <th data-priority="1" style="width:10%">QUANTITY</th>
+                                    <th data-priority="1" style="width:10%">UNIT</th>
+                                    <th data-priority="1" style="width:10%">TOTAL</th>
                                     <th data-priority="1" style="width:5%">ACTIONS</th>
                                 </tr>
                             </thead>
@@ -80,66 +89,35 @@ $this->params['breadcrumbs'][] = $this->title;
                             <tbody>
 
                                 <?php
-                                $epdatotal = 0;
-                                $tot_subtoatl = 0;
+                                $qty_tot = 0;
+                                $tot_amount = 0;
                                 foreach ($order_details as $order_detail) {
                                     $i++;
                                     ?>
                                     <tr>
                                         <td><?= $i; ?></td>
-                                        <td class="" drop_id="estimatedproforma-material_id" id="<?= $order_detail->id ?>-material_id" val="<?= $order_detail->material_id ?>"><?= $order_detail->material_id ?></td>
-                                        <td class="edit_text" id="<?= $order_detail->id ?>-unit_price"  val="<?= $order_detail->unit_price ?>">
-                                            <?php
-                                            if ($order_detail->unit_price == '') {
-                                                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                                            } else {
-                                                echo Yii::$app->SetValues->NumberFormat($order_detail->unit_price);
-                                            }
-                                            ?>
-                                        </td>
+                                        <td class="edit_text" id="<?= $order_detail->id ?>-description" val="<?= $order_detail->description ?>"><?php if ($order_detail->description != '') { ?> <span title="<?= $order_detail->description ?>"><?= substr($order_detail->description, 0, 200) . '...'; ?></span><?php } ?></td>
+                                        <td class="edit_text" id="<?= $order_detail->id ?>-rate" val="<?= $order_detail->rate ?>"><?php if ($order_detail->rate != '') { ?> <?= $order_detail->rate ?><?php } ?></td>
                                         <td class="edit_text" id="<?= $order_detail->id ?>-qty" val="<?= $order_detail->qty ?>">
                                             <?php
-                                            if ($order_detail->qty != '') {
-                                                if (isset($order_detail->unit) && $order_detail->unit != '') {
-                                                    $unit_detail = common\models\Units::findOne($order_detail->unit);
-                                                    echo $order_detail->qty . ' (' . $unit_detail->unit_symbol . ')';
-                                                } else {
-                                                    echo $order_detail->qty;
-                                                }
-                                            }
+                                            echo $order_detail->qty;
                                             ?>
                                         </td>
+                                        <td  id="<?= $order_detail->id ?>-unit" val="<?= $order_detail->unit ?>"><?php if ($order_detail->unit != '') { ?> <?= common\models\Units::findOne($order_detail->unit)->unit_symbol ?><?php } ?></td>
                                         <td  id="<?= $order_detail->id ?>-total" val="<?= $order_detail->total ?>"><?php if ($order_detail->total != '') { ?> <?= $order_detail->total ?><?php } ?></td>
-                                        <td  id="<?= $order_detail->id ?>-tax" val="<?= $order_detail->tax ?>">
-
-                                            <?php
-                                            $tax = \common\models\Tax::findOne($order_detail->tax);
-                                            if ($order_detail->tax_amount != '') {
-                                                ?> <?= $order_detail->tax_amount . ' (' . $tax->value . '%)' ?><?php } ?>
-                                        </td>
-                                        <td style="display:none" id="<?= $order_detail->id ?>-tax_amount" val="<?= $order_detail->tax_amount ?>"><?php if ($order_detail->tax_amount != '') { ?> <?= $order_detail->tax_amount ?><?php } ?></td>
-                                        <td id="<?= $order_detail->id ?>-sub_total" val="<?= $order_detail->sub_total ?>"><?php if ($order_detail->sub_total != '') { ?> <?= $order_detail->sub_total ?><?php } ?></td>
-                                        <td class="edit_text" id="<?= $order_detail->id ?>-description" val="<?= $order_detail->description ?>"><?php if ($order_detail->description != '') { ?> <span title="<?= $order_detail->description ?>"><?= substr($order_detail->description, 0, 30) . '...'; ?></span><?php } ?></td>
-
                                         <td>
                                             <?php
-                                            if ($appointment->status != 0) {
+                                            if ($order->status != 0) {
                                                 ?>
-                                                <?= Html::a('<i class="fa fa-pencil"></i>', ['/appointment/appointment/add', 'id' => $id, 'prfrma_id' => $estimate->id], ['class' => '', 'tittle' => 'Edit']) ?>
-                                                <?= Html::a('<i class="fa fa-remove"></i>', ['/appointment/appointment/delete-detail', 'id' => $estimate->id], ['class' => '', 'tittle' => 'Edit', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
+                                                <?= Html::a('<i class="fa fa-pencil"></i>', ['/purchaseorder/purchase-order-mst/add', 'id' => $id, 'prfrma_id' => $order_detail->id], ['class' => '', 'tittle' => 'Edit']) ?>
+                                                <?= Html::a('<i class="fa fa-remove"></i>', ['/purchaseorder/purchase-order-mst/delete-detail', 'id' => $order_detail->id], ['class' => '', 'tittle' => 'Edit', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
                                             <?php } ?>
-                                            <a>
-                                                <?= Html::beginForm(['appointment/selected-report'], 'post', ['target' => 'print_popup', 'onSubmit' => "window.open('about:blank','print_popup','width=1200,height=600');",]) ?>
-                                                <input type="hidden" name="app_id" value="<?= $order->id ?>">
-                                            </a>
                                         </td>
 
 
                                         <?php
-                                        $epdatotal += $order_detail->total;
-                                        $tot_subtoatl += $order_detail->sub_total;
-                                        $grand_epdatotal += $order_detail->total;
-                                        $grand_tot_subtoatl += $order_detail->sub_total;
+                                        $qty_tot += $order_detail->qty;
+                                        $tot_amount += $order_detail->total;
                                         ?>
                                     </tr>
                                     <?php
@@ -153,15 +131,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <tr class="formm">
                                         <?php $form = ActiveForm::begin(); ?>
                                         <td></td>
-                                        <td><?= $form->field($model, 'material_id')->dropDownList(ArrayHelper::map(common\models\Materials::findAll(['status' => 1]), 'id', 'name'), ['prompt' => '-Material-'])->label(false); ?></td>
-                                        <td><?= $form->field($model, 'unit_price')->textInput(['placeholder' => ' Rate'])->label(false) ?></td>
+                                        <td><?= $form->field($model, 'description')->textarea(['placeholder' => 'Description'])->label(false) ?></td>
+                                        <td><?= $form->field($model, 'rate')->textInput(['placeholder' => 'Rate'])->label(false) ?><span id="unit-text" style="margin-left:5px"></span></td>
                                         <td><?= $form->field($model, 'qty')->textInput(['placeholder' => 'Quantity', 'value' => 1,])->label(false) ?><span id="unit-text" style="margin-left:5px"></span></td>
-                                        <td><?= $form->field($model, 'total')->textInput(['placeholder' => 'Total', 'readonly' => true])->label(false) ?></td>
-                                        <td><div style="border: 1px solid #9a9a9a;height: 40px;"><?= $form->field($model, 'tax')->dropDownList(ArrayHelper::map(common\models\Tax::findAll(['status' => 1]), 'id', 'taxname'), ['prompt' => '-VAT-', 'style' => 'border:none'])->label(false); ?>   <span id="tax-amount-show"></span></div></td>
-                                        <td style="display:none"><?= $form->field($model, 'tax_amount')->textInput(['placeholder' => 'Vat Amount', 'readonly' => true])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'sub_total')->textInput(['placeholder' => 'Sub Total', 'readonly' => true])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'description')->textarea(['placeholder' => 'Comment'])->label(false) ?></td>
-                                        <?= $form->field($model, 'unit')->hiddenInput()->label(false) ?>
+                                        <td><?= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(common\models\Units::findAll(['status' => 1]), 'id', 'unit_symbol'), ['prompt' => '-Unit-',])->label(false); ?></td>
+                                        <td><?= $form->field($model, 'total')->textInput(['placeholder' => 'Total', 'readonly' => TRUE])->label(false) ?></td>
                                         <td><?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => 'btn btn-success']) ?>
                                         </td>
 
@@ -182,15 +156,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <!------------------------------------------------------------------------------------------------------------->
 
-                <?php
-                if ($order->status != 0) {
-                    ?>
-                    <div style="float:right;padding-top: 5px;">
-                        <?php
-                        echo Html::a('<span> Confirm and Close</span>', ['appointment/close-appointment', 'id' => $appointment->id], ['class' => 'btn btn-secondary']);
-                        ?>
-                    </div>
-                <?php } ?>
             </div>
         </div>
     </div>
@@ -222,36 +187,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </style>
 <script>
-    $("document").ready(function () {
-
-        /*
-         * Double click enter function
-         * */
-
-        $('#dailyentrydetails-net_weight').on('keyup', function () {
-            var net_weight = $('#dailyentrydetails-net_weight').val();
-            var rate = $('#dailyentrydetails-rate').val();
-            if (net_weight === undefined || net_weight === null) {
-                // do something
-            }
-        });
-
-    });
-</script>
-<script>
     $(document).ready(function () {
-        $("#dailyentrydetails-net_weight").keyup(function () {
+        $("#purchaseorderdtl-qty").keyup(function () {
             multiply();
         });
-        $("#dailyentrydetails-rate").keyup(function () {
+        $("#purchaseorderdtl-rate").keyup(function () {
             multiply();
         });
     });
     function multiply() {
-        var rate = $("#dailyentrydetails-rate").val();
-        var unit = $("#dailyentrydetails-net_weight").val();
+        var rate = $("#purchaseorderdtl-rate").val();
+        var unit = $("#purchaseorderdtl-qty").val();
         if (rate != '' && unit != '') {
-            $("#dailyentrydetails-total").val(rate * unit);
+            $("#purchaseorderdtl-total").val(rate * unit);
         }
 
     }

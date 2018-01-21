@@ -346,12 +346,12 @@ class PurchaseOrderMstController extends Controller {
         $order = PurchaseOrderMst::findOne($id);
         if ($model->load(Yii::$app->request->post())) {
             $model->purchase_order_mst_id = $id;
-            if (Yii::$app->SetValues->Attributes($model) && $model->save()) {
+            $model->status = 1;
+            $model->CB = Yii::$app->user->identity->id;
+            $model->UB = Yii::$app->user->identity->id;
+            $model->DOC = date('Y-m-d');
+            if ($model->save()) {
                 return $this->redirect(['add', 'id' => $id]);
-            } else {
-                var_dump($model->getErrors());
-                echo 'sdgfd';
-                exit;
             }
         }
 
@@ -361,6 +361,49 @@ class PurchaseOrderMstController extends Controller {
                     'order' => $order,
                     'id' => $id,
         ]);
+    }
+
+    /*
+     * Generate report based on service
+     */
+
+    public function actionPurchaseOrder($id) {
+        $order = PurchaseOrderMst::find()->where(['id' => $id])->one();
+        $order_details = PurchaseOrderDtl::find()->where(['purchase_order_mst_id' => $id])->all();
+        $order_additional = PurchaseOrderAddition::find()->where(['purchase_order_id' => $id])->all();
+        echo $this->renderPartial('purchase_order', [
+            'order' => $order,
+            'order_details' => $order_details,
+            'order_additional' => $order_additional,
+            'print' => true,
+        ]);
+
+        exit;
+    }
+
+    /*
+     * Generate report based on service
+     */
+
+    public function actionPurchaseCover($id) {
+        $order = PurchaseOrderMst::find()->where(['id' => $id])->one();
+        $order_details = PurchaseOrderDtl::find()->where(['purchase_order_mst_id' => $id])->all();
+        echo $this->renderPartial('purchase_cover', [
+            'order' => $order,
+            'order_details' => $order_details,
+            'print' => true,
+        ]);
+
+        exit;
+    }
+
+    /*
+     * Delete order details in purchase order
+     */
+
+    public function actionDeleteDetail($id) {
+        PurchaseOrderDtl::findOne($id)->delete();
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
 }
