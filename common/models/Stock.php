@@ -61,7 +61,7 @@ class Stock extends \yii\db\ActiveRecord {
                     'id' => 'ID',
                     'transaction_type' => 'Transaction Type',
                     'transaction_id' => 'Transaction ID',
-                    'material_id' => 'Material ID',
+                    'material_id' => 'Material',
                     'material_code' => 'Material Code',
                     'yard_id' => 'Yard ID',
                     'yard_code' => 'Yard Code',

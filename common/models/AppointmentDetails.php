@@ -40,7 +40,6 @@ class AppointmentDetails extends \yii\db\ActiveRecord {
                         [['unit_price', 'total', 'tax_amount', 'sub_total'], 'number'],
                         [['description'], 'string'],
                         [['appointment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Appointment::className(), 'targetAttribute' => ['appointment_id' => 'id']],
-                        [['service_id'], 'exist', 'skipOnError' => true, 'targetClass' => Services::className(), 'targetAttribute' => ['service_id' => 'id']],
                 ];
         }
 

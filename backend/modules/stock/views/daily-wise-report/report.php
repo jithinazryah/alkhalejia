@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="panel-body">
 
-                                        <div class="row" style="margin-left: 0px;border-bottom: 2px solid rgba(39, 41, 42, 0.46);">
+                                        <div class="row" style="margin-left: 0px;">
 
 
                                                 <div class="col-md-3">
@@ -37,9 +37,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         $form = ActiveForm::begin([
                                                         ]);
                                                         ?>
+                                                        <?php
+                                                        if (isset($model->DOC)) {
+                                                                $date = date('d-m-Y', strtotime($model->DOC));
+                                                        } else {
+                                                                $date = date('d-m-Y');
+                                                        }
+                                                        ?>
+
                                                         <?=
                                                         $form->field($model, 'DOC')->widget(DatePicker::className(), [
-                                                            'options' => ['class' => 'form-control'], 'pluginOptions' => [
+                                                            'options' => ['class' => 'form-control'],
+                                                            'value' => $date,
+                                                            'pluginOptions' => [
                                                                 'autoclose' => true,
                                                                 'format' => 'dd-mm-yyyy',
                                                             ]
@@ -73,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         if (isset($model->material_id)) {
                                                 $contacts = \common\models\Contacts::find()->where(['status' => 1, 'type' => 2, 'service' => 1])->all();
                                                 ?>
-
+                                                <h4 style="color: #1c5382;margin-bottom: 15px;">Report <?= date('d-m-Y', strtotime($model->DOC)) ?> :</h4>
                                                 <table class='table-responsive table table-small-font table-bordered table-striped'>
                                                         <tr>
                                                                 <th>Crusher</th>
@@ -149,10 +159,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                         }
                                                                                         $total_materials_entry_weight_net += $total_materials_entry_weight;
                                                                                         ?>
-                                                                                        <td><?= $total_materials_entry_weight ?></td>
+                                                                                        <td><?= Yii::$app->SetValues->NumberFormat($total_materials_entry_weight); ?></td>
 
                                                                                 <?php } ?>
-                                                                                <td><?= $total_materials_entry_weight_net ?></td>
+                                                                                <td><?= Yii::$app->SetValues->NumberFormat($total_materials_entry_weight_net); ?></td>
                                                                         </tr>
 
 
@@ -161,12 +171,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         }
                                                         ?>
 
-                                                        <tr>
-                                                                <td></td>
-                                                                <td style="visibility: hidden">dfd</td>
-                                                                <td></td>
-                                                                <td></td>
-                                                        </tr>
+
                                                         <?php
                                                         $previous_date = date('Y-m-d', strtotime($model->DOC . "-1 days"));
                                                         ?>
@@ -183,9 +188,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         $total_previous_stock_net += $total_previous_stock;
                                                                         ?>
 
-                                                                        <td><?= $total_previous_stock ?></td>
+                                                                        <td><?= Yii::$app->SetValues->NumberFormat($total_previous_stock); ?></td>
                                                                 <?php } ?>
-                                                                <td><?= $total_previous_stock_net ?></td>
+                                                                <td><?= Yii::$app->SetValues->NumberFormat($total_previous_stock_net); ?></td>
                                                         </tr>
 
 
@@ -201,9 +206,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         $total_stock_net += $total_stock;
                                                                         ?>
 
-                                                                        <td><?= $total_stock ?></td>
+                                                                        <td><?= Yii::$app->SetValues->NumberFormat($total_stock); ?></td>
                                                                 <?php } ?>
-                                                                <td><?= $total_stock_net ?></td>
+                                                                <td><?= Yii::$app->SetValues->NumberFormat($total_stock_net); ?></td>
 
                                                         </tr>
 
@@ -218,13 +223,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         $total_material_exported += $material_exported;
                                                                         $total_material_exported_net += $total_material_exported;
                                                                         ?>
-                                                                        <td><?= $total_material_exported ?></td>
+                                                                        <td><?= Yii::$app->SetValues->NumberFormat($total_material_exported); ?></td>
                                                                 <?php } ?>
-                                                                <td><?= $total_material_exported_net ?></td>
+                                                                <td><?= Yii::$app->SetValues->NumberFormat($total_material_exported_net); ?></td>
                                                         </tr>
 
                                                         <tr style="font-weight: bold">
-                                                                <td>Net</td>
+                                                                <td>Total Net</td>
                                                                 <?php
                                                                 $total_net_material_exported = 0;
                                                                 $total__net_material_stock = 0;
@@ -236,9 +241,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         $net_material_stock = \common\models\Stock::find()->where(['transaction_type' => 3])->andWhere(['material_id' => $material_net])->sum('quantity_in');
                                                                         $total__net_material_stock += $net_material_stock;
                                                                         ?>
-                                                                        <td><?= $net_material_stock - $net_material_exported ?></td>
+                                                                        <td><?= Yii::$app->SetValues->NumberFormat($net_material_stock - $net_material_exported); ?></td>
                                                                 <?php } ?>
-                                                                <td><?= $total__net_material_stock - $total_net_material_exported ?></td>
+                                                                <td><?= Yii::$app->SetValues->NumberFormat($total__net_material_stock - $total_net_material_exported); ?></td>
                                                         </tr>
 
 
@@ -247,14 +252,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 </table>
 
 
-
-
-
-                                                <?= Html::beginForm(['export'], 'post', ['id' => 'serach-formm']) ?>
-                                                <input type = "hidden" name = "body" value = "<?php echo $body;
-                                                ?>">
-                                                <input type = "submit" name = "submit" Value = "Export to excel">
-                                                <?= Html::endForm() ?>
                                         <?php } ?>
 
 

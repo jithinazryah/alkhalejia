@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use common\models\Materials;
+use common\models\DailyEntry;
+use common\models\DailyEntryDetails;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use yii\widgets\ActiveForm;
@@ -16,97 +18,235 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="stock-index">
 
-    <div class="row">
-        <div class="col-md-12">
+        <div class="row">
+                <div class="col-md-12">
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-
-
-                </div>
-                <div class="panel-body">
-                    <div class="row" style="margin-left: 0px;border-bottom: 2px solid rgba(39, 41, 42, 0.46);">
+                        <div class="panel panel-default">
+                                <div class="panel-heading">
+                                        <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
 
 
-                        <div class="col-md-4">
-                            <?php
-                            $form = ActiveForm::begin([
-                                        'action' => ['index'],
-                                        'method' => 'get',
-                            ]);
-                            ?>
-                            
-                            <?=
-                            $form->field($searchModel, 'DOC')->widget(DatePicker::className(), [
-                                //'language' => 'ru',
-//                                    'dateFormat' => 'yyyy-MM-dd',
-                                'options' => ['class' => 'form-control'],
-                                'pluginOptions' => ['startView' =>
-                                    'year', 'minViewMode' => 'months','format' => 'yyyy-mm']
-                                
-                            ])->label('Date');
-                            ?>
+                                </div>
+                                <div class="panel-body">
+                                        <div class="row" style="margin-left: 0px;">
 
+
+                                                <div class="col-md-3">
+                                                        <?php
+                                                        $form = ActiveForm::begin([
+                                                        ]);
+                                                        ?>
+                                                        <?php
+                                                        if (isset($model->DOC)) {
+                                                                // $date = date('m-Y', strtotime($model->DOC));
+                                                        } else {
+                                                                $date = date('m-Y');
+                                                        }
+                                                        ?>
+
+                                                        <?=
+                                                        $form->field($model, 'DOC')->widget(DatePicker::className(), [
+                                                            'options' => ['class' => 'form-control'],
+                                                            'value' => $date,
+                                                            'pluginOptions' => [
+                                                                'autoclose' => true,
+                                                                'format' => 'dd-mm-yyyy',
+                                                                'startView' => 'year',
+                                                                'minViewMode' => 'months',
+                                                                'format' => 'mm-yyyy',
+                                                            ]
+                                                        ])->label('Date');
+                                                        ?>
+
+                                                </div>
+
+                                                <div class="col-md-3">
+
+                                                        <?php
+                                                        $materials = Materials::findAll(['status' => 1]);
+                                                        ?>
+                                                        <?=
+                                                        $form->field($model, 'material_id')->dropDownList(ArrayHelper::map($materials, 'id', 'name'), ['prompt' => 'Select', 'multiple' => true]);
+                                                        ?>
+
+                                                </div>
+
+                                                <div class="col-md-4" style="margin-top: 31px;">
+                                                        <div class="form-group">
+                                                                <?= Html::submitButton('Search', ['class' => 'btn btn-success']) ?>
+                                                        </div>
+                                                </div>
+                                                <?php ActiveForm::end(); ?>
+
+
+
+                                        </div>
+                                        <?php
+                                        if (isset($model->material_id)) {
+                                                $start_date = '01-' . $model->DOC;
+                                                $month = date('m', strtotime($start_date));
+                                                if ($month == '04' || $month == '06' || $month == '11') {
+                                                        $month_count = 30;
+                                                } else if ($month == '02') {
+                                                        $month_count = 28;
+                                                } else {
+                                                        $month_count = 31;
+                                                }
+
+
+                                                $start_date = date('Y-m-d', strtotime($start_date . "-1 days"));
+                                                ?>
+
+                                                <table class='table-responsive table table-small-font table-bordered table-striped'>
+                                                        <tr>
+                                                                <th>Date</th>
+                                                                <?php
+                                                                foreach ($model->material_id as $value) {
+                                                                        $material_detail = Materials::findOne($value);
+                                                                        ?>
+                                                                        <th>Trips</th>
+                                                                        <th><?= $material_detail->name ?></th>
+                                                                <?php } ?>
+                                                                <th>Total</th>
+                                                        </tr>
+
+
+
+                                                        <tr>
+                                                                <th>Closing Balance</th>
+                                                                <?php
+                                                                $overall_total = 0;
+                                                                $overall = array();
+                                                                $total_mat_count_net = 0;
+                                                                $total_materials_entry_weight_net = 0;
+
+                                                                foreach ($model->material_id as $material_trip) {
+                                                                        $materials_entry = DailyEntry::find()->where(['material' => $material_trip])->andWhere(['<=', 'DOC', $start_date])->all();
+                                                                        $materials_entry_count = 0;
+                                                                        $total_mat_count = 0;
+                                                                        $materials_weight_count = 0;
+                                                                        $total_materials_entry_weight = 0;
+
+                                                                        foreach ($materials_entry as $materials_entry_per) {
+
+                                                                                $materials_entry_count = DailyEntryDetails::find()->where(['daily_entry_id' => $materials_entry_per->id])->count();
+                                                                                $total_mat_count += $materials_entry_count;
+                                                                                $materials_weight_count = DailyEntryDetails::find()->where(['daily_entry_id' => $materials_entry_per->id])->sum('net_weight');
+                                                                                $total_materials_entry_weight += $materials_weight_count;
+                                                                        }
+                                                                        $total_mat_count_net += $total_mat_count;
+                                                                        $total_materials_entry_weight_net += $total_materials_entry_weight;
+                                                                        $overall_total += $total_materials_entry_weight;
+                                                                        $overall[$material_trip]['trip'] += $total_mat_count;
+                                                                        $overall[$material_trip]['weight'] += $total_materials_entry_weight;
+                                                                        ?>
+                                                                        <th><?php
+                                                                                echo $total_mat_count;
+                                                                                ?></th>
+                                                                        <th><?php
+                                                                                echo Yii::$app->SetValues->NumberFormat($total_materials_entry_weight);
+                                                                                ?>
+                                                                        </th>
+                                                                        <?php
+                                                                }
+                                                                ?>
+                                                                <th><?= Yii::$app->SetValues->NumberFormat($total_materials_entry_weight_net); ?></th>
+                                                        </tr>
+
+
+
+
+
+
+                                                        <?php
+                                                        for ($i = 0; $i < $month_count; $i++) {
+                                                                $start_date = date('Y-m-d', strtotime($start_date . "+1 days"));
+                                                                ?>
+                                                                <tr>
+                                                                        <td><?= date('d-m-Y', strtotime($start_date)); ?></td>
+                                                                        <?php
+                                                                        $total_mat_count_net = 0;
+                                                                        $total_materials_entry_weight_net = 0;
+
+                                                                        foreach ($model->material_id as $material_trip) {
+                                                                                $materials_entry = DailyEntry::find()->where(['material' => $material_trip, 'DOC' => $start_date, 'status' => 1])->all();
+                                                                                $materials_entry_count = 0;
+                                                                                $total_mat_count = 0;
+                                                                                $materials_weight_count = 0;
+                                                                                $total_materials_entry_weight = 0;
+
+                                                                                foreach ($materials_entry as $materials_entry_per) {
+
+                                                                                        $materials_entry_count = DailyEntryDetails::find()->where(['daily_entry_id' => $materials_entry_per->id])->count();
+                                                                                        $total_mat_count += $materials_entry_count;
+                                                                                        $materials_weight_count = DailyEntryDetails::find()->where(['daily_entry_id' => $materials_entry_per->id])->sum('net_weight');
+                                                                                        $total_materials_entry_weight += $materials_weight_count;
+                                                                                }
+                                                                                $total_mat_count_net += $total_mat_count;
+                                                                                $total_materials_entry_weight_net += $total_materials_entry_weight;
+
+                                                                                $overall[$material_trip]['trip'] += $total_mat_count;
+                                                                                $overall[$material_trip]['weight'] += $total_materials_entry_weight;
+                                                                                ?>
+                                                                                <td><?php
+                                                                                        if ($total_mat_count > 0) {
+                                                                                                echo $total_mat_count;
+                                                                                        } else {
+                                                                                                echo '-';
+                                                                                        }
+                                                                                        ?></td>
+                                                                                <td><?php
+                                                                                        if ($total_materials_entry_weight > 0) {
+                                                                                                echo Yii::$app->SetValues->NumberFormat($total_materials_entry_weight);
+                                                                                        } else {
+                                                                                                echo '-';
+                                                                                        }
+                                                                                        ?>
+                                                                                </td>
+                                                                                <?php
+                                                                        }
+                                                                        ?>
+                                                                        <td>
+                                                                                <?php
+                                                                                $overall_total += $total_materials_entry_weight_net;
+                                                                                if ($total_materials_entry_weight_net > 0) {
+                                                                                        echo Yii::$app->SetValues->NumberFormat($total_materials_entry_weight_net);
+                                                                                } else {
+                                                                                        echo '-';
+                                                                                }
+                                                                                ?>
+                                                                        </td>
+
+                                                                </tr>
+                                                        <?php } ?>
+                                                        <tr>
+                                                                <td></td>
+                                                                <?php
+                                                                foreach ($model->material_id as $mate) {
+                                                                        ?>
+                                                                        <th><?= $overall[$mate]['trip'] ?></th>
+                                                                        <th><?= Yii::$app->SetValues->NumberFormat($overall[$mate]['weight']); ?></th>
+                                                                <?php } ?>
+                                                                <td><b><?= Yii::$app->SetValues->NumberFormat($overall_total); ?></b></td>
+                                                        </tr>
+                                                </table>
+                                        <?php } ?>
+                                </div>
                         </div>
-                        <div class="col-md-4" style="margin-top: 31px;">
-                            <div class="form-group">
-                                <?= Html::submitButton('Search', ['class' => 'btn btn-success']) ?>
-                                <?php // Html::resetButton('Reset', ['class' => 'btn btn-default', 'style' => 'background-color: #e6e6e6;'])   ?>
-                            </div>
-                        </div>
-                        <?php ActiveForm::end(); ?>
-
-
-
-                    </div>
-                    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-                    <?=
-                    GridView::widget([
-                        'dataProvider' => $dataProvider,
-                        'filterModel' => $searchModel,
-                        'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-                            [
-                                'attribute' => 'material_id',
-                                'label' => 'Material Name',
-                                'value' => 'material.name',
-                                'filter' => ArrayHelper::map(Materials::find()->asArray()->all(), 'id', 'name'),
-                            ],
-//                            'material_code',
-                            [
-                                'attribute' => 'quantity_in',
-                                'header' => 'Quantity',
-                                'filter' => '',
-                                'value' => function ($data) {
-                                    return $data->monthlyQtyTotal($data->material_id, $data->DOC);
-                                },
-                            ],
-                            // 'weight_in',
-                            // 'weight_out',
-                            // 'total_cost',
-                            // 'status',
-                            // 'CB',
-                            // 'UB',
-                            [
-                                'attribute' => 'DOC',
-                                'header' => 'Date',
-                                'filter' => '',
-                                'value' => function ($data) {
-                                    return date('Y-M', strtotime($data->DOC));
-                                },
-                            ],
-//                            'DOC',
-                        // 'DOU',
-//                            ['class' => 'yii\grid\ActionColumn'],
-                        ],
-                    ]);
-                    ?>
                 </div>
-            </div>
         </div>
-    </div>
 </div>
 
 
+<script>
+        $(document).ready(function () {
+
+                $("#stock-material_id").select2({
+                        //   placeholder: 'Select',
+                        allowClear: true
+                }).on('select2-open', function ()
+                {
+                        $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                });
+        });
+</script>
