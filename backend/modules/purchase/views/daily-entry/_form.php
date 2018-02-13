@@ -23,10 +23,14 @@ use common\components\ModalViewWidget;
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?php
+            if ($model->isNewRecord) {
+                $model->received_date = date('d-M-Y h:i');
+            }
+            ?>
             <?=
             $form->field($model, 'received_date')->widget(DateTimePicker::classname(), [
                 'type' => DateTimePicker::TYPE_INPUT,
-                'value' => '23-Feb-1982 10:10',
                 'pluginOptions' => [
                     'autoclose' => true,
                     'format' => 'dd-M-yyyy hh:ii'
@@ -43,12 +47,12 @@ use common\components\ModalViewWidget;
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php $suppliers = ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 2, 'service' => 1]), 'id', 'name'); ?>
             <?= $form->field($model, 'supplier')->dropDownList($suppliers, ['prompt' => '-Choose a Supplier-']) ?>
-            <?= Html::button('<span> Add Supplier</span>', ['value' => Url::to('supplier'), 'class' => 'btn btn-icon btn-white extra_btn supplier_add modalButton']) ?>
+            <?= Html::button('<span> Add Supplier</span>', ['value' => Url::to('supplier'), 'class' => 'btn btn-icon btn-white extra_btn supplier_add modalButton', 'tabindex' => "-1"]) ?>
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
-            <?php $transports = ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 2, 'service' => 2]), 'id', 'name'); ?>
+            <?php $transports = ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 3, 'service' => 2]), 'id', 'name'); ?>
             <?= $form->field($model, 'transport')->dropDownList($transports, ['prompt' => '-Choose a Transporter-']) ?>
-            <?= Html::button('<span> Add Transporter</span>', ['value' => Url::to('transporter'), 'class' => 'btn btn-icon btn-white extra_btn supplier_add modalButton']) ?>
+            <?= Html::button('<span> Add Transporter</span>', ['value' => Url::to('transporter'), 'class' => 'btn btn-icon btn-white extra_btn supplier_add modalButton', 'tabindex' => "-1"]) ?>
         </div>
     </div>
     <div class="row">
@@ -59,9 +63,6 @@ use common\components\ModalViewWidget;
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php $yards = ArrayHelper::map(Yard::findAll(['status' => 1]), 'id', 'name'); ?>
             <?= $form->field($model, 'yard_id')->dropDownList($yards, ['prompt' => '-Choose a Yard-']) ?>
-        </div>
-        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'status')->dropDownList(['1' => 'Enabled', '0' => 'Disabled']) ?>
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?= $form->field($model, 'image')->fileInput() ?>
@@ -85,5 +86,6 @@ use common\components\ModalViewWidget;
                 .load($(this).attr("value"));
 
     });
+    $("#w0 input:text, #formId textarea").first().focus();
 </script>
 

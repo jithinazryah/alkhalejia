@@ -9,7 +9,7 @@ use common\models\Ships;
 /* @var $searchModel common\models\PurchaseOrderMstSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Purchase Order Msts';
+$this->title = 'Purchase Order';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="purchase-order-mst-index">

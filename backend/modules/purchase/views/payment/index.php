@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\models\Contacts;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\PaymentMstSearch */
@@ -32,10 +34,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 //                            'id',
-                            'transaction_type',
+//                            'transaction_type',
+                            [
+                                'attribute' => 'transaction_type',
+                                'filter' => [1 => 'Receipt', 2 => 'Payment'],
+                                'value' => function ($model) {
+                                    return $model->transaction_type == 1 ? 'Receipt' : 'Payment';
+                                },
+                                'filterInputOptions' => ['class' => 'form-control', 'id' => null, 'prompt' => 'All'],
+                            ],
                             'document_no',
                             'document_date',
-                            'supplier',
+                            [
+                                'attribute' => 'supplier',
+                                'format' => 'raw',
+                                'filter' => Html::activeDropDownList($searchModel, 'supplier', ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 2, 'service' => 1]), 'id', 'name'), ['class' => 'form-control', 'id' => 'name', 'prompt' => 'All']),
+                                'value' => function ($data) {
+                                    return Contacts::findOne($data->supplier)->name;
+                                },
+                            ],
                             // 'due_amount',
                             // 'paid_amount',
                             // 'payment_mode',

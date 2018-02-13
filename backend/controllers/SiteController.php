@@ -101,6 +101,7 @@ class SiteController extends Controller {
             }
             $searchModel = new AppointmentSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $dataProvider->pagination->pageSize = 25;
 
             return $this->render('index', [
                         'searchModel' => $searchModel,

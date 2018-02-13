@@ -45,8 +45,32 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 ],
                                                 'appointment_number',
                                                 'date',
-                                                'port_of_call',
-                                                'terminal',
+                                                [
+                                'attribute' => 'port_of_call',
+                                'format' => 'raw',
+                                'filter' => Html::activeDropDownList($searchModel, 'port_of_call', ArrayHelper::map(\common\models\Ports::find()->all(), 'id', 'port_name'), ['class' => 'form-control', 'id' => 'port_name', 'prompt' => '']),
+                                'value' => function ($data) {
+                                    $res1 = \common\models\Ports::findOne($data->port_of_call);
+                                    if (!empty($res1)) {
+                                        return $res1->port_name;
+                                    } else {
+                                        return '';
+                                    }
+                                },
+                            ],
+                            [
+                                'attribute' => 'terminal',
+                                'format' => 'raw',
+                                'filter' => Html::activeDropDownList($searchModel, 'terminal', ArrayHelper::map(\common\models\Terminals::find()->all(), 'id', 'terminal'), ['class' => 'form-control', 'id' => 'terminal', 'prompt' => '']),
+                                'value' => function ($data) {
+                                    $res2 = \common\models\Terminals::findOne($data->terminal);
+                                    if (!empty($res2)) {
+                                        return $res2->terminal;
+                                    } else {
+                                        return '';
+                                    }
+                                },
+                            ],
                                                 // 'berth_number',
                                                 // 'material',
                                                 // 'quantity',

@@ -34,6 +34,14 @@ AppAsset::register($this);
         <![endif]-->
         <?= Html::csrfMetaTags() ?>
         <?php $this->head() ?>
+        <style>
+            /*            body{
+                            text-transform: uppercase;
+                        }*/
+            input,textarea,select{
+                text-transform: uppercase;
+            }
+        </style>
     </head>
     <body class="page-body">
         <?php $this->beginBody() ?>
@@ -167,6 +175,20 @@ AppAsset::register($this);
                                     <li>
                                         <?= Html::a('Material Wise Report', ['/stock/material-wise-report/index'], ['class' => 'title']) ?>
                                     </li>
+                                </ul>
+                            </li>
+                            <?php
+                        }
+                        ?>
+                        <?php
+                        if (Yii::$app->session['post']['admin'] == 1) {
+                            ?>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-file-o"></i>
+                                    <span class="title">Reports</span>
+                                </a>
+                                <ul>
                                     <li>
                                         <?= Html::a('Daily Wise Report', ['/stock/daily-wise-report/index'], ['class' => 'title']) ?>
                                     </li>

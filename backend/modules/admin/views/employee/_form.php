@@ -37,7 +37,7 @@ use yii\helpers\ArrayHelper;
 
         </div>
         <div class='col-md-12 col-sm-12 col-xs-12 left_padd'>
-            <?= $form->field($model, 'address')->textarea(['rows' => 2]) ?>
+            <?= $form->field($model, 'address')->textarea(['rows' => 2, 'maxlength' => true]) ?>
 
         </div>
         <?php if ($model->isNewRecord) { ?>

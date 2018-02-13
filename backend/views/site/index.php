@@ -28,7 +28,7 @@ use common\models\Ships;
                     <?=
                     GridView::widget([
                         'dataProvider' => $dataProvider,
-                        'filterModel' => $searchModel,
+//                        'filterModel' => $searchModel,
                         'rowOptions' => function ($model, $key, $index, $grid) {
                             $url = 'http://' . Yii::$app->getRequest()->serverName . Yii::$app->homeUrl . 'appointment/appointment/update?id=' . $model->id;
                             return ['data-id' => $model->id, 'onclick' => "window.location.href='{$url}'", 'onmouseover' => "this.style.backgroundColor='rgba(167, 167, 167, 0.52)';this.style.cursor='pointer'", 'onmouseout' => "this.style.backgroundColor=''"];
@@ -47,8 +47,32 @@ use common\models\Ships;
                             ],
                             'appointment_number',
                             'date',
-                            'port_of_call',
-                            'terminal',
+                            [
+                                'attribute' => 'port_of_call',
+                                'format' => 'raw',
+                                'filter' => Html::activeDropDownList($searchModel, 'port_of_call', ArrayHelper::map(\common\models\Ports::find()->all(), 'id', 'port_name'), ['class' => 'form-control', 'id' => 'port_name', 'prompt' => '']),
+                                'value' => function ($data) {
+                                    $res1 = \common\models\Ports::findOne($data->port_of_call);
+                                    if (!empty($res1)) {
+                                        return $res1->port_name;
+                                    } else {
+                                        return '';
+                                    }
+                                },
+                            ],
+                            [
+                                'attribute' => 'terminal',
+                                'format' => 'raw',
+                                'filter' => Html::activeDropDownList($searchModel, 'terminal', ArrayHelper::map(\common\models\Terminals::find()->all(), 'id', 'terminal'), ['class' => 'form-control', 'id' => 'terminal', 'prompt' => '']),
+                                'value' => function ($data) {
+                                    $res2 = \common\models\Terminals::findOne($data->terminal);
+                                    if (!empty($res2)) {
+                                        return $res2->terminal;
+                                    } else {
+                                        return '';
+                                    }
+                                },
+                            ],
                         ],
                     ]);
                     ?>

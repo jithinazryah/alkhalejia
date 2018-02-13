@@ -102,7 +102,7 @@
                                 <p>Trading,import and export</p>
                                 <p>TEL: 072041315</p>
                                 <p>POST BOX: 072041315</p>
-                                <p style="padding-top: 15px;font-weight: 700;font-size:11px;">VAT ID : 12356</p>
+                                <p style="padding-top: 15px;font-weight: 700;font-size:11px;">VAT ID : 100353326000003</p>
                             </div>
                         </div>
                         <br/>
@@ -122,7 +122,7 @@
                                         <td style="max-width: 405px;">
                                             <table>
                                                 <tr style="font-size: 11px;">
-                                                    <td><strong>ATTENSSION</strong></td>
+                                                    <td><strong>ATTENTION</strong></td>
                                                     <td style="padding: 3px 10px;">:</td>
                                                     <td>
                                                         <p>

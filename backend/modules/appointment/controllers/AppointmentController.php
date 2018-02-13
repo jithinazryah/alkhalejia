@@ -101,9 +101,14 @@ class AppointmentController extends Controller {
                 $services = \common\models\TransactionCategory::find()->where(['status' => 1])->all();
                 $appointment = Appointment::findOne($id);
                 if ($model->load(Yii::$app->request->post())) {
+
                         $model->appointment_id = $id;
                         if ($model->save()) {
+
                                 return $this->redirect(['add', 'id' => $id]);
+                        } else {
+                                var_dump($model->getErrors());
+                                exit;
                         }
                 }
 

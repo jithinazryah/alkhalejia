@@ -52,10 +52,10 @@ class StockAdjDtlController extends Controller {
      */
     public function actionView($id) {
         $model = StockAdjMst::findOne(['id' => $id]);
-        $stock_details = StockAdjDtl::find()->where(['StockAdjMstId' => $id])->all();
+        $model_details = StockAdjDtl::find()->where(['master_id' => $id])->all();
         return $this->render('view', [
                     'model' => $model,
-                    'stock_details' => $stock_details,
+                    'model_details' => $model_details,
         ]);
     }
 

@@ -280,12 +280,17 @@ $this->params['breadcrumbs'][] = $this->title;
             calculateTotal();
         });
         $(document).on('blur', '#paymentmst-paid_amount', function (e) {
-            alert($(this).val());
             $('#paymentmst-paid_amount-balance').val($(this).val());
             $('.payed_amount').val('');
             $('.amount_paid_total').val('');
             $('#checkbox-payall').attr('checked', false);
             $('#auto-allocation').attr('checked', false);
+            if ($("#paymentmst-paid_amount").next(".validation").length != 0) // only add if not added
+            {
+                if ($('#paymentmst-paid_amount').val() > 0) {
+                    $("#paymentmst-paid_amount").next(".validation").remove(); // remove it
+                }
+            }
 //        calculateTotal();
         });
         $(document).on('keyup', '#paymentmst-paid_amount', function (e) {

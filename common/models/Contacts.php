@@ -51,7 +51,9 @@ class Contacts extends \yii\db\ActiveRecord {
             [['DOC', 'DOU'], 'safe'],
             [['name', 'tax_id'], 'string', 'max' => 200],
             [['code'], 'string', 'max' => 20],
-            [['phone', 'email', 'city'], 'string', 'max' => 150],
+            [['email', 'city'], 'string', 'max' => 150],
+            [['phone'], 'string', 'max' => 15],
+            [['phone'], 'match', 'pattern' => '/^[0-9]+$/'],
             [['type'], 'exist', 'skipOnError' => true, 'targetClass' => ContactType::className(), 'targetAttribute' => ['type' => 'id']],
 //            [['category'], 'exist', 'skipOnError' => true, 'targetClass' => SupplierCategory::className(), 'targetAttribute' => ['category' => 'id']],
         ];

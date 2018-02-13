@@ -29,7 +29,7 @@ use common\models\TransactionCategory;
         <div class='col-md-4 col-sm-6 col-xs-12 left_padd'>    <?= $form->field($model, 'tax_id')->textInput(['maxlength' => true]) ?>
 
         </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'type')->dropDownList(['2' => 'Supplier'], ['readonly' => TRUE]) ?>
+            <?= $form->field($model, 'type')->dropDownList(['3' => 'Transporter'], ['readonly' => TRUE]) ?>
 
         </div><div class='col-md-4 col-sm-6 col-xs-12 left_padd'>    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
 

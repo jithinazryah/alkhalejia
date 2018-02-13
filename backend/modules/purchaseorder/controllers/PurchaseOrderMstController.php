@@ -346,13 +346,14 @@ class PurchaseOrderMstController extends Controller {
         $order = PurchaseOrderMst::findOne($id);
         if ($model->load(Yii::$app->request->post())) {
             $model->purchase_order_mst_id = $id;
+           
             $model->status = 1;
             $model->CB = Yii::$app->user->identity->id;
             $model->UB = Yii::$app->user->identity->id;
             $model->DOC = date('Y-m-d');
             if ($model->save()) {
                 return $this->redirect(['add', 'id' => $id]);
-            }
+            } 
         }
 
         return $this->render('add', [
