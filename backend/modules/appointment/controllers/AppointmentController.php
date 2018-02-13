@@ -329,7 +329,7 @@ class AppointmentController extends Controller {
                 $stock->yard_id = '';
                 $stock->yard_code = '';
                 $stock->material_cost = $model->unit_price;
-                $stock->weight_out = $model->quantity;
+                $stock->quantity_out = $model->quantity;
                 $stock->total_cost = $model->unit_price * $model->quantity;
                 Yii::$app->SetValues->Attributes($stock);
                 if ($stock->save()) {

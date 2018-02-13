@@ -43,9 +43,9 @@ class Stock extends \yii\db\ActiveRecord {
          */
         public function rules() {
                 return [
-                        [['transaction_type', 'transaction_id', 'material_id', 'yard_id', 'quantity_out', 'weight_in', 'weight_out', 'status', 'CB', 'UB'], 'integer'],
+                        [['transaction_type', 'transaction_id', 'material_id', 'yard_id', 'status', 'CB', 'UB'], 'integer'],
                         [['transaction_id'], 'required'],
-                        [['material_cost', 'total_cost', 'quantity_in',], 'number'],
+                        [['material_cost', 'total_cost', 'quantity_in', 'weight_in', 'weight_out', 'quantity_out',], 'number'],
                         [['DOC', 'DOU'], 'safe'],
                         [['material_code', 'yard_code'], 'string', 'max' => 20],
                         [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Materials::className(), 'targetAttribute' => ['material_id' => 'id']],
