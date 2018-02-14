@@ -160,6 +160,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                                         <?php
                                                         for ($i = 0; $i < $month_count; $i++) {
+
                                                                 $start_date = date('Y-m-d', strtotime($start_date . "+1 days"));
                                                                 ?>
                                                                 <tr>
@@ -169,8 +170,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         $total_materials_entry_weight_net = 0;
 
                                                                         foreach ($model->material_id as $material_trip) {
-                                                                                $materials_entry = DailyEntry::find()->where(['material' => $material_trip, 'DOC' => $start_date, 'status' => 1])->all();
-                                                                                $materials_entry_count = 0;
+                                                                                $materials_entry = DailyEntry::find()->where(['material' => $material_trip, 'DOC' => $start_date])->all();
                                                                                 $total_mat_count = 0;
                                                                                 $materials_weight_count = 0;
                                                                                 $total_materials_entry_weight = 0;
