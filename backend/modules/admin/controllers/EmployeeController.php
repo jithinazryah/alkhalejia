@@ -228,8 +228,6 @@ class EmployeeController extends Controller {
             }
             if ($model->save()) {
                 if (!empty($files)) {
-                    $model->photo = $model->id . '.' . $files->extension;
-                    $model->update();
                     $this->upload($model, $files);
                 }
                 $this->Imageupload($model);
@@ -249,8 +247,15 @@ class EmployeeController extends Controller {
      * @return mixed
      */
     public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        if ($model->delete()) {
+            $dirPath = Yii::getAlias(Yii::$app->params['uploadPath']) . '/uploads/employee';
+            $file_name = $dirPath . '/' . $model->id . '.' . $model->photo;
+            if (file_exists($file_name)) {
+                unlink($file_name);
+                Yii::$app->session->setFlash('success', "Employee Remove Successfully");
+            }
+        }
         return $this->redirect(['index']);
     }
 
@@ -274,7 +279,8 @@ class EmployeeController extends Controller {
      */
     public function actionAttachment() {
         if (Yii::$app->request->isAjax) {
-            $data = $this->renderPartial('_form_add_attachment');
+            $next = $_POST['next'];
+            $data = $this->renderPartial('_form_add_attachment', ['next' => $next]);
             echo $data;
         }
     }
@@ -292,7 +298,9 @@ class EmployeeController extends Controller {
                     unlink($file_name);
                 }
                 if (is_dir($dirPath)) {
-                    rmdir($dirPath);
+                    if (is_dir_empty($dirPath)) {
+                        rmdir($dirPath);
+                    }
                 }
             }
         }
