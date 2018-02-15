@@ -69,7 +69,7 @@ class PurchaseOrderMst extends \yii\db\ActiveRecord {
             'invoice' => 'Invoice',
             'email_confirmation' => 'Email Confirmation',
             'delivery_note' => 'Delivery Note',
-            'eta' => 'Eta',
+            'eta' => 'ETA',
             'port' => 'Port',
             'payment_terms' => 'Payment Terms',
             'agent_details' => 'Agent Details',

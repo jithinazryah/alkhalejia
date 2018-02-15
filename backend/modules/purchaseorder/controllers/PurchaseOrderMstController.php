@@ -346,14 +346,26 @@ class PurchaseOrderMstController extends Controller {
         $order = PurchaseOrderMst::findOne($id);
         if ($model->load(Yii::$app->request->post())) {
             $model->purchase_order_mst_id = $id;
-           
+
             $model->status = 1;
             $model->CB = Yii::$app->user->identity->id;
             $model->UB = Yii::$app->user->identity->id;
             $model->DOC = date('Y-m-d');
-            if ($model->save()) {
-                return $this->redirect(['add', 'id' => $id]);
-            } 
+            $transaction = Yii::$app->db->beginTransaction();
+            if (!isset($prfrma_id)) {
+                if ($model->save() && $this->Addtransaction($model)) {
+                    $transaction->commit();
+                } else {
+                    $transaction->rollBack();
+                }
+            } else {
+                if ($model->save() && $this->Updatetransaction($model)) {
+                    $transaction->commit();
+                } else {
+                    $transaction->rollBack();
+                }
+            }
+            return $this->redirect(['add', 'id' => $id]);
         }
 
         return $this->render('add', [
@@ -362,6 +374,44 @@ class PurchaseOrderMstController extends Controller {
                     'order' => $order,
                     'id' => $id,
         ]);
+    }
+
+    /*
+     * Add purchase order entry into transaction
+     */
+
+    public function Addtransaction($model) {
+        $master = PurchaseOrderMst::find()->where(['id' => $model->purchase_order_mst_id])->one();
+        $flag = 0;
+        $financial_year = '';
+        $supplier = \common\models\Contacts::findOne($master->attenssion);
+        if (Yii::$app->SetValues->Transaction(1, $model->id, date('Y-m-d', strtotime($master->date)), $financial_year, $master->attenssion, $supplier->name, $supplier->code, 0, $model->total, $model->total, 1, 3)) {
+            $flag = 1;
+        }
+        if ($flag == 1) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /*
+     * Update purchase order entry into transaction
+     */
+
+    public function Updatetransaction($model) {
+        $master = PurchaseOrderMst::find()->where(['id' => $model->purchase_order_mst_id])->one();
+        $flag = 0;
+        $financial_year = '';
+        $supplier = \common\models\Contacts::findOne($master->attenssion);
+        if (Yii::$app->SetValues->TransactionUpdate(1, $model->id, date('Y-m-d', strtotime($master->date)), $financial_year, $master->attenssion, $supplier->name, $supplier->code, 0, $model->total, $model->total, 1, 3)) {
+            $flag = 1;
+        }
+        if ($flag == 1) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
     /*

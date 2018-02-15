@@ -241,3 +241,42 @@ Use common\models\Ports;
         });
     });
 </script>
+<link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/select2/select2.css">
+<link rel="stylesheet" href="<?= Yii::$app->homeUrl; ?>js/select2/select2-bootstrap.css">
+<script src="<?= Yii::$app->homeUrl; ?>js/select2/select2.min.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function ($)
+    {
+        $("#purchaseordermst-category").select2({
+            allowClear: true
+        }).on('select2-open', function ()
+        {
+            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+        });
+
+        $("#purchaseordermst-vessel").select2({
+            allowClear: true
+        }).on('select2-open', function ()
+        {
+            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+        });
+
+        $("#purchaseordermst-appointment_no").select2({
+            allowClear: true
+        }).on('select2-open', function ()
+        {
+            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+        });
+
+
+        $("#purchaseordermst-attenssion").select2({
+            allowClear: true
+        }).on('select2-open', function ()
+        {
+            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+        });
+
+
+
+    });
+</script>

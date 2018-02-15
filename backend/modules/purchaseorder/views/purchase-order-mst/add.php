@@ -106,12 +106,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <td  id="<?= $order_detail->id ?>-unit" val="<?= $order_detail->unit ?>"><?php if ($order_detail->unit != '') { ?> <?= common\models\Units::findOne($order_detail->unit)->unit_symbol ?><?php } ?></td>
                                         <td  id="<?= $order_detail->id ?>-total" val="<?= $order_detail->total ?>"><?php if ($order_detail->total != '') { ?> <?= $order_detail->total ?><?php } ?></td>
                                         <td>
-                                            <?php
-                                            if ($order->status != 0) {
-                                                ?>
-                                                <?= Html::a('<i class="fa fa-pencil"></i>', ['/purchaseorder/purchase-order-mst/add', 'id' => $id, 'prfrma_id' => $order_detail->id], ['class' => '', 'tittle' => 'Edit']) ?>
-                                                <?= Html::a('<i class="fa fa-remove"></i>', ['/purchaseorder/purchase-order-mst/delete-detail', 'id' => $order_detail->id], ['class' => '', 'tittle' => 'Edit', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
-                                            <?php } ?>
+                                            <?php // Html::a('<i class="fa fa-pencil"></i>', ['/purchaseorder/purchase-order-mst/add', 'id' => $id, 'prfrma_id' => $order_detail->id], ['class' => '', 'tittle' => 'Edit']) ?>
+                                            <?php // Html::a('<i class="fa fa-remove"></i>', ['/purchaseorder/purchase-order-mst/delete-detail', 'id' => $order_detail->id], ['class' => '', 'tittle' => 'Edit', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>
                                         </td>
 
 
@@ -124,26 +120,21 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
                                 ?>
 
-                                <?php
-                                if ($order->status != 0) {
-                                    ?>
 
-                                    <tr class="formm">
-                                        <?php $form = ActiveForm::begin(); ?>
-                                        <td></td>
-                                        <td><?= $form->field($model, 'description')->textarea(['placeholder' => 'Description'])->label(false) ?></td>
-                                        <td><?= $form->field($model, 'rate')->textInput(['placeholder' => 'Rate'])->label(false) ?><span id="unit-text" style="margin-left:5px"></span></td>
-                                        <td><?= $form->field($model, 'qty')->textInput(['placeholder' => 'Quantity', 'value' => 1,])->label(false) ?><span id="unit-text" style="margin-left:5px"></span></td>
-                                        <td><?= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(common\models\Units::findAll(['status' => 1]), 'id', 'unit_symbol'), ['prompt' => '-Unit-',])->label(false); ?></td>
-                                        <td><?= $form->field($model, 'total')->textInput(['placeholder' => 'Total', 'readonly' => TRUE])->label(false) ?></td>
-                                        <td><?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => 'btn btn-success']) ?>
-                                        </td>
+                                <tr class="formm">
+                                    <?php $form = ActiveForm::begin(); ?>
+                                    <td></td>
+                                    <td><?= $form->field($model, 'description')->textarea(['placeholder' => 'Description'])->label(false) ?></td>
+                                    <td><?= $form->field($model, 'rate')->textInput(['placeholder' => 'Rate'])->label(false) ?><span id="unit-text" style="margin-left:5px"></span></td>
+                                    <td><?= $form->field($model, 'qty')->textInput(['placeholder' => 'Quantity', 'value' => 1,])->label(false) ?><span id="unit-text" style="margin-left:5px"></span></td>
+                                    <td><?= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(common\models\Units::findAll(['status' => 1]), 'id', 'unit_symbol'), ['prompt' => '-Unit-',])->label(false); ?></td>
+                                    <td><?= $form->field($model, 'total')->textInput(['placeholder' => 'Total', 'readonly' => TRUE])->label(false) ?></td>
+                                    <td><?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => 'btn btn-success']) ?>
+                                    </td>
 
-                                        <?php ActiveForm::end(); ?>
-                                    </tr>
-                                    <tr></tr>
-                                <?php } ?>
-
+                                    <?php ActiveForm::end(); ?>
+                                </tr>
+                                <tr></tr>
 
                             </tbody>
 

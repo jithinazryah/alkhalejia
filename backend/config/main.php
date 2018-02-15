@@ -43,6 +43,9 @@ return [
         'purchaseorder' => [
             'class' => 'backend\modules\purchaseorder\Module',
         ],
+        'notification' => [
+            'class' => 'backend\modules\notification\Module',
+        ],
     ],
     'components' => [
         'request' => [

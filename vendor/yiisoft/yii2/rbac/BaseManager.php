@@ -8,8 +8,8 @@
 namespace yii\rbac;
 
 use yii\base\Component;
+use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
-use yii\base\InvalidParamException;
 
 /**
  * BaseManager is a base class implementing [[ManagerInterface]] for RBAC management.
@@ -96,7 +96,7 @@ abstract class BaseManager extends Component implements ManagerInterface
     abstract protected function updateRule($name, $rule);
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createRole($name)
     {
@@ -106,7 +106,7 @@ abstract class BaseManager extends Component implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createPermission($name)
     {
@@ -116,7 +116,7 @@ abstract class BaseManager extends Component implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function add($object)
     {
@@ -132,11 +132,11 @@ abstract class BaseManager extends Component implements ManagerInterface
             return $this->addRule($object);
         }
 
-        throw new InvalidParamException('Adding unsupported object type.');
+        throw new InvalidArgumentException('Adding unsupported object type.');
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function remove($object)
     {
@@ -146,11 +146,11 @@ abstract class BaseManager extends Component implements ManagerInterface
             return $this->removeRule($object);
         }
 
-        throw new InvalidParamException('Removing unsupported object type.');
+        throw new InvalidArgumentException('Removing unsupported object type.');
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function update($name, $object)
     {
@@ -166,11 +166,11 @@ abstract class BaseManager extends Component implements ManagerInterface
             return $this->updateRule($name, $object);
         }
 
-        throw new InvalidParamException('Updating unsupported object type.');
+        throw new InvalidArgumentException('Updating unsupported object type.');
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getRole($name)
     {
@@ -179,7 +179,7 @@ abstract class BaseManager extends Component implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPermission($name)
     {
@@ -188,7 +188,7 @@ abstract class BaseManager extends Component implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getRoles()
     {
@@ -207,11 +207,11 @@ abstract class BaseManager extends Component implements ManagerInterface
         } elseif (is_callable($roles)) {
             $roles = $roles();
             if (!is_array($roles)) {
-                throw new InvalidParamException('Default roles closure must return an array');
+                throw new InvalidArgumentException('Default roles closure must return an array');
             }
             $this->defaultRoles = $roles;
         } else {
-            throw new InvalidParamException('Default roles must be either an array or a callable');
+            throw new InvalidArgumentException('Default roles must be either an array or a callable');
         }
     }
 
@@ -241,7 +241,7 @@ abstract class BaseManager extends Component implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPermissions()
     {
