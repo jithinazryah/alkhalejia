@@ -50,6 +50,7 @@ class Stock extends \yii\db\ActiveRecord {
                         [['material_code', 'yard_code'], 'string', 'max' => 20],
                         [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Materials::className(), 'targetAttribute' => ['material_id' => 'id']],
                         [['yard_id'], 'exist', 'skipOnError' => true, 'targetClass' => Yard::className(), 'targetAttribute' => ['yard_id' => 'id']],
+                        [['DOC', 'material_id'], 'required', 'on' => 'daily-wise'],
                 ];
         }
 

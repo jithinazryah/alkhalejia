@@ -18,46 +18,46 @@ use Yii;
  */
 class TransactionCategory extends \yii\db\ActiveRecord {
 
-    /**
-     * @inheritdoc
-     */
-    public static function tableName() {
-        return 'transaction_category';
-    }
+        /**
+         * @inheritdoc
+         */
+        public static function tableName() {
+                return 'transaction_category';
+        }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules() {
-        return [
-            [['category'], 'required'],
-            [['description'], 'string'],
-            [['status', 'CB', 'UB'], 'integer'],
-            [['DOC', 'DOU'], 'safe'],
-            [['category'], 'string', 'max' => 100],
-        ];
-    }
+        /**
+         * @inheritdoc
+         */
+        public function rules() {
+                return [
+                        [['category'], 'required'],
+                        [['description'], 'string'],
+                        [['status', 'CB', 'UB', 'sort_order'], 'integer'],
+                        [['DOC', 'DOU'], 'safe'],
+                        [['category'], 'string', 'max' => 100],
+                ];
+        }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels() {
-        return [
-            'id' => 'ID',
-            'category' => 'Category',
-            'description' => 'Description',
-            'status' => 'Status',
-            'CB' => 'Cb',
-            'UB' => 'Ub',
-            'DOC' => 'Doc',
-            'DOU' => 'Dou',
-        ];
-    }
+        /**
+         * @inheritdoc
+         */
+        public function attributeLabels() {
+                return [
+                    'id' => 'ID',
+                    'category' => 'Category',
+                    'description' => 'Description',
+                    'status' => 'Status',
+                    'CB' => 'Cb',
+                    'UB' => 'Ub',
+                    'DOC' => 'Doc',
+                    'DOU' => 'Dou',
+                ];
+        }
 
-    public static function Category() {
-        $data = static::find()->where(['status' => 1])->all();
-        $value = (count($data) == 0) ? ['' => ''] : \yii\helpers\ArrayHelper::map($data, 'id', 'category');
-        return $value;
-    }
+        public static function Category() {
+                $data = static::find()->where(['status' => 1])->all();
+                $value = (count($data) == 0) ? ['' => ''] : \yii\helpers\ArrayHelper::map($data, 'id', 'category');
+                return $value;
+        }
 
 }

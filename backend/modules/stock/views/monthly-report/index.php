@@ -83,9 +83,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                         </div>
                                         <?php
                                         if (isset($model->material_id)) {
+                                                $cc_material_cont = count($model->material_id);
+                                                $cc_width = 100 / $cc_material_cont;
                                                 $start_date = '01-' . $model->DOC;
                                                 $month = date('m', strtotime($start_date));
-                                                if ($month == '04' || $month == '06' || $month == '11') {
+                                                if ($month == '04' || $month == '06' || $month == '11' || $month = '09') {
                                                         $month_count = 30;
                                                 } else if ($month == '02') {
                                                         $month_count = 28;
@@ -107,7 +109,24 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         <th>Trips</th>
                                                                         <th><?= $material_detail->name ?></th>
                                                                 <?php } ?>
+                                                                <th style="padding: 0">
+                                                                        <table class="table-responsive table table-small-font table-bordered table-striped" style="margin-bottom: 0">
+                                                                                <tr>
+                                                                                        <th colspan="<?= $cc_material_cont ?>" style="text-align: center">Export</th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                        <?php
+                                                                                        foreach ($model->material_id as $value) {
+                                                                                                $material_detail = Materials::findOne($value);
+                                                                                                ?>
+                                                                                                <th style="width:<?= $cc_width ?>%"><?= $material_detail->name ?></th>
+                                                                                        <?php } ?>
+                                                                                </tr>
+                                                                        </table>
+                                                                </th>
                                                                 <th>Total</th>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <!--                                                                <th>Total</th>-->
                                                         </tr>
 
 
@@ -136,21 +155,41 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         }
                                                                         $total_mat_count_net += $total_mat_count;
                                                                         $total_materials_entry_weight_net += $total_materials_entry_weight;
-                                                                        $overall_total += $total_materials_entry_weight;
+
                                                                         $overall[$material_trip]['trip'] += $total_mat_count;
                                                                         $overall[$material_trip]['weight'] += $total_materials_entry_weight;
                                                                         ?>
-                                                                        <th><?php
-                                                                                echo $total_mat_count;
-                                                                                ?></th>
-                                                                        <th><?php
-                                                                                echo Yii::$app->SetValues->NumberFormat($total_materials_entry_weight);
-                                                                                ?>
-                                                                        </th>
+                                                                        <th><?php echo $total_mat_count; ?></th>
+                                                                        <th><?php echo Yii::$app->SetValues->NumberFormat($total_materials_entry_weight); ?></th>
+
                                                                         <?php
                                                                 }
                                                                 ?>
-                                                                <th><?= Yii::$app->SetValues->NumberFormat($total_materials_entry_weight_net); ?></th>
+
+                                                                <th style="padding: 0">
+                                                                        <table class="table-responsive table table-small-font table-bordered table-striped" style="margin-bottom: 0">
+                                                                                <tr>
+                                                                                        <?php
+                                                                                        $total_materials_export_weight_net = 0;
+                                                                                        foreach ($model->material_id as $prev_material_stock) {
+                                                                                                $closing_export = \common\models\MaterialUse::find()->where(['material_id' => $prev_material_stock])->andWhere(['<=', 'sell_date', $start_date])->sum('quantity');
+                                                                                                ?>
+                                                                                                <th style="width:<?= $cc_width ?>%"><?php
+                                                                                                        if ($closing_export > 0) {
+                                                                                                                echo $closing_export;
+                                                                                                        } else {
+                                                                                                                echo '-';
+                                                                                                        }
+                                                                                                        $overall[$prev_material_stock]['export'] += $closing_export;
+                                                                                                        $total_materials_export_weight_net += $closing_export;
+                                                                                                        ?>
+                                                                                                </th>
+                                                                                        <?php } ?>
+                                                                                </tr>
+                                                                        </table>
+                                                                </th>
+
+                                                                <th><?= Yii::$app->SetValues->NumberFormat($total_materials_entry_weight_net - $total_materials_export_weight_net); ?></th>
                                                         </tr>
 
 
@@ -159,6 +198,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                                                         <?php
+                                                        $overall_total += $total_materials_entry_weight_net - $total_materials_export_weight_net;
+
                                                         for ($i = 0; $i < $month_count; $i++) {
 
                                                                 $start_date = date('Y-m-d', strtotime($start_date . "+1 days"));
@@ -206,16 +247,45 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                                 <?php
                                                                         }
                                                                         ?>
+
+                                                                        <th style="padding: 0">
+                                                                                <table class="table-responsive table table-small-font table-bordered table-striped" style="margin-bottom: 0">
+                                                                                        <tr>
+                                                                                                <?php
+                                                                                                $total_materials_export_weight_net = 0;
+                                                                                                foreach ($model->material_id as $prev_material_stock) {
+                                                                                                        $dat_days_use = \common\models\MaterialUse::find()->where(['material_id' => $prev_material_stock, 'sell_date' => $start_date])->sum('quantity');
+                                                                                                        ?>
+                                                                                                        <td style="width:<?= $cc_width ?>%"><?php
+                                                                                                                if ($dat_days_use > 0) {
+                                                                                                                        echo $dat_days_use;
+                                                                                                                } else {
+                                                                                                                        echo '-';
+                                                                                                                }
+                                                                                                                $overall[$prev_material_stock]['export'] += $dat_days_use;
+                                                                                                                $total_materials_export_weight_net += $dat_days_use;
+                                                                                                                ?>
+                                                                                                        </td>
+                                                                                                <?php } ?>
+                                                                                        </tr>
+                                                                                </table>
+                                                                        </th>
+
+
+
+
                                                                         <td>
                                                                                 <?php
-                                                                                $overall_total += $total_materials_entry_weight_net;
+                                                                                $overall_total += $total_materials_entry_weight_net - $total_materials_export_weight_net;
                                                                                 if ($total_materials_entry_weight_net > 0) {
-                                                                                        echo Yii::$app->SetValues->NumberFormat($total_materials_entry_weight_net);
+                                                                                        echo Yii::$app->SetValues->NumberFormat($total_materials_entry_weight_net - $total_materials_export_weight_net);
                                                                                 } else {
                                                                                         echo '-';
                                                                                 }
                                                                                 ?>
                                                                         </td>
+
+
 
                                                                 </tr>
                                                         <?php } ?>
@@ -227,6 +297,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         <th><?= $overall[$mate]['trip'] ?></th>
                                                                         <th><?= Yii::$app->SetValues->NumberFormat($overall[$mate]['weight']); ?></th>
                                                                 <?php } ?>
+
+                                                                <th style="padding: 0">
+                                                                        <table class="table-responsive table table-small-font table-bordered table-striped" style="margin-bottom: 0">
+                                                                                <tr>
+                                                                                        <?php
+                                                                                        foreach ($model->material_id as $prev_material_stock) {
+                                                                                                ?>
+                                                                                                <th style="width:<?= $cc_width ?>%"><?= Yii::$app->SetValues->NumberFormat($overall[$prev_material_stock]['export']); ?></th>
+                                                                                                <?php } ?>
+                                                                                </tr>
+                                                                        </table>
+                                                                </th>
                                                                 <td><b><?= Yii::$app->SetValues->NumberFormat($overall_total); ?></b></td>
                                                         </tr>
                                                 </table>

@@ -51,9 +51,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         foreach ($service_ids as $service_one) {
 
                                                                                 if ($service_one != '') {
-                                                                                        $data = Services::findOne(['id' => $service_one->service_id]);
+                                                                                        $data = \common\models\TransactionCategory::findOne(['id' => $service_one->service_id]);
                                                                                         ?>
-                                                                                        <option value="<?= $service_one->service_id ?>"><?= $data->service ?></option>
+                                                                                        <option value="<?= $service_one->service_id ?>"><?= $data->category ?></option>
                                                                                         <?php
                                                                                 }
                                                                         }
@@ -260,7 +260,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                                         <tr class="formm">
                                                                                 <?php $form = ActiveForm::begin(); ?>
                                                                                 <td></td>
-                                                                                <td><?= $form->field($model, 'service_id')->dropDownList(ArrayHelper::map(common\models\TransactionCategory::find()->where(['status' => 1])->andWhere(['<>', 'id', 1])->orderBy(['id' => SORT_DESC])->all(), 'id', 'category'), ['prompt' => '-Service-'])->label(false); ?></td>
+                                                                                <td><?= $form->field($model, 'service_id')->dropDownList(ArrayHelper::map(common\models\TransactionCategory::find()->where(['status' => 1])->andWhere(['<>', 'id', 1])->orderBy(['sort_order' => SORT_ASC])->all(), 'id', 'category'), ['prompt' => '-Service-'])->label(false); ?></td>
                                                                                 <?php
                                                                                 $contacts = Contacts::find()->where(['status' => 1])->all();
                                                                                 if (isset($model->service_id) && $model->service_id == 1) {

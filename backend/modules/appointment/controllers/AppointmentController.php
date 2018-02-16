@@ -270,13 +270,13 @@ class AppointmentController extends Controller {
                         $transaction_id = $value->id;
                         $transaction_date = date('Y-m-d');
                         $financial_year = $this->GetFinancialYear($transaction_date);
-                        $service = \common\models\Services::findOne($value->service_id);
+                        //$service = \common\models\Services::findOne($value->service_id);
                         if ($value->service_id == 16) {
                                 $supplier = \common\models\Materials::findOne($value->supplier);
                         } else {
                                 $supplier = \common\models\Contacts::findOne($value->supplier);
                         }
-                        if (Yii::$app->SetValues->Transaction($service->category, $transaction_id, $transaction_date, $financial_year, $value->supplier, $supplier->name, $supplier->code, $value->sub_total, 0, $value->sub_total, 1, 1)) {
+                        if (Yii::$app->SetValues->Transaction($value->service_id, $transaction_id, $transaction_date, $financial_year, $value->supplier, $supplier->name, $supplier->code, $value->sub_total, 0, $value->sub_total, 1, 1)) {
                                 $flag = 1;
                                 if ($value->service_id == 16) {
                                         if ($this->SaveStock($value)) {
