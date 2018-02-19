@@ -44,7 +44,7 @@ use yii\helpers\Html;
         </td>
     </tr>
     <tr>
-        <td class="labell">INVOICE NO </td><td class="value">:
+        <td class="labell">QUATATION REF NO </td><td class="value">:
             <?= $Order->invoice_no; ?>
         </td>
         <td class="labell">APPOINTMENT NO </td><td class="value">:
@@ -69,4 +69,5 @@ use yii\helpers\Html;
     </tr>
 
 </table>
+
 

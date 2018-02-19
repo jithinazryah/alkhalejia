@@ -41,8 +41,14 @@ Use common\models\Ports;
             <?= $form->field($model, 'vessel')->dropDownList($vessel, ['prompt' => '--Select--']) ?>
 
         </div>
+        <?php
+        if ($model->isNewRecord) { // === false even we insert a new record
+            $lco_number = $this->context->generateLcoNo();
+            $model->reference_no = $lco_number['lco_num'];
+        }
+        ?>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'reference_no')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'reference_no')->textInput(['maxlength' => true, 'readonly' => TRUE]) ?>
 
         </div>
     </div>
@@ -112,13 +118,13 @@ Use common\models\Ports;
     <div class="row">
         <div class = 'col-md-4'>
             <div class = "form-group field-staffperviousemployer-hospital_address">
-                <label class="control-label port-assign_to" for="">Label</label>
+                <label class="control-label port-assign_to" for="">Remarks</label>
             </div>
         </div>
-        <div class = 'col-md-7'>
-            <div class = "form-group field-staffperviousemployer-hospital_address">
-                <label class="control-label port-assign_to" for="">Value</label></div>
-        </div>
+        <!--        <div class = 'col-md-7'>
+                    <div class = "form-group field-staffperviousemployer-hospital_address">
+                        <label class="control-label port-assign_to" for="">Value</label></div>
+                </div>-->
     </div>
     <div id="p_scents">
         <input type="hidden" id="delete_port_vals"  name="delete_port_vals" value="">

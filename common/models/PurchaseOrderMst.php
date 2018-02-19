@@ -44,10 +44,10 @@ class PurchaseOrderMst extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['date', 'eta', 'DOC', 'DOU', 'payment_terms', 'agent_details', 'category', 'other'], 'safe'],
-            [['vessel', 'attenssion', 'port', 'status', 'CB', 'UB', 'appointment_no'], 'integer'],
+            [['date', 'eta', 'DOC', 'DOU', 'payment_terms', 'agent_details', 'category', 'other', 'reference_no'], 'safe'],
+            [['vessel', 'attenssion', 'port', 'status', 'CB', 'UB', 'appointment_no', 'lco_no'], 'integer'],
             [['address'], 'string'],
-            [['reference_no', 'invoice_no', 'invoice', 'email_confirmation', 'delivery_note'], 'string', 'max' => 100],
+            [['invoice_no', 'invoice', 'email_confirmation', 'delivery_note'], 'string', 'max' => 100],
         ];
     }
 
@@ -59,18 +59,19 @@ class PurchaseOrderMst extends \yii\db\ActiveRecord {
             'id' => 'ID',
             'date' => 'Date',
             'vessel' => 'Vessel',
-            'reference_no' => 'Reference No',
-            'appointment_no' => 'Appointment No',
-            'invoice_no' => 'Invoice No',
+            'reference_no' => 'LPO No.',
+            'appointment_no' => 'Voyage No.',
+            'invoice_no' => 'Quotation Ref No.',
             'attenssion' => 'Supplier',
-            'address' => 'Address',
+            'address' => 'Supplier Address',
             'category' => 'Category',
             'other' => 'Other',
             'invoice' => 'Invoice',
             'email_confirmation' => 'Email Confirmation',
             'delivery_note' => 'Delivery Note',
-            'eta' => 'ETA',
+            'eta' => 'Vessel ETA',
             'port' => 'Port',
+            'lco_no' => 'LCO No',
             'payment_terms' => 'Payment Terms',
             'agent_details' => 'Agent Details',
             'status' => 'Status',

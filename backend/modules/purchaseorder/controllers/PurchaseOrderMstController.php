@@ -71,6 +71,9 @@ class PurchaseOrderMstController extends Controller {
             $email_confirm = UploadedFile::getInstance($model, 'email_confirmation');
             $delivery_note = UploadedFile::getInstance($model, 'delivery_note');
             $other = UploadedFile::getInstance($model, 'other');
+            $lco_number = $this->generateLcoNo();
+            $model->reference_no = $lco_number['lco_num'];
+            $model->lco_no = $lco_number['lco_value'];
             $model = $this->SetImageValues($model, $invoice, $email_confirm, $delivery_note, $other);
             if ($model->save()) {
                 $this->SaveImage($model, $invoice, $email_confirm, $delivery_note, $other);
@@ -436,6 +439,26 @@ class PurchaseOrderMstController extends Controller {
      * Generate report based on service
      */
 
+    public function actionWordExport($id) {
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition: attachment;Filename=document_name.doc");
+        $order = PurchaseOrderMst::find()->where(['id' => $id])->one();
+        $order_details = PurchaseOrderDtl::find()->where(['purchase_order_mst_id' => $id])->all();
+        $order_additional = PurchaseOrderAddition::find()->where(['purchase_order_id' => $id])->all();
+        $text = $this->renderPartial('purchase_order_word', [
+            'order' => $order,
+            'order_details' => $order_details,
+            'order_additional' => $order_additional,
+            'print' => true,
+        ]);
+        echo $text;
+        exit;
+    }
+
+    /*
+     * Generate report based on service
+     */
+
     public function actionPurchaseCover($id) {
         $order = PurchaseOrderMst::find()->where(['id' => $id])->one();
         $order_details = PurchaseOrderDtl::find()->where(['purchase_order_mst_id' => $id])->all();
@@ -455,6 +478,26 @@ class PurchaseOrderMstController extends Controller {
     public function actionDeleteDetail($id) {
         PurchaseOrderDtl::findOne($id)->delete();
         return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /*
+     * Generate LCO Number
+     */
+
+    public function generateLcoNo() {
+        $loc_no = '';
+        $loc_val = '';
+        $last_purchase_order = PurchaseOrderMst::find()->where(['<>', 'lco_no', ''])->orderBy(['id' => SORT_DESC])->one();
+        if (empty($last_purchase_order)) {
+            $loc_no = 'AKA/PO/0110/' . date('Y');
+            $loc_val = 110;
+        } else {
+            $last = ++$last_purchase_order->lco_no;
+            $loc_no = 'AKA/PO/' . (sprintf('%04d', $last)) . '/' . date('Y');
+            $loc_val = $last;
+        }
+        $loc_data = array("lco_num" => $loc_no, "lco_value" => $loc_val);
+        return $loc_data;
     }
 
 }

@@ -120,7 +120,14 @@
         </thead>
         <tbody>
             <tr>
-                <th colspan="3"><h3>PETCO ENERGY DIESEL L.L.C</h3></th>
+                <th colspan="3"><h3>
+                        <?php
+                        if ($order->attenssion != '') {
+                            $Supplier = common\models\Contacts::findOne($order->attenssion);
+                            echo $Supplier->name;
+                        }
+                        ?>
+                    </h3></th>
             </tr>
             <tr>
                 <td colspan="3">
@@ -153,7 +160,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Invoice No</th>
+                                        <th>Quotation Ref No</th>
                                         <th>:</th>
                                         <td><?= $order->invoice_no ?></td>
                                     </tr>

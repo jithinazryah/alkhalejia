@@ -39,6 +39,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo Html::a('<i class="fa-print"></i><span>Invoice Cover</span>', ['purchase-order-mst/purchase-cover', 'id' => $order->id], ['class' => 'btn btn-secondary btn-icon btn-icon-standalone', 'target' => '_blank']);
                         ?>
                     </div>
+                    <div style="float:left;padding-top: 5px;padding-left: 25px;">
+                        <?php
+                        echo Html::a('<i class="fa fa-file-word-o"></i><span>Export to Word</span>', ['purchase-order-mst/word-export', 'id' => $order->id], ['class' => 'btn btn-secondary btn-icon btn-icon-standalone', 'target' => '_blank']);
+                        ?>
+                    </div>
                 </div>
                 <!---------------------------------------------------- Generate Print  ------------------------------------------->
 

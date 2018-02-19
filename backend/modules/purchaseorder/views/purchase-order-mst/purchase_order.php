@@ -88,7 +88,7 @@
             border:1px solid #a09c9c;
         }
     </style>
-    <table class="main-tabl" border="0" style="font-family: Roboto, sans-serif !important;">
+    <table id="page-content" class="main-tabl" border="0" style="font-family: Roboto, sans-serif !important;">
         <thead>
             <tr>
                 <th style="width:100%">
@@ -99,9 +99,9 @@
                         <div class="main-right" style="padding-top: 12px;">
                             <div class="heading" style="font-weight:normal">
                                 <strong style="text-transform:uppercase;font-size:11px;">ALKHALEJIA AGGREGATES fZE</strong>
-<!--                                <p>Trading,import and export</p>
-                                <p>TEL: 072041315</p>
-                                <p>POST BOX: 072041315</p>-->
+                                <!--<p>Trading,import and export</p>-->
+                                <p>Phone No: 07-204-1315</p>
+                                <p>Email: alkhalejia@rakfzbc.ae</p>
                                 <p style="padding-top: 15px;font-weight: 700;font-size:11px;">VAT ID : 100234434700003</p>
                             </div>
                         </div>
@@ -160,9 +160,14 @@
                                                     <td><?= $order->date ?></td>
                                                 </tr>
                                                 <tr style="font-size: 11px;">
-                                                    <td>Reference No</td>
+                                                    <td>LPO No</td>
                                                     <td style="padding: 1px 10px;">:</td>
                                                     <td><?= $order->reference_no ?></td>
+                                                </tr>
+                                                <tr style="font-size: 11px;">
+                                                    <td>Quotation Ref No</td>
+                                                    <td style="padding: 1px 10px;">:</td>
+                                                    <td><?= $order->invoice_no ?></td>
                                                 </tr>
                                                 <tr style="font-size: 11px;">
                                                     <td>Vessel</td>
@@ -234,7 +239,7 @@
                         <table style="width:100%;text-align: left;font-weight:600;text-transform: uppercase;" class="order-details-tbl">
                             <?php if ($order->eta != '') { ?>
                                 <tr>
-                                    <td style="width: 10%;font-size: 11px;padding: 7px 5px;">ETA : <?= $order->eta ?></td>
+                                    <td style="width: 10%;font-size: 11px;padding: 7px 5px;">Vessel ETA : <?= $order->eta ?></td>
                                 </tr>
                             <?php }
                             ?>
@@ -285,10 +290,10 @@
             <tr>
                 <td style="width:100%">
                     <div class="footer">
-<!--                        <span>
-                            <p style="font-size:11px;font-weight: 600;">Bank Account Details</p>
-                            <p>Account Name : Alkhalejia, Account No : 1234567890123456, Bank Name : United Emirates Bank, Branch : UAE, IBAN N0 : 34535454, Swift Code : 546546</p>
-                        </span>-->
+                        <span>
+                            <p style="font-size:11px;font-weight: 600;">Office 304-305-306-A, BC-4 RAKFZ, P.O.Box 30381 Nakheel RAK UAE</p>
+                            <p>Email : alkhalejia@rakfzbc.ae, FAX No : 072041317, Mobile No : 050-5300331</p>
+                        </span>
                     </div>
                 </td>
             </tr>
