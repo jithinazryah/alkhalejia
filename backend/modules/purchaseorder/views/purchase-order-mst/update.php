@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = 'Update';
             </div>
             <div class="panel-body">
                 <?= Html::a('<i class="fa-th-list"></i><span> Manage Purchase Order</span>', ['index'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?>
-                <?= Html::a('<i class="fa-th-list"></i><span> Create Purchase Order</span>', ['create'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?>
+                <?= Html::a('<i class="fa-th-list"></i><span> Add</span>', ['create'], ['class' => 'btn btn-warning  btn-icon btn-icon-standalone']) ?>
 
                 <ul class="nav nav-tabs nav-tabs-justified">
                     <li  class="active">

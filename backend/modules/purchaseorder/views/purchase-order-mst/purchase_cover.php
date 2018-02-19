@@ -131,19 +131,26 @@
                                     <tr>
                                         <th>Vessel Name</th>
                                         <th>:</th>
-                                        <td>
+                                        <th>
                                             <?php
                                             if ($order->vessel != '') {
                                                 $vessel = common\models\Ships::findOne($order->vessel);
                                                 echo $vessel->name;
                                             }
                                             ?>
-                                        </td>
+                                        </th>
                                     </tr>
                                     <tr>
                                         <th>Voyage No</th>
                                         <th>:</th>
-                                        <td></td>
+                                        <td>
+                                            <?php
+                                            if ($order->appointment_no != '') {
+                                                $appointment_no = common\models\Appointment::findOne($order->appointment_no);
+                                                echo $appointment_no->appointment_number;
+                                            }
+                                            ?>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Invoice No</th>

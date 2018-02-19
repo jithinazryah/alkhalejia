@@ -126,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <td></td>
                                     <td><?= $form->field($model, 'description')->textarea(['placeholder' => 'Description'])->label(false) ?></td>
                                     <td><?= $form->field($model, 'rate')->textInput(['placeholder' => 'Rate'])->label(false) ?><span id="unit-text" style="margin-left:5px"></span></td>
-                                    <td><?= $form->field($model, 'qty')->textInput(['placeholder' => 'Quantity', 'value' => 1,])->label(false) ?><span id="unit-text" style="margin-left:5px"></span></td>
+                                    <td><?= $form->field($model, 'qty')->textInput(['type' => 'number', 'placeholder' => 'Quantity', 'value' => 1,])->label(false) ?><span id="unit-text" style="margin-left:5px"></span></td>
                                     <td><?= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(common\models\Units::findAll(['status' => 1]), 'id', 'unit_symbol'), ['prompt' => '-Unit-',])->label(false); ?></td>
                                     <td><?= $form->field($model, 'total')->textInput(['placeholder' => 'Total', 'readonly' => TRUE])->label(false) ?></td>
                                     <td><?= Html::submitButton($model->isNewRecord ? 'Add' : 'Update', ['class' => 'btn btn-success']) ?>
@@ -179,10 +179,10 @@ $this->params['breadcrumbs'][] = $this->title;
 </style>
 <script>
     $(document).ready(function () {
-        $("#purchaseorderdtl-qty").keyup(function () {
+        $(document).on('keyup mouseup', '#purchaseorderdtl-qty', function () {
             multiply();
         });
-        $("#purchaseorderdtl-rate").keyup(function () {
+        $(document).on('keyup mouseup', '#purchaseorderdtl-rate', function () {
             multiply();
         });
     });

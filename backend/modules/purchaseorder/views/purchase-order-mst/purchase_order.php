@@ -98,11 +98,11 @@
                         </div>
                         <div class="main-right" style="padding-top: 12px;">
                             <div class="heading" style="font-weight:normal">
-                                <strong style="text-transform:uppercase;font-size:11px;">Alkhalejia For Aggregates</strong>
-                                <p>Trading,import and export</p>
+                                <strong style="text-transform:uppercase;font-size:11px;">ALKHALEJIA AGGREGATES fZE</strong>
+<!--                                <p>Trading,import and export</p>
                                 <p>TEL: 072041315</p>
-                                <p>POST BOX: 072041315</p>
-                                <p style="padding-top: 15px;font-weight: 700;font-size:11px;">VAT ID : 100353326000003</p>
+                                <p>POST BOX: 072041315</p>-->
+                                <p style="padding-top: 15px;font-weight: 700;font-size:11px;">VAT ID : 100234434700003</p>
                             </div>
                         </div>
                         <br/>
