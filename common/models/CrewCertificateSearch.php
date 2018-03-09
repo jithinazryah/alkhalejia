@@ -53,6 +53,18 @@ class CrewCertificateSearch extends CrewCertificate {
             // $query->where('0=1');
             return $dataProvider;
         }
+        if (!empty($this->date_of_expiry) && strpos($this->date_of_expiry, '-') !== false) {
+            list($start_date, $end_date) = explode(' - ', $this->date_of_expiry);
+
+            $query->andFilterWhere(['between', 'date(date_of_expiry)', $start_date, $end_date]);
+            $this->date_of_expiry = "";
+        }
+        if (!empty($this->date_of_issue) && strpos($this->date_of_issue, '-') !== false) {
+            list($start_date, $end_date) = explode(' - ', $this->date_of_issue);
+
+            $query->andFilterWhere(['between', 'date(date_of_issue)', $start_date, $end_date]);
+            $this->date_of_issue = "";
+        }
 
         // grid filtering conditions
         $query->andFilterWhere([

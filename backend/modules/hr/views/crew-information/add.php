@@ -6,6 +6,7 @@ use common\components\ModalViewWidget;
 use yii\helpers\Url;
 use common\models\CertificateType;
 use yii\helpers\ArrayHelper;
+use kartik\daterange\DateRangePicker;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\CrewCertificate */
@@ -62,8 +63,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return CertificateType::findOne($data->certificate_id)->certificate_name;
                                 },
                             ],
-                            'date_of_issue',
-                            'date_of_expiry',
+                            [
+                                'attribute' => 'date_of_issue',
+                                'value' => function($model) {
+                                    return \Yii::$app->formatter->asDatetime($model->date_of_issue, "php:d-M-Y h:i A");
+                                },
+                                'filter' => DateRangePicker::widget(['model' => $searchModel, 'attribute' => 'date_of_issue', 'pluginOptions' => ['format' => 'd-m-Y', 'autoUpdateInput' => false]]),
+                            ],
+                            [
+                                'attribute' => 'date_of_expiry',
+                                'value' => function($model) {
+                                    return \Yii::$app->formatter->asDatetime($model->date_of_expiry, "php:d-M-Y h:i A");
+                                },
+                                'filter' => DateRangePicker::widget(['model' => $searchModel, 'attribute' => 'date_of_expiry', 'pluginOptions' => ['format' => 'd-m-Y', 'autoUpdateInput' => false]]),
+                            ],
                             'issuing_authority',
                             [
                                 'attribute' => 'image',

@@ -52,8 +52,13 @@ class CrewInformationController extends Controller {
      * @return mixed
      */
     public function actionView($id) {
+        $crew = $this->findModel($id);
+        $crew_details = CrewInformationDetails::find()->where(['crew_id' => $id])->one();
+        $crew_certificates = CrewCertificate::find()->where(['crew_id' => $id])->all();
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+                    'crew' => $crew,
+                    'crew_details' => $crew_details,
+                    'crew_certificates' => $crew_certificates,
         ]);
     }
 
