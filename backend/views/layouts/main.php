@@ -277,6 +277,26 @@ AppAsset::register($this);
                             <?php
                         }
                         ?>
+                        <?php
+                        if (Yii::$app->session['post']['admin'] == 1) {
+                            ?>
+                            <li>
+                                <a href="">
+                                    <i class="fa fa-outdent"></i>
+                                    <span class="title">HR Management</span>
+                                </a>
+                                <ul>
+                                    <li>
+                                        <?= Html::a('Certificate Type', ['/hr/certificate-type/index'], ['class' => 'title']) ?>
+                                    </li>
+                                    <li>
+                                        <?= Html::a('Add Crew', ['/hr/crew-information/index'], ['class' => 'title']) ?>
+                                    </li>
+                                </ul>
+                            </li>
+                            <?php
+                        }
+                        ?>
                     </ul>
 
                 </div>

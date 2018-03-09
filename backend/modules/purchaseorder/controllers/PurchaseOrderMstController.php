@@ -441,7 +441,7 @@ class PurchaseOrderMstController extends Controller {
 
     public function actionWordExport($id) {
         header("Content-type: application/vnd.ms-word");
-        header("Content-Disposition: attachment;Filename=document_name.doc");
+        header("Content-Disposition: attachment;Filename=purchase_order.doc");
         $order = PurchaseOrderMst::find()->where(['id' => $id])->one();
         $order_details = PurchaseOrderDtl::find()->where(['purchase_order_mst_id' => $id])->all();
         $order_additional = PurchaseOrderAddition::find()->where(['purchase_order_id' => $id])->all();

@@ -46,6 +46,9 @@ return [
         'notification' => [
             'class' => 'backend\modules\notification\Module',
         ],
+        'hr' => [
+            'class' => 'backend\modules\hr\Module',
+        ],
     ],
     'components' => [
         'request' => [
