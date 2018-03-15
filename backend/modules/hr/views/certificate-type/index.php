@@ -39,10 +39,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,
                             'filterModel' => $searchModel,
                             'columns' => [
-                                    ['class' => 'yii\grid\SerialColumn'],
+                                ['class' => 'yii\grid\SerialColumn'],
 //                                'id',
                                 'certificate_name',
-                                    [
+                                [
                                     'attribute' => 'status',
                                     'value' => function($model) {
                                         if ($model->status == '1')
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     },
                                     'filter' => ['1' => 'Enabled', '2' => 'Diabled'],
                                 ],
-                                    [
+                                [
                                     'class' => 'yii\grid\ActionColumn',
                                     'header' => 'Actions',
                                     'template' => '{update}',
@@ -72,19 +72,20 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
+</div>
+<script>
+    $(document).ready(function () {
+        $(".filters").slideToggle();
+        $("#search-option").click(function () {
             $(".filters").slideToggle();
-            $("#search-option").click(function () {
-                $(".filters").slideToggle();
-            });
-            $(document).on('click', '.modalButton', function () {
-
-                $('#modal').modal('show')
-                        .find('#modalContent')
-                        .load($(this).attr("value"));
-
-            });
         });
-    </script>
+        $(document).on('click', '.modalButton', function () {
+
+            $('#modal').modal('show')
+                    .find('#modalContent')
+                    .load($(this).attr("value"));
+
+        });
+    });
+</script>
 

@@ -10,15 +10,14 @@ use common\models\ChequeNotification;
 /**
  * ChequeNotificationSearch represents the model behind the search form about `common\models\ChequeNotification`.
  */
-class ChequeNotificationSearch extends ChequeNotification
-{
+class ChequeNotificationSearch extends ChequeNotification {
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['id', 'payment_id', 'status', 'CB', 'UB'], 'integer'],
+            [['id', 'payment_id', 'status', 'CB', 'UB', 'type'], 'integer'],
             [['cheque_no', 'cheque_due_date', 'DOC', 'DOU'], 'safe'],
             [['cheque_amount'], 'number'],
         ];
@@ -27,8 +26,7 @@ class ChequeNotificationSearch extends ChequeNotification
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -40,8 +38,7 @@ class ChequeNotificationSearch extends ChequeNotification
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = ChequeNotification::find();
 
         // add conditions that should always apply here
@@ -75,4 +72,5 @@ class ChequeNotificationSearch extends ChequeNotification
 
         return $dataProvider;
     }
+
 }

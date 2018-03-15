@@ -80,12 +80,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'issuing_authority',
                             [
                                 'attribute' => 'image',
+                                'attribute' => 'Uploded File',
                                 'format' => 'raw',
                                 'value' => function ($data) {
                                     $links = common\models\CrewCertificate::getDocuments($data->id);
                                     return $links;
                                 },
                             ],
+                            'description',
                             // 'status',
                             // 'CB',
                             // 'UB',

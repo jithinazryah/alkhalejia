@@ -230,10 +230,14 @@ class AppointmentController extends Controller {
         empty(Yii::$app->session['fda-report']);
         $app = $_POST['app_id'];
         $service_ids = $_POST['service_ids'];
+        $invoice_formats = $_POST['invoice_formats'];
         $appointment = Appointment::findOne($app);
         $appointment_details = AppointmentDetails::findAll(['service_id' => $service_ids, 'appointment_id' => $app]);
-
-        echo $this->renderPartial('report', [
+        $page = report;
+        if ($invoice_formats == 2) {
+            $page = report_arabic;
+        }
+        echo $this->renderPartial($page, [
             'appointment' => $appointment,
             'appointment_details' => $appointment_details,
             'print' => true,

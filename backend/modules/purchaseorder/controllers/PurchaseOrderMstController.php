@@ -65,8 +65,10 @@ class PurchaseOrderMstController extends Controller {
         $model = new PurchaseOrderMst();
 
         if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model)) {
-            $model->date = date('Y-m-d', strtotime($model->date));
-            $model->eta = date('Y-m-d', strtotime($model->date));
+            $model->date = $this->ConvertDate($model->date);
+            $model->eta = $this->ConvertDate($model->eta);
+            $model->payment_date = $this->ConvertDate($model->payment_date);
+            $model->cheque_date = $this->ConvertDate($model->cheque_date);
             $invoice = UploadedFile::getInstance($model, 'invoice');
             $email_confirm = UploadedFile::getInstance($model, 'email_confirmation');
             $delivery_note = UploadedFile::getInstance($model, 'delivery_note');
@@ -98,8 +100,10 @@ class PurchaseOrderMstController extends Controller {
         $delivery_note_ = $model->delivery_note;
         $other_ = $model->other;
         if ($model->load(Yii::$app->request->post()) && Yii::$app->SetValues->Attributes($model)) {
-            $model->date = date('Y-m-d', strtotime($model->date));
-            $model->eta = date('Y-m-d', strtotime($model->date));
+            $model->date = $this->ConvertDate($model->date);
+            $model->eta = $this->ConvertDate($model->eta);
+            $model->payment_date = $this->ConvertDate($model->payment_date);
+            $model->cheque_date = $this->ConvertDate($model->cheque_date);
             $invoice = UploadedFile::getInstance($model, 'invoice');
             $email_confirm = UploadedFile::getInstance($model, 'email_confirmation');
             $delivery_note = UploadedFile::getInstance($model, 'delivery_note');
@@ -116,6 +120,15 @@ class PurchaseOrderMstController extends Controller {
                     'model' => $model,
                     'model_additional' => $model_additional,
         ]);
+    }
+
+    public function ConvertDate($data) {
+        if (isset($data) && $data != '') {
+            return date('Y-m-d', strtotime($data));
+            ;
+        } else {
+            return '';
+        }
     }
 
     /**
@@ -498,6 +511,70 @@ class PurchaseOrderMstController extends Controller {
         }
         $loc_data = array("lco_num" => $loc_no, "lco_value" => $loc_val);
         return $loc_data;
+    }
+
+    /*
+     * Add supplier from purchase order form
+     */
+
+    public function actionAddSupplier() {
+        $model = new \common\models\Contacts();
+
+        if (Yii::$app->request->post()) {
+            $model->service = Yii::$app->request->post()['contacts_service'];
+            $model->name = Yii::$app->request->post()['contacts_name'];
+            $model->code = Yii::$app->request->post()['contacts_code'];
+            $model->tax_id = Yii::$app->request->post()['contacts_tax_id'];
+            $model->type = Yii::$app->request->post()['contacts_type'];
+            $model->phone = Yii::$app->request->post()['contacts_phone'];
+            $model->email = Yii::$app->request->post()['contacts_email'];
+            $model->city = Yii::$app->request->post()['contacts_city'];
+            $model->status = Yii::$app->request->post()['contacts_status'];
+            $model->address = Yii::$app->request->post()['contacts_address'];
+            $model->description = Yii::$app->request->post()['contacts_description'];
+            Yii::$app->SetValues->Attributes($model);
+            if ($model->validate() && $model->save()) {
+                echo json_encode(array("con" => "1", 'id' => $model->id, 'name' => $model->name)); //Success
+                exit;
+            } else {
+                $array = $model->getErrors();
+                $error = isset($array['name']['0']) ? $array['name']['0'] : 'Internal error';
+                echo json_encode(array("con" => "2", 'error' => $error));
+                exit;
+            }
+        }
+        return $this->renderAjax('form_supplier', [
+                    'model' => $model,
+        ]);
+    }
+
+    /*
+     * This functio remove uploaded path
+     */
+
+    public function actionRemove($path, $id, $type) {
+        echo $type;
+        $model = PurchaseOrderMst::findOne($id);
+        if (!empty($model)) {
+            if ($type == 1) {
+                $model->invoice = '';
+            } elseif ($type == 2) {
+                $model->email_confirmation = '';
+            } elseif ($type == 3) {
+                $model->delivery_note = '';
+            } elseif ($type == 4) {
+                $model->other = '';
+            } else {
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+            if ($model->update()) {
+                unlink($path);
+//                if (Yii::$app->session['post']['id'] == 1) {
+//                    unlink($path);
+//                }
+            }
+        }
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
 }

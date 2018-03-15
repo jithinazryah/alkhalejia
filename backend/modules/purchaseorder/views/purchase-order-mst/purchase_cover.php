@@ -117,6 +117,25 @@
     </style>
     <table class="main-tabl cover-tbl-main" border="0" style="font-family: Roboto, sans-serif !important;">
         <thead>
+            <tr>
+                <th style="width:100%" colspan="3">
+                    <div class="header">
+                        <div class="main-left">
+                            <img width="" height="" src="<?= Yii::$app->homeUrl ?>images/logo.png"/>
+                        </div>
+                        <div class="main-right" style="padding-top: 12px;">
+                            <div class="heading" style="font-weight:normal">
+                                <strong style="text-transform:uppercase;font-size:11px;">ALKHALEJIA AGGREGATES fZE</strong>
+                                <!--<p>Trading,import and export</p>-->
+                                <p>Phone No: 07-204-1315</p>
+                                <p>Email: al.khalejia@rakfzbc.ae</p>
+                                <p style="padding-top: 15px;font-weight: 700;font-size:11px;">VAT ID : 100234434700003</p>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </th>
+            </tr>
         </thead>
         <tbody>
             <tr>
@@ -169,6 +188,11 @@
                                         <th>:</th>
                                         <td><?= $order->date ?></td>
                                     </tr>
+                                    <tr>
+                                        <th>Invoice Cover No.</th>
+                                        <th>:</th>
+                                        <td><?= sprintf("%05d", $order->id); ?></td>
+                                    </tr>
                                 </table>
                             </td>
                         </tr>
@@ -199,12 +223,12 @@
                         }
                         ?>
                         <td class = "tbl1-width-80 item-dtl">(QTY : <?= $order_detail->qty ?> <?= $unit ?> * RATE : $<?= $order_detail->rate ?>/<?= $unit ?>)</td>
-                        <td class = "tbl1-width-10 item-dtl"><?= Yii::$app->SetValues->NumberFormat($order_detail->total) ?></td>
+                        <td class = "tbl1-width-10 item-dtl" style="text-align: right !important;padding-right: 5px;"><?= Yii::$app->SetValues->NumberFormat($order_detail->total) ?></td>
                         <?php
                         $currency = common\models\Currency::findOne(1);
                         $aed_amount = $order_detail->total * $currency->currency_value;
                         ?>
-                        <td class = "tbl1-width-10 item-dtl"><?= Yii::$app->SetValues->NumberFormat($aed_amount) ?></td>
+                        <td class = "tbl1-width-10 item-dtl" style="text-align: right !important;padding-right: 5px;"><?= Yii::$app->SetValues->NumberFormat($aed_amount) ?></td>
                     </tr>
                     <?php
                     $usd_grand_tot += $order_detail->total;
@@ -214,8 +238,8 @@
             ?>
             <tr>
                 <th class="tbl1-width-80">Total</th>
-                <th class="tbl1-width-10"><?= Yii::$app->SetValues->NumberFormat($usd_grand_tot) ?></th>
-                <th class="tbl1-width-10"><?= Yii::$app->SetValues->NumberFormat($aed_grand_tot) ?></th>
+                <th class="tbl1-width-10" style="text-align: right !important;padding-right: 5px;"><?= Yii::$app->SetValues->NumberFormat($usd_grand_tot) ?></th>
+                <th class="tbl1-width-10" style="text-align: right !important;padding-right: 5px;"><?= Yii::$app->SetValues->NumberFormat($aed_grand_tot) ?></th>
             </tr>
             <tr>
                 <td colspan="3">
@@ -229,7 +253,19 @@
                         <tr>
                             <td style="padding: 8px 20px;font-size: 13px;border:none;width: 25%;">PAYMENT MODE </td>
                             <td style="padding: 8px 20px;font-size: 13px;border:none;width: 5%;">:</td>
-                            <td style="padding: 8px 20px;font-size: 13px;border: none;border-bottom: 1px solid #a09c9c;width: 20%;"></td>
+                            <td style="padding: 8px 20px;font-size: 13px;border: none;border-bottom: 1px solid #a09c9c;width: 20%;">
+                                <?php
+                                if ($order->payment_mode != '') {
+                                    if ($order->payment_mode == 1) {
+                                        echo 'Cash';
+                                    } elseif ($order->payment_mode == 2) {
+                                        echo 'Cheque';
+                                    }
+                                } else {
+                                    echo '';
+                                }
+                                ?>
+                            </td>
                             <td style="padding: 8px 20px;font-size: 13px;border:none;width: 25%;width: 20%;"></td>
                             <td style="padding: 8px 20px;font-size: 13px;border:none;width: 5%;"></td>
                             <td style="padding: 8px 20px;font-size: 13px;border: none;width: 20%;"></td>
@@ -237,10 +273,26 @@
                         <tr>
                             <td style="padding: 8px 20px;font-size: 13px;border:none;width: 25%;">PAYMENT DATE </td>
                             <td style="padding: 8px 20px;font-size: 13px;border:none;width: 5%;">:</td>
-                            <td style="padding: 8px 20px;font-size: 13px;border: none;border-bottom: 1px solid #a09c9c;width: 20%;"></td>
+                            <td style="padding: 8px 20px;font-size: 13px;border: none;border-bottom: 1px solid #a09c9c;width: 20%;">
+                                <?php
+                                if ($order->payment_date != '') {
+                                    echo $order->payment_date;
+                                } else {
+                                    echo '';
+                                }
+                                ?>
+                            </td>
                             <td style="padding: 8px 20px;font-size: 13px;border:none;width: 25%;width: 20%;">CHEQUE DATE</td>
                             <td style="padding: 8px 20px;font-size: 13px;border:none;width: 5%;">:</td>
-                            <td style="padding: 8px 20px;font-size: 13px;border: none;border-bottom: 1px solid #a09c9c;width: 20%;"></td>
+                            <td style="padding: 8px 20px;font-size: 13px;border: none;border-bottom: 1px solid #a09c9c;width: 20%;">
+                                <?php
+                                if ($order->cheque_date != '') {
+                                    echo $order->cheque_date;
+                                } else {
+                                    echo '';
+                                }
+                                ?>
+                            </td>
                         </tr>
                     </table>
                     <div class="notes">NOTE</div>

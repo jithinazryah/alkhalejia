@@ -77,6 +77,36 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                             </div>
                             <div class="row">
+                                <div class='col-md-12 col-sm-12 col-xs-12 left_padd'>
+                                    <?= $form->field($model, 'description')->textInput() ?>
+                                </div>
+                            </div>
+                            <?php
+                            if (!$model->isNewRecord) {
+                                ?>
+                                <div class="row">
+                                    <hr class="appoint_history" />
+                                    <div class="uploaded-file">
+                                        <h4 class="upload-head">Uploaded Files</h4>
+                                        <?php
+                                        $path = Yii::getAlias(Yii::$app->params['uploadPath']) . '/uploads/crew_information/crew_certificates/' . $model->id;
+                                        $i = 0;
+                                        foreach (glob("{$path}/*") as $file) {
+                                            $i++;
+                                            $arry = explode('/', $file);
+                                            if ($file != '') {
+                                                ?>
+                                                <div class="upload_file_list" id="upload_file_list-<?= $i ?>"><a href="<?= Yii::$app->homeUrl ?>uploads/crew_information/crew_certificates/<?= $model->id ?>/<?= end($arry) ?>" target="_blank"><?= end($arry) ?></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="" class="upload-file-remove" id="upload-file-remove-<?= $i ?>" data-val="<?= $file ?>"><i class="fa fa-remove"></i></a></div>
+                                                <?php
+                                            }
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                            ?>
+                            <div class="row">
                                 <div class='col-md-12 col-sm-12 col-xs-12'>
                                     <div class="form-group">
                                         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'style' => 'margin-top: 18px; height: 36px; width:100px;float:right;']) ?>
@@ -84,7 +114,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                             </div>
                             <?php ActiveForm::end(); ?>
-
                         </div>
                     </div>
                 </div>
@@ -92,3 +121,24 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $(document).on('click', '.upload-file-remove', function (e) {
+            e.preventDefault();
+            var current_row_id = $(this).attr('id').match(/\d+/); // 123456
+            var path = $(this).attr('data-val');
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                async: false,
+                data: {path: path},
+                url: '<?= Yii::$app->homeUrl; ?>hr/crew-information/remove',
+                success: function (data) {
+                    if (data == 1) {
+                        $('#upload_file_list-' + current_row_id).remove();
+                    }
+                }
+            });
+        });
+    });
+</script>

@@ -18,23 +18,21 @@ use Yii;
  * @property string $DOC
  * @property string $DOU
  */
-class ChequeNotification extends \yii\db\ActiveRecord
-{
+class ChequeNotification extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'cheque_notification';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['payment_id', 'status', 'CB', 'UB'], 'integer'],
+            [['payment_id', 'status', 'CB', 'UB', 'type'], 'integer'],
             [['cheque_due_date', 'DOC', 'DOU'], 'safe'],
             [['cheque_amount'], 'number'],
             [['cheque_no'], 'string', 'max' => 100],
@@ -44,8 +42,7 @@ class ChequeNotification extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'payment_id' => 'Payment ID',
@@ -59,4 +56,5 @@ class ChequeNotification extends \yii\db\ActiveRecord
             'DOU' => 'Dou',
         ];
     }
+
 }

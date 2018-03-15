@@ -76,6 +76,8 @@ class CrewInformationController extends Controller {
             if (!empty($files)) {
                 $model->photo = $files->extension;
             }
+            $model = $this->ConvertCrewDate($model);
+            $crew_details = $this->ConvertCrewDetailsDate($crew_details);
             if ($model->validate() && $crew_details->validate()) {
                 if ($model->save()) {
                     $crew_details->crew_id = $model->id;
@@ -89,6 +91,35 @@ class CrewInformationController extends Controller {
                     'model' => $model,
                     'crew_details' => $crew_details,
         ]);
+    }
+
+    public function ConvertCrewDate($model) {
+        if (isset($model->date_of_birth) && $model->date_of_birth != '') {
+            $model->date_of_birth = date('Y-m-d', strtotime($model->date_of_birth));
+        }
+        if (isset($model->joining_date) && $model->joining_date != '') {
+            $model->joining_date = date('Y-m-d', strtotime($model->joining_date));
+        }
+        return $model;
+    }
+
+    public function ConvertCrewDetailsDate($crew_details) {
+        if (isset($crew_details->passport_issue_date) && $crew_details->passport_issue_date != '') {
+            $crew_details->passport_issue_date = date('Y-m-d', strtotime($crew_details->passport_issue_date));
+        }
+        if (isset($crew_details->passport_expiry_date) && $crew_details->passport_expiry_date != '') {
+            $crew_details->passport_expiry_date = date('Y-m-d', strtotime($crew_details->passport_expiry_date));
+        }
+        if (isset($crew_details->seaman_book_issue_date) && $crew_details->seaman_book_issue_date != '') {
+            $crew_details->seaman_book_issue_date = date('Y-m-d', strtotime($crew_details->seaman_book_issue_date));
+        }
+        if (isset($crew_details->seaman_book_expiry_date) && $crew_details->seaman_book_expiry_date != '') {
+            $crew_details->seaman_book_expiry_date = date('Y-m-d', strtotime($crew_details->seaman_book_expiry_date));
+        }
+        if (isset($crew_details->panama_endorsement_expiry_date) && $crew_details->panama_endorsement_expiry_date != '') {
+            $crew_details->panama_endorsement_expiry_date = date('Y-m-d', strtotime($crew_details->panama_endorsement_expiry_date));
+        }
+        return $crew_details;
     }
 
     /*
@@ -136,6 +167,8 @@ class CrewInformationController extends Controller {
             } else {
                 $model->photo = $files->extension;
             }
+            $model = $this->ConvertCrewDate($model);
+            $crew_details = $this->ConvertCrewDetailsDate($crew_details);
             if ($model->validate() && $crew_details->validate()) {
                 if ($model->save()) {
                     $crew_details->crew_id = $model->id;
@@ -211,14 +244,29 @@ class CrewInformationController extends Controller {
                     $root_path = ['crew_information/crew_certificates', $model->id];
                     Yii::$app->UploadFile->UploadSingle($image, $model, $root_path);
                     Yii::$app->session->setFlash('success', "Certificate Added Successfully");
-                    return $this->redirect(['add', 'id' => $model->crew_id]);
                 }
+                return $this->redirect(['add', 'id' => $model->crew_id]);
             }
         }
         return $this->renderAjax('_form_certificate', [
                     'model' => $model,
                     'id' => $model->crew_id,
         ]);
+    }
+
+    /*
+     * This functio remove uploaded path
+     */
+
+    public function actionRemove() {
+        if (Yii::$app->request->isAjax) {
+            if (unlink($_POST['path'])) {
+                $flag = 1;
+            } else {
+                $flag = 1;
+            }
+        }
+        return $flag;
     }
 
 }

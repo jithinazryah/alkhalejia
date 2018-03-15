@@ -10,24 +10,22 @@ use common\models\PurchaseOrderMst;
 /**
  * PurchaseOrderMstSearch represents the model behind the search form about `common\models\PurchaseOrderMst`.
  */
-class PurchaseOrderMstSearch extends PurchaseOrderMst
-{
+class PurchaseOrderMstSearch extends PurchaseOrderMst {
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['id', 'vessel', 'attenssion', 'port', 'status', 'CB', 'UB'], 'integer'],
-            [['date', 'reference_no', 'appointment_no', 'invoice_no', 'address', 'invoice', 'email_confirmation', 'delivery_note', 'eta', 'payment_terms', 'agent_details', 'DOC', 'DOU'], 'safe'],
+            [['id', 'vessel', 'attenssion', 'port', 'status', 'CB', 'UB', 'payment_mode', 'currency'], 'integer'],
+            [['date', 'reference_no', 'appointment_no', 'invoice_no', 'address', 'invoice', 'email_confirmation', 'delivery_note', 'eta', 'payment_terms', 'agent_details', 'DOC', 'DOU', 'payment_date', 'cheque_number', 'cheque_date'], 'safe'],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -39,8 +37,7 @@ class PurchaseOrderMstSearch extends PurchaseOrderMst
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = PurchaseOrderMst::find();
 
         // add conditions that should always apply here
@@ -73,15 +70,16 @@ class PurchaseOrderMstSearch extends PurchaseOrderMst
         ]);
 
         $query->andFilterWhere(['like', 'reference_no', $this->reference_no])
-            ->andFilterWhere(['like', 'appointment_no', $this->appointment_no])
-            ->andFilterWhere(['like', 'invoice_no', $this->invoice_no])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'invoice', $this->invoice])
-            ->andFilterWhere(['like', 'email_confirmation', $this->email_confirmation])
-            ->andFilterWhere(['like', 'delivery_note', $this->delivery_note])
-            ->andFilterWhere(['like', 'payment_terms', $this->payment_terms])
-            ->andFilterWhere(['like', 'agent_details', $this->agent_details]);
+                ->andFilterWhere(['like', 'appointment_no', $this->appointment_no])
+                ->andFilterWhere(['like', 'invoice_no', $this->invoice_no])
+                ->andFilterWhere(['like', 'address', $this->address])
+                ->andFilterWhere(['like', 'invoice', $this->invoice])
+                ->andFilterWhere(['like', 'email_confirmation', $this->email_confirmation])
+                ->andFilterWhere(['like', 'delivery_note', $this->delivery_note])
+                ->andFilterWhere(['like', 'payment_terms', $this->payment_terms])
+                ->andFilterWhere(['like', 'agent_details', $this->agent_details]);
 
         return $dataProvider;
     }
+
 }

@@ -195,6 +195,8 @@ form .form-group .form-control{
     padding: 12px 10px 10px 10px;
     font-size: 13px;
     font-weight: bold;
+    display: inline-block;
+    margin-bottom: 10px;
 }
 .upload_file_list1 {
     clear: both;
@@ -653,4 +655,23 @@ a {
     font-weight: bold;
     text-decoration: none;
     color: #0f6ca8;
+}
+.uploaded-file{
+    text-align: center;
+    margin: 30px 0px;
+}
+.uploaded-file .upload-head{
+    color: #00BCD4;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+#daily-tax{
+    margin: 0px;
+    display: inline-flex;
+    border: 1px solid #9a9a9a;
+    height: 39px;
+    width: 100%;
+}
+.txt-align-right{
+    text-align: right;
 }

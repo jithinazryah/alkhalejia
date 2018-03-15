@@ -54,7 +54,7 @@ class Appointment extends \yii\db\ActiveRecord {
         return [
             'id' => 'ID',
             'vessel' => 'Vessel Name',
-            'appointment_number' => 'Appointment Number',
+            'appointment_number' => 'Voyage  Number',
             'date' => 'Date',
             'port_of_call' => 'Port Of Call',
             'terminal' => 'Terminal',

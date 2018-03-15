@@ -184,8 +184,8 @@
                                             <tr>
                                                 <th style="width: 10%;font-size: 12px;padding: 10px 5px;">Sl No.</th>
                                                 <th style="width: 60%;font-size: 12px;padding: 10px 2px;">Description</th>
-                                                <th style="width: 15%;font-size: 12px;padding: 10px 2px;">Qty</th>
-                                                <th style="width: 15%;font-size: 12px;padding: 10px 2px;">Amount</th>
+                                                <th style="width: 15%;font-size: 12px;padding: 10px 5px;text-align: right;">Qty</th>
+                                                <th style="width: 15%;font-size: 12px;padding: 10px 5px;text-align: right;">Amount</th>
                                             </tr>
                                             <?php
                                             $qty_tot = 0;
@@ -198,8 +198,8 @@
                                                     <tr>
                                                         <td style="width: 10%;font-size: 12px;padding: 10px 5px;"><?= $i ?></td>
                                                         <td style="width: 60%;font-size: 12px;padding: 10px 2px;"><?= $order_detail->description ?></td>
-                                                        <td style="width: 15%;font-size: 12px;padding: 10px 2px;"><?= $order_detail->qty ?></td>
-                                                        <td style="width: 15%;font-size: 12px;padding: 10px 2px;"><?= $order_detail->total ?></td>
+                                                        <td style="width: 15%;font-size: 12px;padding: 10px 5px;text-align: right;"><?= $order_detail->qty ?></td>
+                                                        <td style="width: 15%;font-size: 12px;padding: 10px 5px;text-align: right;"><?= $order_detail->total ?></td>
                                                     </tr>
                                                     <?php
                                                     $qty_tot += $order_detail->qty;
@@ -210,8 +210,8 @@
                                             <tr>
                                                 <td style="width: 10%;font-size: 12px;padding: 10px 5px;"></td>
                                                 <td style="width: 60%;font-size: 12px;padding: 10px 2px;">Total</td>
-                                                <td style="width: 15%;font-size: 12px;padding: 10px 2px;"><?= $qty_tot ?></td>
-                                                <td style="width: 15%;font-size: 12px;padding: 10px 2px;"><?= $amount_tot ?></td>
+                                                <td style="width: 15%;font-size: 12px;padding: 10px 5px;text-align: right;"><?= $qty_tot ?></td>
+                                                <td style="width: 15%;font-size: 12px;padding: 10px 5px;text-align: right;"><?= sprintf('%0.2f', $amount_tot); ?></td>
                                             </tr>
                                         </table>
 

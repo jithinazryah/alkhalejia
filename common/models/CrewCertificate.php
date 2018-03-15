@@ -35,7 +35,7 @@ class CrewCertificate extends \yii\db\ActiveRecord {
         return [
             [['certificate_id', 'date_of_issue', 'date_of_expiry', 'issuing_authority'], 'required'],
             [['crew_id', 'certificate_id', 'status', 'CB', 'UB'], 'integer'],
-            [['date_of_issue', 'date_of_expiry', 'DOC', 'DOU'], 'safe'],
+            [['date_of_issue', 'date_of_expiry', 'DOC', 'DOU', 'description'], 'safe'],
             [['issuing_authority'], 'string', 'max' => 100],
             [['image'], 'file', 'extensions' => 'pdf,txt,doc,docx,xls,xlsx,msg,zip,eml, jpg, jpeg, png', 'maxFiles' => 10],
         ];
@@ -64,7 +64,7 @@ class CrewCertificate extends \yii\db\ActiveRecord {
         $path = Yii::getAlias(Yii::$app->params['uploadPath']) . '/uploads/crew_information/crew_certificates/' . $id;
         $link = '';
         if (count(glob("{$path}/*")) > 0) {
-            ?>
+?>
             <?php
 
             $i = 0;
@@ -75,7 +75,7 @@ class CrewCertificate extends \yii\db\ActiveRecord {
                 if ($i != 0) {
                     $link .= '<br/>';
                 }
-                $link .= '<a href="' . Yii::$app->homeUrl . 'uploads/crew_information/crew_certificates/' . $id . '/' . end($arry) . '" target="_blank">' . end($arry) . '</a>';
+                $link .= '<a href="' . Yii::$app->homeUrl . 'uploads/crew_information/crew_certificates/' . $id . '/' . end($arry) . '" target="_blank" style="color: #3F51B5;">' . end($arry) . '</a>';
                 $i++;
             }
         }

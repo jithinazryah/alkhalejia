@@ -101,7 +101,7 @@
                                 <strong style="text-transform:uppercase;font-size:11px;">ALKHALEJIA AGGREGATES fZE</strong>
                                 <!--<p>Trading,import and export</p>-->
                                 <p>Phone No: 07-204-1315</p>
-                                <p>Email: alkhalejia@rakfzbc.ae</p>
+                                <p>Email: al.khalejia@rakfzbc.ae</p>
                                 <p style="padding-top: 15px;font-weight: 700;font-size:11px;">VAT ID : 100234434700003</p>
                             </div>
                         </div>
@@ -217,8 +217,8 @@
                                     <tr>
                                         <td style="width: 10%;font-size: 12px;padding: 10px 5px;"><?= $i ?></td>
                                         <td style="width: 60%;font-size: 12px;padding: 10px 2px;"><?= $order_detail->description ?></td>
-                                        <td style="width: 15%;font-size: 12px;padding: 10px 2px;"><?= $order_detail->qty ?></td>
-                                        <td style="width: 15%;font-size: 12px;padding: 10px 2px;"><?= $order_detail->total ?></td>
+                                        <td style="width: 15%;font-size: 12px;padding: 10px 5px;text-align: right;"><?= $order_detail->qty ?></td>
+                                        <td style="width: 15%;font-size: 12px;padding: 10px 5px;text-align: right;"><?= $order_detail->total ?></td>
                                     </tr>
                                     <?php
                                     $qty_tot += $order_detail->qty;
@@ -229,8 +229,8 @@
                             <tr>
                                 <td style="width: 10%;font-size: 12px;padding: 10px 5px;"></td>
                                 <td style="width: 60%;font-size: 12px;padding: 10px 2px;">Total</td>
-                                <td style="width: 15%;font-size: 12px;padding: 10px 2px;"><?= $qty_tot ?></td>
-                                <td style="width: 15%;font-size: 12px;padding: 10px 2px;"><?= $amount_tot ?></td>
+                                <td style="width: 15%;font-size: 12px;padding: 10px 5px;text-align: right;"><?= $qty_tot ?></td>
+                                <td style="width: 15%;font-size: 12px;padding: 10px 5px;text-align: right;"><?= sprintf('%0.2f', $amount_tot); ?></td>
                             </tr>
                         </table>
 
@@ -292,7 +292,7 @@
                     <div class="footer">
                         <span>
                             <p style="font-size:11px;font-weight: 600;">Office 304-305-306-A, BC-4 RAKFZ, P.O.Box 30381 Nakheel RAK UAE</p>
-                            <p>Email : alkhalejia@rakfzbc.ae, FAX No : 072041317, Mobile No : 050-5300331</p>
+                            <p>Email : al.khalejia@rakfzbc.ae, FAX No : 072041317, Mobile No : 050-5300331</p>
                         </span>
                     </div>
                 </td>

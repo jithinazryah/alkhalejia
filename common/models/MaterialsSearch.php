@@ -10,13 +10,12 @@ use common\models\Materials;
 /**
  * MaterialsSearch represents the model behind the search form about `common\models\Materials`.
  */
-class MaterialsSearch extends Materials
-{
+class MaterialsSearch extends Materials {
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['id', 'tax', 'unit', 'status', 'CB', 'UB'], 'integer'],
             [['name', 'code', 'size', 'image', 'description', 'DOC', 'DOU'], 'safe'],
@@ -27,8 +26,7 @@ class MaterialsSearch extends Materials
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -40,14 +38,20 @@ class MaterialsSearch extends Materials
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = Materials::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => array(
+                'pageSize' => 20,
+                'params' => [
+                    'q' => $q,
+                    'page' => Yii::$app->request->get('page'),
+                ],
+            ),
         ]);
 
         $this->load($params);
@@ -73,11 +77,12 @@ class MaterialsSearch extends Materials
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'size', $this->size])
-            ->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', 'description', $this->description]);
+                ->andFilterWhere(['like', 'code', $this->code])
+                ->andFilterWhere(['like', 'size', $this->size])
+                ->andFilterWhere(['like', 'image', $this->image])
+                ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }
+
 }

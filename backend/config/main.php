@@ -49,6 +49,9 @@ return [
         'hr' => [
             'class' => 'backend\modules\hr\Module',
         ],
+        'reports' => [
+            'class' => 'backend\modules\reports\Module',
+        ],
     ],
     'components' => [
         'request' => [

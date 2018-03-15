@@ -41,10 +41,10 @@ class DailyEntryDetails extends \yii\db\ActiveRecord {
     public function rules() {
         return [
 //            [['daily_entry_id', 'ticket_no', 'truck_number', 'gross_weight', 'tare_weight', 'net_weight', 'rate', 'total', 'transport_amount'], 'required'],
-            [['daily_entry_id', 'status', 'CB', 'UB'], 'integer'],
-            [['rate', 'total', 'transport_amount'], 'number'],
+            [['daily_entry_id', 'status', 'CB', 'UB', 'tax_id', 'material', 'supplier', 'transporter'], 'integer'],
+            [['rate', 'total', 'transport_amount', 'tax_amount'], 'number'],
             [['description'], 'string'],
-            [['DOC', 'DOU'], 'safe'],
+            [['DOC', 'DOU', 'per_ton', 'received_date'], 'safe'],
             [['ticket_no'], 'string', 'max' => 20],
             [['truck_number', 'gross_weight', 'tare_weight', 'net_weight'], 'string', 'max' => 255],
             [['daily_entry_id'], 'exist', 'skipOnError' => true, 'targetClass' => DailyEntry::className(), 'targetAttribute' => ['daily_entry_id' => 'id']],
@@ -65,6 +65,8 @@ class DailyEntryDetails extends \yii\db\ActiveRecord {
             'net_weight' => 'Net Weight',
             'rate' => 'Rate',
             'total' => 'Total',
+            'tax_id' => 'Tax ID',
+            'tax_amount' => 'Tax Amount',
             'description' => 'Description',
             'transport_amount' => 'Transport Amount',
             'status' => 'Status',

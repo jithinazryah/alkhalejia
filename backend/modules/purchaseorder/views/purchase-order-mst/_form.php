@@ -7,6 +7,8 @@ use common\models\Ships;
 use kartik\date\DatePicker;
 use common\models\Contacts;
 Use common\models\Ports;
+use yii\helpers\Url;
+use common\components\ModalViewWidget;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\PurchaseOrderMst */
@@ -14,12 +16,20 @@ Use common\models\Ports;
 ?>
 
 <div class="purchase-order-mst-form form-inline">
-
+    <?php
+    echo ModalViewWidget::widget();
+    ?>
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php
-            $model->date = date('d-M-Y');
+            if ($model->isNewRecord) {
+                $model->date = date('d-M-Y');
+            } else {
+                if (isset($model->date) && $model->date != '') {
+                    $model->date = date('d-M-Y', strtotime($model->date));
+                }
+            }
             ?>
             <?=
             $form->field($model, 'date')->widget(DatePicker::classname(), [
@@ -60,13 +70,20 @@ Use common\models\Ports;
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php $suppliers = ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 2, 'service' => 1]), 'id', 'name'); ?>
             <?= $form->field($model, 'attenssion')->dropDownList($suppliers, ['prompt' => '-Choose a Supplier-']) ?>
+            <?= Html::button('<span> Add Supplier</span>', ['value' => Url::to('add-supplier'), 'class' => 'btn btn-icon btn-white extra_btn supplier_add modalButton']) ?>
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?= $form->field($model, 'invoice_no')->textInput(['maxlength' => true]) ?>
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php
-            $model->eta = date('d-M-Y');
+            if ($model->isNewRecord) {
+                $model->eta = date('d-M-Y');
+            } else {
+                if (isset($model->eta) && $model->eta != '') {
+                    $model->eta = date('d-M-Y', strtotime($model->eta));
+                }
+            }
             ?>
             <?=
             $form->field($model, 'eta')->widget(DatePicker::classname(), [
@@ -80,15 +97,6 @@ Use common\models\Ports;
         </div>
     </div>
     <div class="row">
-        <div class='col-md-6 col-sm-6 col-xs-12 left_padd'>
-            <?php $ports = ArrayHelper::map(Ports::findAll(['status' => 1]), 'id', 'port_name'); ?>
-            <?= $form->field($model, 'port')->dropDownList($ports, ['prompt' => '--Select--']) ?>
-        </div>
-        <div class='col-md-6 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'status')->dropDownList(['1' => 'Enabled', '0' => 'Disabled']) ?>
-        </div>
-    </div>
-    <div class="row">
         <div class='col-md-4 col-sm-4 col-xs-12 left_padd'>
             <?= $form->field($model, 'address')->textarea(['rows' => 3]) ?>
         </div>
@@ -99,7 +107,69 @@ Use common\models\Ports;
             <?= $form->field($model, 'agent_details')->textarea(['rows' => 3]) ?>
         </div>
     </div>
-
+    <div class="row">
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?php $ports = ArrayHelper::map(Ports::findAll(['status' => 1]), 'id', 'port_name'); ?>
+            <?= $form->field($model, 'port')->dropDownList($ports, ['prompt' => '--Select--']) ?>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?php $currencies = ArrayHelper::map(common\models\Currency::findAll(['status' => 1]), 'id', 'currency_name'); ?>
+            <?= $form->field($model, 'currency')->dropDownList($currencies, ['prompt' => '--Select--']) ?>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?php $payment_modes = ArrayHelper::map(common\models\PaymentMode::findAll(['status' => 1]), 'id', 'payment_mode'); ?>
+            <?= $form->field($model, 'payment_mode')->dropDownList($payment_modes, ['prompt' => '--Select--']) ?>
+        </div>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?php
+            if ($model->isNewRecord) {
+                $model->payment_date = date('d-M-Y');
+            } else {
+                if (isset($model->payment_date) && $model->payment_date != '') {
+                    $model->payment_date = date('d-M-Y', strtotime($model->payment_date));
+                }
+            }
+            ?>
+            <?=
+            $form->field($model, 'payment_date')->widget(DatePicker::classname(), [
+                'type' => DatePicker::TYPE_INPUT,
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'format' => 'dd-M-yyyy'
+                ]
+            ]);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class='col-md-3 col-sm-4 col-xs-12 left_padd'>
+            <?= $form->field($model, 'cheque_number')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class='col-md-3 col-sm-4 col-xs-12 left_padd'>
+            <?php // $form->field($model, 'cheque_number')->textInput() ?>
+            <?php
+            if ($model->isNewRecord) {
+                $model->cheque_date = date('d-M-Y');
+            } else {
+                if (isset($model->cheque_date) && $model->cheque_date != '') {
+                    $model->cheque_date = date('d-M-Y', strtotime($model->cheque_date));
+                }
+            }
+            ?>
+            <?=
+            $form->field($model, 'cheque_date')->widget(DatePicker::classname(), [
+                'type' => DatePicker::TYPE_INPUT,
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'format' => 'dd-M-yyyy'
+                ]
+            ]);
+            ?>
+        </div>
+        <div class='col-md-3 col-sm-4 col-xs-12 left_padd'>
+            <?= $form->field($model, 'status')->dropDownList(['1' => 'Enabled', '0' => 'Disabled']) ?>
+        </div>
+    </div>
     <div class="row">
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?= $form->field($model, 'invoice')->fileInput() ?>
@@ -187,7 +257,52 @@ Use common\models\Ports;
         </div>
     </div>
     <?php ActiveForm::end(); ?>
-
+    <hr class="appoint_history" />
+    <div class="uploaded-file">
+        <h4 class="upload-head">Uploaded Files</h4>
+        <?php
+        if ($model->invoice != '') {
+            $dirPath1 = Yii::getAlias(Yii::$app->params['uploadPath']) . '/uploads/purchase-order/' . $model->id . '/invoice.' . $model->invoice;
+            if (file_exists($dirPath1)) {
+                ?>
+                <span class="upload_file_list"><a href="<?= Yii::$app->homeUrl ?>uploads/purchase-order/<?= $model->id ?>/invoice.<?= $model->invoice ?>" target="_blank">invoice.<?= $model->invoice ?></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?= Yii::$app->homeUrl ?>purchaseorder/purchase-order-mst/remove?path=<?= $dirPath1 ?>&id=<?= $model->id ?>&type=1"><i class="fa fa-remove"></i></a></span>
+                <?php
+            } else {
+                echo '';
+            }
+        }
+        if ($model->email_confirmation != '') {
+            $dirPath2 = Yii::getAlias(Yii::$app->params['uploadPath']) . '/uploads/purchase-order/' . $model->id . '/email_confirmation.' . $model->email_confirmation;
+            if (file_exists($dirPath2)) {
+                ?>
+                <span class="upload_file_list"><a href="<?= Yii::$app->homeUrl ?>uploads/purchase-order/<?= $model->id ?>/email_confirmation.<?= $model->email_confirmation ?>" target="_blank">email_confirmation.<?= $model->email_confirmation ?></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?= Yii::$app->homeUrl ?>purchaseorder/purchase-order-mst/remove?path=<?= $dirPath2 ?>&id=<?= $model->id ?>&type=2"><i class="fa fa-remove"></i></a></span>
+                <?php
+            } else {
+                echo '';
+            }
+        }
+        if ($model->delivery_note != '') {
+            $dirPath3 = Yii::getAlias(Yii::$app->params['uploadPath']) . '/uploads/purchase-order/' . $model->id . '/delivery_note.' . $model->delivery_note;
+            if (file_exists($dirPath3)) {
+                ?>
+                <span class="upload_file_list"><a href="<?= Yii::$app->homeUrl ?>uploads/purchase-order/<?= $model->id ?>/delivery_note.<?= $model->delivery_note ?>" target="_blank">delivery_note.<?= $model->delivery_note ?></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?= Yii::$app->homeUrl ?>purchaseorder/purchase-order-mst/remove?path=<?= $dirPath3 ?>&id=<?= $model->id ?>&type=3"><i class="fa fa-remove"></i></a></span>
+                <?php
+            } else {
+                echo '';
+            }
+        }
+        if ($model->other != '') {
+            $dirPath4 = Yii::getAlias(Yii::$app->params['uploadPath']) . '/uploads/purchase-order/' . $model->id . '/other.' . $model->other;
+            if (file_exists($dirPath4)) {
+                ?>
+                <span class="upload_file_list"><a href="<?= Yii::$app->homeUrl ?>uploads/purchase-order/<?= $model->id ?>/other.<?= $model->other ?>" target="_blank">other.<?= $model->other ?></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?= Yii::$app->homeUrl ?>purchaseorder/purchase-order-mst/remove?path=<?= $dirPath4 ?>&id=<?= $model->id ?>&type=4"><i class="fa fa-remove"></i></a></span>
+                        <?php
+                    } else {
+                        echo '';
+                    }
+                }
+                ?>
+    </div>
 </div>
 
 <script>

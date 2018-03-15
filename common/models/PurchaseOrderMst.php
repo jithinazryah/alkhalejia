@@ -44,8 +44,8 @@ class PurchaseOrderMst extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['date', 'eta', 'DOC', 'DOU', 'payment_terms', 'agent_details', 'category', 'other', 'reference_no'], 'safe'],
-            [['vessel', 'attenssion', 'port', 'status', 'CB', 'UB', 'appointment_no', 'lco_no'], 'integer'],
+            [['date', 'eta', 'DOC', 'DOU', 'payment_terms', 'agent_details', 'category', 'other', 'reference_no', 'payment_date', 'cheque_number', 'cheque_date'], 'safe'],
+            [['vessel', 'attenssion', 'port', 'status', 'CB', 'UB', 'appointment_no', 'lco_no', 'currency', 'payment_mode'], 'integer'],
             [['address'], 'string'],
             [['invoice_no', 'invoice', 'email_confirmation', 'delivery_note'], 'string', 'max' => 100],
         ];
@@ -72,8 +72,13 @@ class PurchaseOrderMst extends \yii\db\ActiveRecord {
             'eta' => 'Vessel ETA',
             'port' => 'Port',
             'lco_no' => 'LCO No',
+            'currency' => 'Currency',
+            'payment_mode' => 'Payment Mode',
+            'payment_date' => 'Payment Date',
+            'cheque_number' => 'Cheque Number',
             'payment_terms' => 'Payment Terms',
             'agent_details' => 'Agent Details',
+            'cheque_date' => 'Cheque Date',
             'status' => 'Status',
             'CB' => 'Cb',
             'UB' => 'Ub',

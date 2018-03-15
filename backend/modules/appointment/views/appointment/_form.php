@@ -10,6 +10,7 @@ use kartik\datetime\DateTimePicker;
 use common\models\Terminals;
 use yii\helpers\Url;
 use common\components\ModalViewWidget;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Appointment */
@@ -29,7 +30,7 @@ use common\components\ModalViewWidget;
         </div>
 
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
-            <?= $form->field($model, 'appointment_number')->textInput(['maxlength' => true, 'readonly' => true]) ?>
+            <?= $form->field($model, 'appointment_number')->textInput(['maxlength' => true]) ?>
 
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
@@ -45,7 +46,18 @@ use common\components\ModalViewWidget;
             else
                 $model->date = date('d-m-Y', strtotime($model->date));
             ?>
-            <?= $form->field($model, 'date')->textInput(['maxlength' => true]) ?>
+            <?=
+            DatePicker::widget([
+                'model' => $model,
+                'form' => $form,
+                'type' => DatePicker::TYPE_INPUT,
+                'attribute' => 'date',
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'format' => 'dd-mm-yyyy',
+                ]
+            ]);
+            ?>
 
         </div>
 

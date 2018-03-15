@@ -168,10 +168,10 @@
                             <tr style="background: #4e5254;color: white !important;">
                                 <th style="width: 10%;font-size: 12px;padding: 10px 5px;">Sl No.</th>
                                 <th style="width: 40%;font-size: 12px;padding: 10px 2px;">Particulars</th>
-                                <th style="width: 13%;font-size: 12px;padding: 10px 2px;">Qty</th>
-                                <th style="width: 11%;font-size: 12px;padding: 10px 2px;">Price</th>
-                                <th style="width: 15%;font-size: 12px;padding: 10px 2px;">Amount</th>
-                                <th style="width: 11%;font-size: 12px;padding: 10px 2px;">Tax Amount</th>
+                                <th style="width: 13%;font-size: 12px;padding: 10px 2px;text-align: right;">Qty</th>
+                                <th style="width: 11%;font-size: 12px;padding: 10px 2px;text-align: right;">Price</th>
+                                <th style="width: 15%;font-size: 12px;padding: 10px 2px;text-align: right;">Amount</th>
+                                <th style="width: 11%;font-size: 12px;padding: 10px 2px;text-align: right;">Tax Amount</th>
                             </tr>
                             <?php
                             $p = 0;
@@ -200,10 +200,10 @@
                                 <tr style="<?= $count != $p ? 'border-bottom: 1px solid #a09c9c;' : '' ?>">
                                     <td style="width: 10%;font-size: 11px;padding: 10px 5px;"><?= $p ?></td>
                                     <td style="width: 40%;font-size: 11px;padding: 10px 2px;"><?= $value->description ?></td>
-                                    <td style="width: 13%;font-size: 11px;padding: 10px 2px;"><?= $value->quantity ?></td>
-                                    <td style="width: 11%;font-size: 11px;padding: 10px 2px;"><?= $value->unit_price ?></td>
-                                    <td style="width: 15%;font-size: 11px;padding: 10px 2px;"><?= $value->total ?></td>
-                                    <td style="width: 11%;font-size: 11px;padding: 10px 2px;"><?= $value->tax_amount ?></td>
+                                    <td style="width: 13%;font-size: 11px;padding: 10px 2px;text-align: right;"><?= $value->quantity ?></td>
+                                    <td style="width: 11%;font-size: 11px;padding: 10px 2px;text-align: right;"><?= $value->unit_price ?></td>
+                                    <td style="width: 15%;font-size: 11px;padding: 10px 2px;text-align: right;"><?= $value->total ?></td>
+                                    <td style="width: 11%;font-size: 11px;padding: 10px 2px;text-align: right;"><?= $value->tax_amount ?></td>
                                 </tr>
 
                             <?php } ?>

@@ -44,6 +44,12 @@ $this->params['breadcrumbs'][] = $this->title;
     h4{
         color: #2196F3;
     }
+    table.table tr td:last-child {
+        display: block;
+    }
+    .tbl-view th,td{
+        text-align: center;
+    }
 </style>
 <div class="row">
     <div class="col-md-12">
@@ -103,7 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="sales-details">
                         <h4>Payment Details</h4>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered tbl-view">
                             <tr>
                                 <th>Date</th>
                                 <th>Invoice No</th>
@@ -112,6 +118,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <th>Payment</th>
                             </tr>
                             <?php
+                            $invoice_total = 0;
                             $due_total = 0;
                             $paid_total = 0;
                             foreach ($model_details as $model_detail) {
@@ -119,19 +126,21 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <tr>
                                     <td><?= $model_detail->document_date; ?></td>
                                     <td><?= $model_detail->transaction_id; ?></td>
-                                    <td><?= $model_detail->total_amount; ?></td>
-                                    <td><?= $model_detail->due_amount; ?></td>
-                                    <td><?= $model_detail->paid_amount; ?></td>
+                                    <td class="txt-align-right"><?= $model_detail->total_amount; ?></td>
+                                    <td class="txt-align-right"><?= $model_detail->due_amount; ?></td>
+                                    <td class="txt-align-right"><?= $model_detail->paid_amount; ?></td>
                                 </tr>
                                 <?php
                                 $due_total += $model_detail->due_amount;
                                 $paid_total += $model_detail->paid_amount;
+                                $invoice_total += $model_detail->total_amount;
                             }
                             ?>
                             <tr>
-                                <td colspan="3">TOTAL</td>
-                                <td><?= sprintf('%0.2f', $due_total); ?></td>
-                                <td><?= sprintf('%0.2f', $paid_total); ?></td>
+                                <td colspan="2">TOTAL</td>
+                                <td class="txt-align-right"><?= sprintf('%0.2f', $invoice_total); ?></td>
+                                <td class="txt-align-right"><?= sprintf('%0.2f', $due_total); ?></td>
+                                <td class="txt-align-right"><?= sprintf('%0.2f', $paid_total); ?></td>
                             </tr>
                         </table>
                     </div>

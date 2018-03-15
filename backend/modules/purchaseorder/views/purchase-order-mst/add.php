@@ -102,14 +102,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <tr>
                                         <td><?= $i; ?></td>
                                         <td class="edit_text" id="<?= $order_detail->id ?>-description" val="<?= $order_detail->description ?>"><?php if ($order_detail->description != '') { ?> <span title="<?= $order_detail->description ?>"><?= substr($order_detail->description, 0, 200) . '...'; ?></span><?php } ?></td>
-                                        <td class="edit_text" id="<?= $order_detail->id ?>-rate" val="<?= $order_detail->rate ?>"><?php if ($order_detail->rate != '') { ?> <?= $order_detail->rate ?><?php } ?></td>
-                                        <td class="edit_text" id="<?= $order_detail->id ?>-qty" val="<?= $order_detail->qty ?>">
+                                        <td class="edit_text txt-align-right" id="<?= $order_detail->id ?>-rate" val="<?= $order_detail->rate ?>"><?php if ($order_detail->rate != '') { ?> <?= $order_detail->rate ?><?php } ?></td>
+                                        <td class="edit_text txt-align-right" id="<?= $order_detail->id ?>-qty" val="<?= $order_detail->qty ?>">
                                             <?php
                                             echo $order_detail->qty;
                                             ?>
                                         </td>
-                                        <td  id="<?= $order_detail->id ?>-unit" val="<?= $order_detail->unit ?>"><?php if ($order_detail->unit != '') { ?> <?= common\models\Units::findOne($order_detail->unit)->unit_symbol ?><?php } ?></td>
-                                        <td  id="<?= $order_detail->id ?>-total" val="<?= $order_detail->total ?>"><?php if ($order_detail->total != '') { ?> <?= $order_detail->total ?><?php } ?></td>
+                                        <td  class="txt-align-right" id="<?= $order_detail->id ?>-unit" val="<?= $order_detail->unit ?>"><?php if ($order_detail->unit != '') { ?> <?= common\models\Units::findOne($order_detail->unit)->unit_symbol ?><?php } ?></td>
+                                        <td  class="txt-align-right" id="<?= $order_detail->id ?>-total" val="<?= $order_detail->total ?>"><?php if ($order_detail->total != '') { ?> <?= $order_detail->total ?><?php } ?></td>
                                         <td>
                                             <?php // Html::a('<i class="fa fa-pencil"></i>', ['/purchaseorder/purchase-order-mst/add', 'id' => $id, 'prfrma_id' => $order_detail->id], ['class' => '', 'tittle' => 'Edit']) ?>
                                             <?php // Html::a('<i class="fa fa-remove"></i>', ['/purchaseorder/purchase-order-mst/delete-detail', 'id' => $order_detail->id], ['class' => '', 'tittle' => 'Edit', 'data-confirm' => 'Are you sure you want to delete this item?']) ?>

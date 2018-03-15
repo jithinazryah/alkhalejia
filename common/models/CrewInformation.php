@@ -32,26 +32,25 @@ use Yii;
  * @property string $DOC
  * @property string $DOU
  */
-class CrewInformation extends \yii\db\ActiveRecord
-{
+class CrewInformation extends \yii\db\ActiveRecord {
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'crew_information';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['vessel', 'port', 'marital_status', 'sex', 'status', 'CB', 'UB'], 'integer'],
+            [['vessel', 'port', 'agent', 'sex', 'full_name'], 'required'],
+            [['vessel', 'port', 'marital_status', 'sex', 'status', 'CB', 'UB', 'nationality'], 'integer'],
             [['date_of_birth', 'joining_date', 'DOC', 'DOU'], 'safe'],
             [['residential_address'], 'string'],
-            [['agent', 'full_name', 'nationality', 'place_of_birth', 'mothers_name', 'fathers_name', 'religion', 'first_language', 'photo'], 'string', 'max' => 100],
+            [['agent', 'full_name', 'place_of_birth', 'mothers_name', 'fathers_name', 'religion', 'first_language', 'photo'], 'string', 'max' => 100],
             [['rank'], 'string', 'max' => 50],
             [['phone_number'], 'string', 'max' => 30],
         ];
@@ -60,8 +59,7 @@ class CrewInformation extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'vessel' => 'Vessel',
@@ -89,4 +87,5 @@ class CrewInformation extends \yii\db\ActiveRecord
             'DOU' => 'Dou',
         ];
     }
+
 }

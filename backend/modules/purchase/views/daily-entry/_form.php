@@ -86,6 +86,6 @@ use common\components\ModalViewWidget;
                 .load($(this).attr("value"));
 
     });
-    $("#w0 input:text, #formId textarea").first().focus();
+//    $("#w0 input:text, #formId textarea").first().focus();
 </script>
 

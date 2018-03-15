@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use common\models\Ships;
 use common\models\Ports;
 use kartik\date\DatePicker;
+use common\models\Country;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\CrewInformation */
@@ -40,13 +41,19 @@ use kartik\date\DatePicker;
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>    <?= $form->field($model, 'rank')->textInput(['maxlength' => true]) ?>
 
         </div>
-        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>    <?= $form->field($model, 'nationality')->textInput(['maxlength' => true]) ?>
+        <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
+            <?php $countries = ArrayHelper::map(Country::findAll(['status' => 1]), 'id', 'country_name'); ?>
+            <?= $form->field($model, 'nationality')->dropDownList($countries, ['prompt' => '--Select--']) ?>
 
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php
             if ($model->isNewRecord) {
-                $model->date_of_birth = date('Y-m-d');
+                $model->date_of_birth = date('d-M-Y');
+            } else {
+                if (isset($model->date_of_birth) && $model->date_of_birth != '') {
+                    $model->date_of_birth = date('d-M-Y', strtotime($model->date_of_birth));
+                }
             }
             ?>
             <?=
@@ -54,7 +61,7 @@ use kartik\date\DatePicker;
                 'type' => DatePicker::TYPE_INPUT,
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format' => 'yyyy-mm-dd'
+                    'format' => 'dd-M-yyyy'
                 ]
             ]);
             ?>
@@ -72,7 +79,11 @@ use kartik\date\DatePicker;
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php
             if ($model->isNewRecord) {
-                $model->joining_date = date('Y-m-d');
+                $model->joining_date = date('d-M-Y');
+            } else {
+                if (isset($model->joining_date) && $model->joining_date != '') {
+                    $model->joining_date = date('d-M-Y', strtotime($model->joining_date));
+                }
             }
             ?>
             <?=
@@ -80,11 +91,10 @@ use kartik\date\DatePicker;
                 'type' => DatePicker::TYPE_INPUT,
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format' => 'yyyy-mm-dd'
+                    'format' => 'dd-M-yyyy'
                 ]
             ]);
             ?>
-
         </div>
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>    <?= $form->field($model, 'phone_number')->textInput(['maxlength' => true]) ?>
 
@@ -121,7 +131,11 @@ use kartik\date\DatePicker;
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php
             if ($crew_details->isNewRecord) {
-                $crew_details->passport_issue_date = date('Y-m-d');
+                $crew_details->passport_issue_date = date('d-M-Y');
+            } else {
+                if (isset($crew_details->passport_issue_date) && $crew_details->passport_issue_date != '') {
+                    $crew_details->passport_issue_date = date('d-M-Y', strtotime($crew_details->passport_issue_date));
+                }
             }
             ?>
             <?=
@@ -129,7 +143,7 @@ use kartik\date\DatePicker;
                 'type' => DatePicker::TYPE_INPUT,
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format' => 'yyyy-mm-dd'
+                    'format' => 'dd-M-yyyy'
                 ]
             ]);
             ?>
@@ -137,7 +151,11 @@ use kartik\date\DatePicker;
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php
             if ($crew_details->isNewRecord) {
-                $crew_details->passport_expiry_date = date('Y-m-d');
+                $crew_details->passport_expiry_date = date('d-M-Y');
+            } else {
+                if (isset($crew_details->passport_expiry_date) && $crew_details->passport_expiry_date != '') {
+                    $crew_details->passport_expiry_date = date('d-M-Y', strtotime($crew_details->passport_expiry_date));
+                }
             }
             ?>
             <?=
@@ -145,7 +163,7 @@ use kartik\date\DatePicker;
                 'type' => DatePicker::TYPE_INPUT,
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format' => 'yyyy-mm-dd'
+                    'format' => 'dd-M-yyyy'
                 ]
             ]);
             ?>
@@ -163,7 +181,11 @@ use kartik\date\DatePicker;
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php
             if ($crew_details->isNewRecord) {
-                $crew_details->seaman_book_issue_date = date('Y-m-d');
+                $crew_details->seaman_book_issue_date = date('d-M-Y');
+            } else {
+                if (isset($crew_details->seaman_book_issue_date) && $crew_details->seaman_book_issue_date != '') {
+                    $crew_details->seaman_book_issue_date = date('d-M-Y', strtotime($crew_details->seaman_book_issue_date));
+                }
             }
             ?>
             <?=
@@ -171,7 +193,7 @@ use kartik\date\DatePicker;
                 'type' => DatePicker::TYPE_INPUT,
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format' => 'yyyy-mm-dd'
+                    'format' => 'dd-M-yyyy'
                 ]
             ]);
             ?>
@@ -179,7 +201,11 @@ use kartik\date\DatePicker;
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php
             if ($crew_details->isNewRecord) {
-                $crew_details->seaman_book_expiry_date = date('Y-m-d');
+                $crew_details->seaman_book_expiry_date = date('d-M-Y');
+            } else {
+                if (isset($crew_details->seaman_book_expiry_date) && $crew_details->seaman_book_expiry_date != '') {
+                    $crew_details->seaman_book_expiry_date = date('d-M-Y', strtotime($crew_details->seaman_book_expiry_date));
+                }
             }
             ?>
             <?=
@@ -187,7 +213,7 @@ use kartik\date\DatePicker;
                 'type' => DatePicker::TYPE_INPUT,
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format' => 'yyyy-mm-dd'
+                    'format' => 'dd-M-yyyy'
                 ]
             ]);
             ?>
@@ -207,7 +233,11 @@ use kartik\date\DatePicker;
         <div class='col-md-3 col-sm-6 col-xs-12 left_padd'>
             <?php
             if ($crew_details->isNewRecord) {
-                $crew_details->panama_endorsement_expiry_date = date('Y-m-d');
+                $crew_details->panama_endorsement_expiry_date = date('d-M-Y');
+            } else {
+                if (isset($crew_details->panama_endorsement_expiry_date) && $crew_details->panama_endorsement_expiry_date != '') {
+                    $crew_details->panama_endorsement_expiry_date = date('d-M-Y', strtotime($crew_details->panama_endorsement_expiry_date));
+                }
             }
             ?>
             <?=
@@ -215,7 +245,7 @@ use kartik\date\DatePicker;
                 'type' => DatePicker::TYPE_INPUT,
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format' => 'yyyy-mm-dd'
+                    'format' => 'dd-M-yyyy'
                 ]
             ]);
             ?>

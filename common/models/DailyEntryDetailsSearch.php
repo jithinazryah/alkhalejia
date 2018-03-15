@@ -10,25 +10,23 @@ use common\models\DailyEntryDetails;
 /**
  * DailyEntryDetailsSearch represents the model behind the search form about `common\models\DailyEntryDetails`.
  */
-class DailyEntryDetailsSearch extends DailyEntryDetails
-{
+class DailyEntryDetailsSearch extends DailyEntryDetails {
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['id', 'daily_entry_id', 'status', 'CB', 'UB'], 'integer'],
-            [['ticket_no', 'truck_number', 'gross_weight', 'tare_weight', 'net_weight', 'description', 'DOC', 'DOU'], 'safe'],
-            [['rate', 'total', 'transport_amount'], 'number'],
+            [['id', 'daily_entry_id', 'status', 'CB', 'UB', 'tax_id'], 'integer'],
+            [['ticket_no', 'truck_number', 'gross_weight', 'tare_weight', 'net_weight', 'description', 'DOC', 'DOU', 'per_ton'], 'safe'],
+            [['rate', 'total', 'transport_amount', 'tax_amount'], 'number'],
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -40,8 +38,7 @@ class DailyEntryDetailsSearch extends DailyEntryDetails
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = DailyEntryDetails::find();
 
         // add conditions that should always apply here
@@ -64,6 +61,8 @@ class DailyEntryDetailsSearch extends DailyEntryDetails
             'daily_entry_id' => $this->daily_entry_id,
             'rate' => $this->rate,
             'total' => $this->total,
+            'tax_id' => $this->tax_id,
+            'tax_amount' => $this->tax_amount,
             'transport_amount' => $this->transport_amount,
             'status' => $this->status,
             'CB' => $this->CB,
@@ -73,12 +72,13 @@ class DailyEntryDetailsSearch extends DailyEntryDetails
         ]);
 
         $query->andFilterWhere(['like', 'ticket_no', $this->ticket_no])
-            ->andFilterWhere(['like', 'truck_number', $this->truck_number])
-            ->andFilterWhere(['like', 'gross_weight', $this->gross_weight])
-            ->andFilterWhere(['like', 'tare_weight', $this->tare_weight])
-            ->andFilterWhere(['like', 'net_weight', $this->net_weight])
-            ->andFilterWhere(['like', 'description', $this->description]);
+                ->andFilterWhere(['like', 'truck_number', $this->truck_number])
+                ->andFilterWhere(['like', 'gross_weight', $this->gross_weight])
+                ->andFilterWhere(['like', 'tare_weight', $this->tare_weight])
+                ->andFilterWhere(['like', 'net_weight', $this->net_weight])
+                ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }
+
 }

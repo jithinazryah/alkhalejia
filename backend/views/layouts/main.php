@@ -130,11 +130,11 @@ AppAsset::register($this);
                             <li>
                                 <a href="">
                                     <i class="fa fa-file"></i>
-                                    <span class="title">Appointments</span>
+                                    <span class="title">Voyage Details</span>
                                 </a>
                                 <ul>
                                     <li>
-                                        <?= Html::a('Appointments', ['/appointment/appointment/index'], ['class' => 'title']) ?>
+                                        <?= Html::a('Voyage Details', ['/appointment/appointment/index'], ['class' => 'title']) ?>
                                     </li>
                                 </ul>
                             </li>
@@ -194,6 +194,9 @@ AppAsset::register($this);
                                     </li>
                                     <li>
                                         <?= Html::a('Monthly Report', ['/stock/monthly-report/index'], ['class' => 'title']) ?>
+                                    </li>
+                                    <li>
+                                        <?= Html::a('Transporter Report', ['/reports/transporter-report/index'], ['class' => 'title']) ?>
                                     </li>
                                 </ul>
                             </li>
@@ -287,6 +290,9 @@ AppAsset::register($this);
                                 </a>
                                 <ul>
                                     <li>
+                                        <?= Html::a('Add Country', ['/hr/country/index'], ['class' => 'title']) ?>
+                                    </li>
+                                    <li>
                                         <?= Html::a('Certificate Type', ['/hr/certificate-type/index'], ['class' => 'title']) ?>
                                     </li>
                                     <li>
@@ -316,8 +322,8 @@ AppAsset::register($this);
                             </a>
                         </li>
                         <?php
-                        $notifications = \common\models\ChequeNotification::find()->where(['status' => 1])->orderBy(['id' => SORT_DESC])->limit(10)->all();
-                        $notification_count = \common\models\ChequeNotification::find()->where(['status' => 1])->count();
+                        $notifications = \common\models\Notifications::find()->where(['status' => 1])->orderBy(['sort_order' => SORT_DESC])->limit(10)->all();
+                        $notification_count = \common\models\Notifications::find()->where(['status' => 1])->count();
                         ?>
                         <li class="dropdown hover-line hover-line-notify" style="min-height: 48px;">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Notifications">
@@ -342,7 +348,7 @@ AppAsset::register($this);
                                                     <i class="fa fa-envelope-o"></i>
 
                                                     <span class="line">
-                                                        <strong>Cheque No.  <span class="line-col"> <?= $value->cheque_no ?></span> due date is on <span class="line-col"> <?= $value->cheque_due_date ?> </span></strong>
+                                                        <strong style="line-height: 16px;"><?= $value->content ?></strong>
                                                     </span>
                                                     <input type="checkbox" checked="" class="iswitch iswitch-secondary disable-notification" data-id= "<?= $value->id ?>" style="margin-top: -25px;float: right;">
                                                 </a>
@@ -355,7 +361,7 @@ AppAsset::register($this);
                                 </li>
 
                                 <li class="external">
-                                    <?= Html::a('<span>View all notifications</span> <i class="fa-link-ext"></i>', ['/notification/cheque-notification']) ?>
+                                    <?= Html::a('<span>View all notifications</span> <i class="fa-link-ext"></i>', ['/notification/notifications']) ?>
                                 </li>
                             </ul>
                         </li>
@@ -496,30 +502,6 @@ AppAsset::register($this);
 
                 jQuery(document).ready(function ($)
                 {
-                    function Notifications() {
-                        $(".dropdown-menu-list-notify").empty();
-                        $(".dropdown-menu-list-task").empty();
-                        $.ajax({
-                            type: 'POST',
-                            cache: false,
-                            async: false,
-                            data: {},
-                            url: '<?= Yii::$app->homeUrl; ?>site/get-notification-task',
-                            success: function (data) {
-                                var res = $.parseJSON(data);
-                                $(".dropdown-menu-list-notify").append(res.result["notification-list"]);
-                                $('#notify-count').text(res.result["notificationcount"]);
-                                $('#notify-counts').text(res.result["notificationcount"]);
-                                //                                $(".hover-line-notify").addClass("open");
-                                $(".dropdown-menu-list-task").append(res.result["task-list"]);
-                                $('#tasks-counts').text(res.result["taskcount"]);
-                                $('#my-task-count').text(res.result["taskcount"]);
-                                //                                $(".hover-line-task").addClass("open");
-                            }
-                        });
-                    }
-                    //                    setInterval(Notifications, 12000);
-
                     $(".footer-sticked-chat .chat-user, .other-conversations-list a").on('click', function (ev)
                     {
                         ev.preventDefault();
@@ -532,78 +514,10 @@ AppAsset::register($this);
 
                         $(".footer-sticked-chat").toggleClass('mobile-is-visible');
                     });
-                    $(document).on('change', '.disable-notification', function (e) {
-                        var idd = $(this).attr('data-id');
-                        var count = $('#notify-count').text();
-                        $.ajax({
-                            type: 'POST',
-                            cache: false,
-                            async: false,
-                            data: {id: idd},
-                            url: '<?= Yii::$app->homeUrl; ?>appointment/notification/update-notification',
-                            success: function (data) {
-                                $(".hover-line-notify").addClass("open");
-                                var res = $.parseJSON(data);
-                                $('#notify-' + idd).fadeOut(750, function () {
-                                    $(this).remove();
-                                });
-                                $('#notify-count').text(count - 1);
-                                $('#notify-counts').text(count - 1);
-                                if (data != 1) {
-                                    var next_row = '<li class="active notification-success" id="notify-' + res.result["id"] + '" >\n\
-                                <a href="#">\n\
-                                                    <span class="line notification-line" style="width: 85%;padding-left: 0;cursor:pointer" id ="' + res.result["appointment_id"] + '" >\n\
-                                                        <strong style="line-height: 20px;">' + res.result["content"] + '</strong>\n\
-                                                    </span>\n\
-                                                    <span class="line small time" style="padding-left: 0;">' + res.result["date"] + '\n\
-                                                    </span>\n\
-                                                    <input type="checkbox" checked="" class="iswitch iswitch-secondary disable-notification" data-id= "' + res.result["id"] + '" style="margin-top: -35px;float: right;" title="Ignore">\n\
-                                                </a>\n\
-                                </li>';
-                                    $(".dropdown-menu-list-notify").append(next_row);
-                                }
-                                e.preventDefault();
-                            }
-                        });
-                    });
-                    $(document).on('change', '.close-task', function (e) {
-                        var idd = $(this).attr('data-id');
-                        var count = $('#my-task-count').text();
-                        $.ajax({
-                            type: 'POST',
-                            cache: false,
-                            async: false,
-                            data: {id: idd},
-                            url: '<?= Yii::$app->homeUrl; ?>task/task/update-task',
-                            success: function (data) {
-                                var res = $.parseJSON(data);
-                                $('#mytasks-' + idd).fadeOut(750, function () {
-                                    $(this).remove();
-                                });
-                                $('#tasks-counts').text(count - 1);
-                                $('#my-task-count').text(count - 1);
-                                $(".hover-line-task").addClass("open");
-                                if (data != 1) {
-                                    var next_row = '<li class="active notification-success" id="tasks-' + res.result["id"] + '" >\n\
-                                <a href="#">\n\
-                                                    <span class="line" style="width: 85%;padding-left: 0;">\n\
-                                                        <strong style="line-height: 20px;">' + res.result["content"] + '</strong>\n\
-                                                    </span>\n\
-                                                    <span class="line small time" style="padding-left: 0;">' + res.result["date"] + '\n\
-                                                    </span>\n\
-                                                    <input type="checkbox" checked="" class="iswitch iswitch-blue close-task" data-id= "' + res.result["id"] + '" style="margin-top: -35px;float: right;" title="Closed">\n\
-                                                </a>\n\
-                                </li>';
-                                    $(".dropdown-menu-list-task").append(next_row);
-                                }
-                                e.preventDefault();
-                            }
-                        });
-                    });
-                    $(document).on('click', '.notification-line', function (e) {
-                        var idd = $(this).attr('id');
-                        window.location.href = '<?= Yii::$app->homeUrl; ?>appointment/appointment/view?id=' + idd;
-                    });
+//                    $(document).on('click', '.notification-line', function (e) {
+//                        var idd = $(this).attr('id');
+//                        window.location.href = '<?php // Yii::$app->homeUrl;            ?>appointment/appointment/view?id=' + idd;
+//                    });
                 });
             </script>
 
@@ -638,6 +552,8 @@ AppAsset::register($this);
 <?php $this->endPage() ?>
 <script>
                 jQuery(document).ready(function ($) {
+                    setInterval(Notifications, 12000);
+//                    Notifications();
                     $(document).on('change', '.disable-notification', function (e) {
                         var idd = $(this).attr('data-id');
                         var count = $('#notify-count').text();
@@ -646,7 +562,7 @@ AppAsset::register($this);
                             cache: false,
                             async: false,
                             data: {id: idd},
-                            url: '<?= Yii::$app->homeUrl; ?>notification/cheque-notification/update-notification',
+                            url: '<?= Yii::$app->homeUrl; ?>ajax-notification/update-notification',
                             success: function (data) {
                                 $(".hover-line-notify").addClass("open");
                                 var res = $.parseJSON(data);
@@ -658,7 +574,7 @@ AppAsset::register($this);
                                 if (data != 1) {
                                     var next_row = '<li class="active notification-success" id="notify-' + res.result["id"] + '" >\n\
                                 <a href="#">\n\
-                                                    <span class="line notification-line" style="width: 85%;padding-left: 0;cursor:pointer" id ="' + res.result["appointment_id"] + '" >\n\
+                                                    <span class="line notification-line" style="width: 85%;padding-left: 0;cursor:pointer" id ="' + res.result["id"] + '" >\n\
                                                         <strong style="line-height: 20px;">' + res.result["content"] + '</strong>\n\
                                                     </span>\n\
                                                     <span class="line small time" style="padding-left: 0;">' + res.result["date"] + '\n\
@@ -673,4 +589,16 @@ AppAsset::register($this);
                         });
                     });
                 });
+                function Notifications() {
+                    $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        async: false,
+                        data: {},
+                        url: '<?= Yii::$app->homeUrl; ?>ajax-notification/notifications',
+                        success: function (data) {
+                            e.preventDefault();
+                        }
+                    });
+                }
 </script>
