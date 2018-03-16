@@ -2,13 +2,13 @@
 
 namespace backend\modules\reports\controllers;
 
-use yii;
-use common\models\TransporterReport;
+use Yii;
+use common\models\CrusherReport;
 
-class TransporterReportController extends \yii\web\Controller {
+class CrusherReportController extends \yii\web\Controller {
 
     public function actionIndex() {
-        $model = new TransporterReport();
+        $model = new CrusherReport();
         $start_date = '';
         $end_date = '';
         $transport = '';
@@ -16,7 +16,7 @@ class TransporterReportController extends \yii\web\Controller {
         $model->date = '';
         $list = array();
         if ($model->load(Yii::$app->request->post())) {
-            $transport = $model->transporter;
+            $crusher = $model->crusher;
             $dateArray = explode('-', $model->date);
             $month = $dateArray[0];
             $year = $dateArray[1];
@@ -34,7 +34,7 @@ class TransporterReportController extends \yii\web\Controller {
                     'model' => $model,
                     'start_date' => $start_date,
                     'end_date' => $end_date,
-                    'transport' => $transport,
+                    'crusher' => $crusher,
                     'numberDays' => $numberDays,
                     'list' => $list,
                     'dates' => $model->date,
@@ -49,7 +49,7 @@ class TransporterReportController extends \yii\web\Controller {
         $list = array();
         $test = '';
         if (Yii::$app->request->post()) {
-            $transport = Yii::$app->request->post('transporter');
+            $crusher = Yii::$app->request->post('crusher');
             $dateArray = explode('-', Yii::$app->request->post('month_year'));
             $month = $dateArray[0];
             $year = $dateArray[1];
@@ -64,11 +64,11 @@ class TransporterReportController extends \yii\web\Controller {
             $test = $this->renderPartial('report_xls', [
                 'start_date' => $start_date,
                 'end_date' => $end_date,
-                'transport' => $transport,
+                'crusher' => $crusher,
                 'numberDays' => $numberDays,
                 'list' => $list,
             ]);
-            $file = "transporter-report.xls";
+            $file = "crusher-report.xls";
             header("Content-type: application/vnd.ms-excel");
             header("Content-Disposition: attachment; filename=$file");
             return $test;

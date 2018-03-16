@@ -8,9 +8,9 @@ use yii\base\Model;
 /**
  * Login form
  */
-class TransporterReport extends Model {
+class CrusherReport extends Model {
 
-    public $transporter;
+    public $crusher;
     public $date;
 
     /**
@@ -18,7 +18,7 @@ class TransporterReport extends Model {
      */
     public function rules() {
         return [
-            [['transporter', 'date'], 'required'],
+            [['crusher', 'date'], 'required'],
         ];
     }
 

@@ -10,7 +10,7 @@ use kartik\date\DatePicker;
 /* @var $searchModel common\models\AdminPostSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Transporter Report';
+$this->title = 'Crusher Report';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style>
@@ -35,8 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php $form = ActiveForm::begin(); ?>
                     <div class="row">
                         <div class='col-md-3 col-sm-3 col-xs-12 left_padd'>
-                            <?php $transports = ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 3, 'service' => 2]), 'id', 'name'); ?>
-                            <?= $form->field($model, 'transporter')->dropDownList($transports, ['prompt' => '-Choose a Transporter-']) ?>
+                            <?php $suppliers = ArrayHelper::map(Contacts::findAll(['status' => 1, 'type' => 2, 'service' => 1]), 'id', 'name'); ?>
+                            <?= $form->field($model, 'crusher')->dropDownList($suppliers, ['prompt' => '-Choose a Crusher-']) ?>
                         </div>
                         <div class='col-md-3 col-sm-3 col-xs-12 left_padd'>
                             <?php
@@ -62,11 +62,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <?php ActiveForm::end(); ?>
                     <div class="row">
-                        <?php if ($start_date != '' && $end_date != '' && $transport != '') {
+                        <?php if ($start_date != '' && $end_date != '' && $crusher != '') {
                             ?>
                             <div style="float:right;">
-                                <?= Html::beginForm(['transporter-report/exports'], 'post', ['target' => 'print_popup', 'id' => "epda-form", 'style' => 'margin-bottom: 0px;']) ?>
-                                <input type="hidden" name="transporter" value="<?= $transport ?>"/>
+                                <?= Html::beginForm(['crusher-report/exports'], 'post', ['target' => 'print_popup', 'id' => "epda-form", 'style' => 'margin-bottom: 0px;']) ?>
+                                <input type="hidden" name="crusher" value="<?= $crusher ?>"/>
                                 <input type="hidden" name="month_year" value="<?= $dates ?>"/>
                                 <?= Html::submitButton('<i class="fa fa-file-excel-o" style="padding-right: 10px;"></i><span>Export to Excel</span>', ['class' => 'btn btn-default', 'id' => 'pdf-btn', 'name' => 'pdf', 'style' => 'background-color: #337ab7;border-color: #2e6da4;color:white;', 'formtarget' => '_blank']) ?>
 
@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <table class="table table-responsive table-bordered transport-report">
                                 <thead>
                                     <tr>
-                                        <th colspan="10"><?= Contacts::findOne($transport)->name; ?> ( <?= date('M Y', strtotime($year . $month . '-01')); ?> )</th>
+                                        <th colspan="10"><?= Contacts::findOne($crusher)->name; ?> ( <?= date('M Y', strtotime($year . $month . '-01')); ?> )</th>
                                     </tr>
                                     <tr>
                                         <th rowspan="2">Date</th>
@@ -97,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <tbody>
                                     <?php
                                     foreach ($list as $value) {
-                                        $reports = \common\models\DailyEntryDetails::find()->where(['>=', 'received_date', $value . ' 00:00:00'])->andWhere(['<=', 'received_date', $value . ' 60:60:60'])->andWhere(['transporter' => $transport])->all();
+                                        $reports = \common\models\DailyEntryDetails::find()->where(['>=', 'received_date', $value . ' 00:00:00'])->andWhere(['<=', 'received_date', $value . ' 60:60:60'])->andWhere(['supplier' => $crusher])->all();
                                         $material_grand_tot = 0;
                                         $material1_34 = 0;
                                         $material1_38 = 0;
@@ -110,28 +110,28 @@ $this->params['breadcrumbs'][] = $this->title;
                                         if (!empty($reports)) {
                                             foreach ($reports as $val) {
                                                 if ($val->material == 1) {
-                                                    $material1_34 += $val->transport_amount;
-                                                    $material1_tot += $val->transport_amount;
+                                                    $material1_34 += $val->total;
+                                                    $material1_tot += $val->total;
                                                 }
                                                 if ($val->material == 2) {
-                                                    $material1_38 += $val->transport_amount;
-                                                    $material1_tot += $val->transport_amount;
+                                                    $material1_38 += $val->total;
+                                                    $material1_tot += $val->total;
                                                 }
                                                 if ($val->material == 3) {
-                                                    $material1_316 += $val->transport_amount;
-                                                    $material1_tot += $val->transport_amount;
+                                                    $material1_316 += $val->total;
+                                                    $material1_tot += $val->total;
                                                 }
                                                 if ($val->material == 4) {
-                                                    $material2_34 += $val->transport_amount;
-                                                    $material2_tot += $val->transport_amount;
+                                                    $material2_34 += $val->total;
+                                                    $material2_tot += $val->total;
                                                 }
                                                 if ($val->material == 5) {
-                                                    $material2_38 += $val->transport_amount;
-                                                    $material2_tot += $val->transport_amount;
+                                                    $material2_38 += $val->total;
+                                                    $material2_tot += $val->total;
                                                 }
                                                 if ($val->material == 6) {
-                                                    $material2_316 += $val->transport_amount;
-                                                    $material2_tot += $val->transport_amount;
+                                                    $material2_316 += $val->total;
+                                                    $material2_tot += $val->total;
                                                 }
                                             }
                                             $material_grand_tot += $material1_tot;

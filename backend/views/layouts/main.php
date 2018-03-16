@@ -198,6 +198,9 @@ AppAsset::register($this);
                                     <li>
                                         <?= Html::a('Transporter Report', ['/reports/transporter-report/index'], ['class' => 'title']) ?>
                                     </li>
+                                    <li>
+                                        <?= Html::a('Crusher Report', ['/reports/crusher-report/index'], ['class' => 'title']) ?>
+                                    </li>
                                 </ul>
                             </li>
                             <?php
@@ -516,7 +519,7 @@ AppAsset::register($this);
                     });
 //                    $(document).on('click', '.notification-line', function (e) {
 //                        var idd = $(this).attr('id');
-//                        window.location.href = '<?php // Yii::$app->homeUrl;            ?>appointment/appointment/view?id=' + idd;
+//                        window.location.href = '<?php // Yii::$app->homeUrl;             ?>appointment/appointment/view?id=' + idd;
 //                    });
                 });
             </script>

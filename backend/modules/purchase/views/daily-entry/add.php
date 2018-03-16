@@ -80,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <th data-priority="1" style="width:13%">VAT</th>
                                     <th data-priority="1" style="width:5%;display: none;">VAT AMOUNT</th>
                                     <th data-priority="1" style="width:10%">TOTAL</th>
-                                    <th data-priority="1" style="width:10%">PER TON</th>
+                                    <th data-priority="1" style="width:10%">PER TON(Transport)</th>
                                     <th data-priority="1" style="width:10%;">TRANSPORTER AMOUNT</th>
                                     <th data-priority="1">DESCRIPTION</th>
                                     <th data-priority="1" style="width:5%">ACTIONS</th>
